@@ -13,7 +13,7 @@ gelockert haben, steht ein Hinweis *"Seit Java 25"*.
 ## In 60 Sekunden starten
 
 ```bash
-cd learn-java        # der Ordner, in den du den Kurs geklont hast
+cd pointer-entzug    # der Ordner, in den du den Kurs geklont hast
 ./lerne.sh            # Kapiteluebersicht
 ./lerne.sh 01         # Kapitel 1 pruefen (schlaegt anfangs fehl - das ist der Plan)
 ```

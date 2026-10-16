@@ -8,3 +8,13 @@ build/
 out/
 target/
 .gradle/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
