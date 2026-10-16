@@ -1,5 +1,6 @@
-# Skripte immer mit LF auschecken, sonst bricht Bash unter Windows ab
+# Textdateien im Repository mit LF speichern, Git erkennt sie selbst
 * text=auto
+# Bash-Skripte immer mit LF auschecken, sonst bricht Bash unter Windows ab
 *.sh text eol=lf
 # Windows-Skripte mit CRLF, sonst verschluckt cmd gelegentlich Zeilen
 *.cmd text eol=crlf

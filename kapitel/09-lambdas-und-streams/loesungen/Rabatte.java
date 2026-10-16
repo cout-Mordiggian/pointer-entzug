@@ -2,14 +2,14 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Kapitel 09, Musterloesung: Strategien (Aufgabe 11) und eine Fabrik (Aufgabe 12).
+ * Kapitel 09: Musterloesung, Strategien (Aufgabe 11) und eine Fabrik (Aufgabe 12).
  */
 public final class Rabatte {
 
     private Rabatte() { }   // Utility-Klasse wie Pruef: nur statische Methoden
 
-    // Diese Strategie hat keinen Zustand, eine einzige Instanz reicht fuer
-    // alle. Genau das darf eine Fabrikmethode, ein Konstruktor nicht: Er
+    // Diese Strategie hat keinen Zustand, also reicht eine einzige Instanz
+    // fuer alle. Genau das darf eine Fabrikmethode, ein Konstruktor nicht: Er
     // muss bei jedem "new" ein neues Objekt liefern.
     // Nebenbei: Auch ein schlichtes "return betrag -> betrag;" liefert auf der
     // ueblichen JVM (HotSpot) jedes Mal dasselbe Objekt, weil ein Lambda ohne

@@ -1,11 +1,11 @@
 import java.util.Objects;
 
 /**
- * Kapitel 6, Musterloesung: Dekorierer, der jede Zeile nummeriert.
+ * Kapitel 06: Musterloesung. Dekorierer, der jede Zeile nummeriert.
  */
 public class MitZeilennummer implements Protokoll {
 
-    private final Protokoll innen;   // das eingepackte Protokoll, "hat ein", nicht "ist ein"
+    private final Protokoll innen;   // das eingepackte Protokoll ("hat ein", nicht "ist ein")
     private int nummer;              // jeder Dekorierer zaehlt fuer sich
 
     public MitZeilennummer(Protokoll innen) {

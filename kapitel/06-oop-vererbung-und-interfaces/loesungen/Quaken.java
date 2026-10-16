@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Musterloesung: das klassische Quaken.
+ * Kapitel 06: Musterloesung. Das klassische Quaken.
  */
 public class Quaken implements QuakVerhalten {
 

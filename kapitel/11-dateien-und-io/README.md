@@ -13,7 +13,7 @@ import java.nio.file.Files;
 
 Path p = Path.of("daten", "messwerte.csv");     // relativ zum Arbeitsverzeichnis
 Path abs = Path.of("/home/user/daten.csv");     // absolut (Linux, macOS)
-Path win = Path.of("C:\\Users\\anna\\daten.csv");  // absolut (Windows)
+Path win = Path.of("C:/Users/anna/daten.csv");    // absolut (Windows, / geht auch dort)
 Path kind = p.resolve("unterordner");           // anhaengen
 Path eltern = p.getParent();
 String name = p.getFileName().toString();
@@ -69,12 +69,13 @@ new FileReader(datei);                            // ebenso
 Ein Zeichensatz übersetzt zwischen Bytes auf der Platte und `char`s im
 Speicher. Die `Files`-Methoden ohne Zeichensatz-Argument nehmen seit jeher
 UTF-8. Die *älteren* APIs (`FileReader`, `new String(bytes)`, `Scanner` auf
-einer Datei …) nahmen dagegen bis Java 17 den Plattform-Standard, dieselbe
+einer Datei …) nahmen dagegen bis Java 17 den Plattform-Standard: Dieselbe
 Datei las sich unter Linux korrekt und unter Windows als `Ã¤` statt `ä`.
 
 Seit Java 18 ist UTF-8 auch dort Standard, mit einer Ausnahme: der Konsole
-(11.7). Trotzdem: **Schreib den Zeichensatz hin.** Es kostet nichts, dokumentiert die Absicht und schützt
-dich, falls der Code doch einmal auf einer älteren JVM läuft.
+(11.7). Trotzdem: **Schreib den Zeichensatz hin.** Es kostet nichts,
+dokumentiert die Absicht und schützt dich, falls der Code doch einmal auf
+einer älteren JVM läuft.
 
 Wirft eine Datei `MalformedInputException`, ist sie nicht UTF-8 kodiert,
 häufig `windows-1252` aus älteren Windows-Programmen (fast gleich mit
@@ -110,7 +111,7 @@ try (BufferedReader r = Files.newBufferedReader(pfad, StandardCharsets.UTF_8)) {
 
 try (BufferedWriter w = Files.newBufferedWriter(pfad, StandardCharsets.UTF_8)) {
     w.write("Zeile");
-    w.newLine();
+    w.newLine();                                // Zeilenende vom System, Windows: \r\n
 }
 ```
 
@@ -159,9 +160,12 @@ int alter = scanner.nextInt();
 ganze Programm zu.
 
 > **Windows:** Der `Scanner` liest seit Java 18 UTF-8, die Konsole von cmd
-> und PowerShell liefert aber ihre alte Codepage (meist 850). Eingetippte
-> Umlaute kommen dann als `�` an. Abhilfe: das Terminal von IntelliJ oder
-> VS Code benutzen, oder vor dem Start `chcp 65001` eingeben.
+> und PowerShell liefert aber ihre alte Codepage (meist 850). Das gilt auch
+> für das eingebaute Terminal von IntelliJ und VS Code, denn auch das ist
+> eine PowerShell. Eingetippte Umlaute werden dann zu `?` (im String steht
+> das Ersatzzeichen U+FFFD). Abhilfe: vor dem Start `chcp 65001` eingeben,
+> oder in IntelliJ über den grünen Run-Pfeil starten (das Run-Fenster liest
+> UTF-8).
 
 ## 11.8 Wo liegt eigentlich "daten.csv"?
 
@@ -231,7 +235,8 @@ wird nichts in deinem Projekt angefasst.
    try-with-resources**.
 2. **`schreibeZeilen(Path, List<String>)`**: jede Zeile mit `\n`, UTF-8.
    Bestehende Dateien werden überschrieben. Unter Windows wird der Test rot,
-   wenn das Betriebssystem den Zeilentrenner wählt (`Files.write`, `%n`).
+   wenn das Betriebssystem den Zeilentrenner wählt (`Files.write`, `%n`,
+   `newLine()` aus 11.5).
 3. **`nichtLeereZeilen(Path)`** -> `List<String>`, ohne leere und
    Whitespace-Zeilen, jede Zeile `strip()`-behandelt.
 4. **`sicherLesen(Path)`** -> `Optional<String>`. Bei `IOException`

@@ -21,7 +21,7 @@ die letzte Ziffer, `index % laenge` lässt einen Zähler zyklisch umlaufen.
 
 Vorsicht bei negativen Zahlen: Das Vorzeichen des Rests folgt dem **linken**
 Operanden. `-7 % 3` ist `-1`, nicht `2`. Deshalb prüft man "ungerade" mit
-`n % 2 != 0` und nicht mit `n % 2 == 1`, Letzteres ist für `-3` falsch.
+`n % 2 != 0` und nicht mit `n % 2 == 1`; Letzteres ist für `-3` falsch.
 (`Math.floorMod(-7, 3)` liefert `2`, falls du den mathematischen Rest brauchst.)
 
 ### Rangfolge und die `+`-Falle bei Strings
@@ -51,19 +51,19 @@ int c = ++a;   // c = 7, a = 7   (erst erhoehen, dann zuweisen)
 ```
 
 In einer eigenständigen Zeile ist `x++` und `++x` dasselbe. Verschachtelt
-(`arr[i++] = i`) wird es schnell unlesbar, dann lieber zwei Zeilen schreiben.
+(`arr[i++] = i`) wird es schnell unlesbar. Dann lieber zwei Zeilen schreiben.
 
 Die Kurzformen `+=`, `-=`, `*=` … enthalten einen **versteckten Cast**:
 
 ```java
 int x = 5;
 x = x + 1.7;    // Compilerfehler: possible lossy conversion from double to int
-x += 1.7;       // kompiliert! x ist jetzt 6, die Nachkommastellen sind still weg
+x += 1.7;       // kompiliert! x ist jetzt 6, die Nachkommastellen fallen still weg
 ```
 
 ### Vergleich
 
-`==` `!=` `<` `>` `<=` `>=`, Ergebnis ist immer `boolean`.
+`==` `!=` `<` `>` `<=` `>=`. Das Ergebnis ist immer ein `boolean`.
 
 > **Achtung:** Bei Objekten (also auch bei `String`) vergleicht `==` die
 > *Referenz*, nicht den Inhalt. Dazu ausführlich Kapitel 3. Merke fürs Erste:
@@ -90,7 +90,7 @@ if (text != null && text.length() > 3) { ... }
 Ohne Kurzschluss würde `text.length()` bei `null` eine `NullPointerException`
 werfen. Die Reihenfolge der Bedingungen ist hier also nicht beliebig.
 
-Es gibt auch `&` und `|` für booleans, die werten *immer beide* Seiten aus.
+Es gibt auch `&` und `|` für booleans. Die werten *immer beide* Seiten aus.
 Die braucht man fast nie; in 99 % der Fälle willst du `&&` und `||`.
 
 ### Ternärer Operator
@@ -99,8 +99,8 @@ Die braucht man fast nie; in 99 % der Fälle willst du `&&` und `||`.
 String status = alter >= 18 ? "volljaehrig" : "minderjaehrig";
 ```
 
-Ein `if`/`else` als Ausdruck. Gut für kurze Entscheidungen, schlecht wenn
-verschachtelt, drei ineinander geschachtelte `?:` liest niemand gern.
+Ein `if`/`else` als Ausdruck. Gut für kurze Entscheidungen, schlecht, wenn
+verschachtelt: Drei ineinander geschachtelte `?:` liest niemand gern.
 
 ## 2.2 `if` / `else if` / `else`
 
@@ -114,8 +114,8 @@ if (punkte >= 90) {
 }
 ```
 
-Die geschweiften Klammern sind bei einer einzelnen Anweisung optional, **setze
-sie trotzdem immer**. Der berühmte "goto fail"-Bug in Apples TLS-Code entstand
+Die geschweiften Klammern sind bei einer einzelnen Anweisung optional. **Setze
+sie trotzdem immer.** Der berühmte "goto fail"-Bug in Apples TLS-Code entstand
 genau daran.
 
 Die Bedingung muss ein `boolean` sein. `if (x = 5)` ist in Java ein
@@ -161,8 +161,8 @@ String typ = switch (tag) {
 
 Kein `break`, kein Durchfallen, und der `switch` **liefert einen Wert**.
 Weil ein Ausdruck immer einen Wert haben muss, besteht der Compiler darauf,
-dass jeder mögliche Eingabewert abgedeckt ist, bei Zahlen also praktisch
-immer mit `default`.
+dass jeder mögliche Eingabewert abgedeckt ist. Bei Zahlen heißt das
+praktisch immer: mit `default`.
 
 Brauchst du mehrere Anweisungen in einem Zweig, nutze einen Block mit `yield`:
 
@@ -234,9 +234,10 @@ for (String name : namen) {
 }
 ```
 
-Lies das als "für jeden String `name` in `namen`". Funktioniert mit Arrays und
-allem, was `Iterable` ist (Kapitel 8). Kein Index, keine Off-by-one-Fehler,
-**die Standardwahl**, solange du den Index nicht wirklich brauchst.
+Lies das als "für jeden String `name` in `namen`". Funktioniert mit Arrays
+(Kapitel 3) und allem, was `Iterable` ist (Kapitel 8). Kein Index, keine
+Off-by-one-Fehler: **die Standardwahl**, solange du den Index nicht wirklich
+brauchst.
 
 ### `break` und `continue`
 
@@ -292,10 +293,14 @@ int alter = eingabe.nextInt();          // wartet, bis eine Zahl + Enter kommt
 System.out.println(alter >= 18 ? "volljaehrig" : "minderjaehrig");
 ```
 
-Was `new` genau bedeutet, kommt in Kapitel 5, `import` (Klassen aus anderen
-Paketen benutzen) in Kapitel 12. Für jetzt reicht: So bekommst du eine Zahl
-von der Tastatur. Tippt jemand Buchstaben statt einer Zahl, bricht `nextInt`
-mit einer `InputMismatchException` ab; wie man so etwas abfängt, zeigt
+`import` macht eine Klasse aus der Bibliothek unter ihrem kurzen Namen
+bekannt, hier `Scanner` aus dem Paket `java.util`. Die Zeile steht ganz oben
+in der Datei, vor `class`. Klassen wie `String`, `System` und `Math` liegen in
+`java.lang` und brauchen kein `import`. Was `new` genau bedeutet, kommt in
+Kapitel 5. Für jetzt reicht: So bekommst du eine Zahl von der Tastatur.
+
+Tippt jemand Buchstaben statt einer Zahl, bricht `nextInt` mit einer
+`InputMismatchException` ab; wie man so etwas abfängt, zeigt
 Kapitel 7. Die Falle "`nextInt` gemischt mit `nextLine`" behandelt Kapitel 11.7.
 
 ---
@@ -315,7 +320,7 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 02`.
    mit `ue` statt `ü`), alles andere `"ungueltig"`. Nutze einen
    **switch-Ausdruck** mit Pfeilen.
 3. **`istPrimzahl(int n)`**: Zahlen < 2 (auch negative) sind keine Primzahlen.
-   *Optimierung:* Es genügt, bis `Math.sqrt(n)` zu testen, warum?
+   *Optimierung:* Es genügt, bis `Math.sqrt(n)` zu testen. Warum?
    Ohne Kommazahlen geht das mit `i * i <= n` als Schleifenbedingung. Für sehr
    große `n` läuft `i * i` allerdings über (Kapitel 1.4), sicher ist
    `(long) i * i <= n`.
@@ -330,12 +335,13 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 02`.
    **
    ***
    ```
-   Jede Zeile endet mit `\n`, also auch die letzte. `\n` ist *ein* Zeichen,
-   der Zeilenumbruch; der Backslash leitet solche Sonderzeichen ein, als
-   `char` schreibst du es `'\n'`.
+   Jede Zeile endet mit genau `\n`, also auch die letzte. Nimm nicht `%n` oder
+   `System.lineSeparator()`: Die liefern unter Windows `\r\n`, und der Test
+   wird rot. `\n` ist *ein* Zeichen, der Zeilenumbruch. Der Backslash leitet
+   solche Sonderzeichen ein; als `char` schreibst du es `'\n'`.
 
    Zum Zusammenbauen genügt ein String, an den du anhängst:
-   `ergebnis += "*";`. Eleganter (und bei vielen Zeilen schneller, warum,
+   `ergebnis += "*";`. Eleganter (und bei vielen Zeilen schneller; den Grund
    erklärt Kapitel 3.4) ist ein `StringBuilder`:
 
    ```java
@@ -346,8 +352,8 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 02`.
 
 ### Bonus: `Zahlenraten.java`, dein erstes Spiel
 
-Keine Tests, kein `Pruef`, du prüfst, indem du spielst. Das Programm denkt
-sich eine Zahl von 1 bis 100, du rätst, es antwortet mit `Zu gross!` oder
+Keine Tests, kein `Pruef`: Du prüfst, indem du spielst. Das Programm denkt
+sich eine Zahl von 1 bis 100. Du rätst, und es antwortet mit `Zu gross!` oder
 `Zu klein!`. Das Gerüst mit TODOs liegt in [`src/Zahlenraten.java`](src/Zahlenraten.java).
 
 ```bash
@@ -374,7 +380,7 @@ System.out.println(x);
 
 <details><summary>Auflösung</summary>
 
-`5`: `x > 3` ist schon `true`, also wertet `||` die rechte Seite gar nicht aus: `++x` passiert nie. Kurzschluss ist nicht nur Optimierung, er ändert, *was* ausgeführt wird.
+`5`: `x > 3` ist schon `true`, also wertet `||` die rechte Seite gar nicht aus: `++x` passiert nie. Kurzschluss ist nicht nur Optimierung: Er ändert, *was* ausgeführt wird.
 
 </details>
 
@@ -386,7 +392,7 @@ System.out.println(1 + 2 + "3" + 4 + 5);
 
 <details><summary>Auflösung</summary>
 
-`3345`: Von links: `1 + 2` ist noch Rechnen (`3`), ab dem String wird verkettet: `"33"`, `"334"`, `"3345"`.
+`3345`: Von links: `1 + 2` ist noch Rechnen (`3`); ab dem String wird verkettet: `"33"`, `"334"`, `"3345"`.
 
 </details>
 

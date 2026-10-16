@@ -44,10 +44,10 @@ a.equals(c)   // true  <- DAS willst du
 
 Warum ist `a == b` dann `true`? Java hält einen **String-Pool**: Literale, die
 im Quelltext stehen, werden nur einmal angelegt und wiederverwendet. `a` und `b`
-zeigen also tatsächlich auf dasselbe Objekt. Sobald der String zur Laufzeit
-entsteht, aus Nutzereingabe, aus einer Datei, per `new`, durch Verkettung mit
-einer Variablen, gilt das nicht mehr. Ein Test mit zwei Literalen ist also
-grün, das echte Programm trotzdem falsch: die gemeinste Art von Fehler.
+zeigen also tatsächlich auf dasselbe Objekt. Sobald der String erst zur Laufzeit
+entsteht (aus Nutzereingabe, aus einer Datei, per `new`, durch Verkettung mit
+einer Variablen), gilt das nicht mehr. Ein Test mit zwei Literalen ist also
+grün und das echte Programm trotzdem falsch: die gemeinste Art von Fehler.
 
 ```java
 String eingabe = liesVonTastatur();   // Nutzer tippt "hallo"
@@ -55,12 +55,14 @@ eingabe == "hallo"        // false !
 eingabe.equals("hallo")   // true
 ```
 
-**Regel ohne Ausnahme: Strings (und Objekte allgemein) mit `equals` vergleichen.**
+**Regel ohne Ausnahme: Den Inhalt von Strings (und Objekten allgemein)
+vergleichst du mit `equals`.** Nur die Prüfung auf `null` schreibst du mit
+`==` (Kapitel 2.1).
 
 Praktischer Kniff gegen `NullPointerException`:
 
 ```java
-if ("ja".equals(antwort)) { ... }   // funktioniert auch wenn antwort null ist
+if ("ja".equals(antwort)) { ... }   // funktioniert auch, wenn antwort null ist
 if (antwort.equals("ja")) { ... }   // knallt bei antwort == null
 ```
 
@@ -78,6 +80,7 @@ s.isEmpty()                 // false           (Laenge == 0)
 s.isBlank()                 // false           (leer oder nur Whitespace)
 
 "Hallo".charAt(0)           // 'H'   (char, kein String!)
+"Hallo".toCharArray()       // char[]{'H', 'a', 'l', 'l', 'o'}, z. B. fuer for-each
 "Hallo".indexOf("ll")       // 2     (-1 wenn nicht gefunden)
 "Hallo".contains("all")     // true
 "Hallo".startsWith("Ha")    // true
@@ -91,7 +94,7 @@ String.join("-", "a", "b")  // "a-b"
 ```
 
 `substring(von, bis)`: `von` ist **inklusiv**, `bis` ist **exklusiv**. Diese
-Halboffenheit zieht sich durch die ganze Java-Bibliothek, sie sorgt dafür,
+Halboffenheit zieht sich durch die ganze Java-Bibliothek. Sie sorgt dafür,
 dass `bis - von` immer die Länge ergibt.
 
 **`split` nimmt einen regulären Ausdruck**, keinen einfachen Text. Zeichen
@@ -104,7 +107,7 @@ wie `.` `|` `+` `*` `?` `(` `$` haben dort eine Sonderbedeutung:
 "a  b".split("\\s+")    // {"a", "b"}: "ein oder mehr Leerraumzeichen"
 ```
 
-Außerdem wirft `split` leere Felder **am Ende** stillschweigend weg, mehr
+Außerdem wirft `split` leere Felder **am Ende** stillschweigend weg; mehr
 dazu in Kapitel 11 (`split(";", -1)`).
 
 ### Zwischen Text und Zahl umwandeln
@@ -130,6 +133,7 @@ c + 1                  // 98   (int!): Rechnen macht aus char einen int
 Character.isDigit('7')       // true
 Character.isLetter('x')      // true
 Character.toUpperCase('x')   // 'X'
+Character.toLowerCase('X')   // 'x'
 ```
 
 Beachte die Anführungszeichen: `'a'` (einfach) ist ein `char`, `"a"` (doppelt)
@@ -155,7 +159,7 @@ String ergebnis = sb.toString();
 Nützlich: `append`, `insert`, `reverse`, `setLength(0)` (leeren), `length`.
 
 Für **einzelne** Verkettungen außerhalb von Schleifen ist `+` völlig in
-Ordnung, der Compiler optimiert sie selbst. Nur in Schleifen hilft er dir nicht.
+Ordnung; der Compiler optimiert sie selbst. Nur in Schleifen hilft er dir nicht.
 
 ## 3.5 Textblöcke (seit Java 15)
 
@@ -169,7 +173,7 @@ String json = """
 ```
 
 Kein Escapen von Anführungszeichen, keine `\n`-Kette. Die gemeinsame
-Einrückung aller Zeilen wird automatisch entfernt, die Position der
+Einrückung aller Zeilen wird automatisch entfernt; die Position der
 schließenden `"""` bestimmt mit, wie viel.
 
 ## 3.6 Arrays
@@ -212,7 +216,7 @@ Arrays.equals(a, b)            // inhaltlicher Vergleich
 Arrays.stream(zahlen).sum()    // Kapitel 9
 ```
 
-`System.out.println(zahlen)` gibt etwas wie `[I@6d06d69c` aus, das ist die
+`System.out.println(zahlen)` gibt etwas wie `[I@6d06d69c` aus. Das ist die
 Standard-`toString` von `Object` (Typkennung + Hashcode). Für Arrays immer
 `Arrays.toString(...)` verwenden.
 
@@ -239,14 +243,14 @@ So sieht das im Speicher aus:
    c  [ o-]------------------->  int[] { 99, 2, 3 }   (eigene Kopie)
 ```
 
-`a` und `b` enthalten denselben **Pfeil**, nicht zwei Arrays. `c` ist eine
-Kopie vom Stand *nach* `b[0] = 99`, aber ein eigenes Array: Ändert man
-später `a`, bleibt `c` gleich. Wer über einen
+`a` und `b` enthalten denselben **Pfeil**, nicht zwei Arrays. Wer über einen
 Pfeil etwas ändert, ändert es für alle, die auf dasselbe Objekt zeigen.
+`c` dagegen ist eine Kopie vom Stand *nach* `b[0] = 99`, aber ein eigenes
+Array: Ändert man später `a[0]`, bleibt `c` gleich.
 
 Das gilt für alle Objekte in Java. Eine Zuweisung kopiert nie das Objekt,
-nur den Verweis darauf. Male dir bei Unklarheit genau so ein Bild, das ist
-kein Anfängertrick, das machen erfahrene Entwickler auch.
+nur den Verweis darauf. Male dir bei Unklarheit genau so ein Bild. Das ist
+kein Anfängertrick; das machen erfahrene Entwickler auch.
 
 ### Zweidimensionale Arrays
 
@@ -262,7 +266,7 @@ int zeilen = fest.length;              // 2
 int spalten = fest[0].length;          // 3
 ```
 
-Genau genommen ist `int[][]` ein "Array von Arrays", die Zeilen dürfen
+Genau genommen ist `int[][]` ein "Array von Arrays"; die Zeilen dürfen
 unterschiedlich lang sein (*jagged array*). Deshalb `fest[0].length` und nicht
 `fest.length[1]`.
 
@@ -325,7 +329,7 @@ System.out.println(b.equals("hallo"));
 
 <details><summary>Auflösung</summary>
 
-`false`, dann `true`, `b` entsteht zur Laufzeit aus einer Variablen und ist ein neues Objekt, nicht das Literal aus dem Pool. (Wäre `a` als `final String a = "hal"` deklariert, rechnete der Compiler `a + "lo"` schon vorher aus, und `==` wäre `true`. Noch ein Grund, sich nie auf `==` zu verlassen. Das siehst du nur in einer
+`false`, dann `true`: `b` entsteht zur Laufzeit aus einer Variablen und ist ein neues Objekt, nicht das Literal aus dem Pool. (Wäre `a` als `final String a = "hal"` deklariert, rechnete der Compiler `a + "lo"` schon vorher aus, und `==` wäre `true`. Noch ein Grund, sich nie auf `==` zu verlassen. Das siehst du nur in einer
 echten Klasse: jshell ignoriert `final` bei solchen Variablen und zeigt
 weiter `false`.)
 

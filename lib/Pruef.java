@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -159,13 +161,34 @@ public final class Pruef {
     private static String gleicheAnzeige(Object a, Object b) {
         if (a.getClass() != b.getClass()) {
             String typen = "Typen verschieden: " + a.getClass().getSimpleName()
-                    + " gegen " + b.getClass().getSimpleName();
+                    + " gegen " + b.getClass().getSimpleName() + ".";
             if (a instanceof Number && b instanceof Number) {
-                typen += " (im Test passend schreiben, z. B. 3L fuer long, 2.0 fuer double)";
+                typen += " Passt der Rueckgabetyp? Im Test z. B. 3L fuer long oder 2.0 fuer double schreiben.";
             }
             return typen;
         }
-        return "Sieht gleich aus, aber equals() liefert false (equals ueberschrieben?)";
+        // Listen und Arrays: das erste verschiedene Element genauer ansehen
+        List<?> x = alsListe(a);
+        List<?> y = alsListe(b);
+        if (x != null && y != null && x.size() == y.size()) {
+            for (int i = 0; i < x.size(); i++) {
+                Object p = x.get(i);
+                Object q = y.get(i);
+                if (!tiefGleich(p, q)) {
+                    if (p != null && q != null && zeige(p).equals(zeige(q))) {
+                        return "Element " + i + ": " + gleicheAnzeige(p, q);
+                    }
+                    break;
+                }
+            }
+        }
+        return "Sieht gleich aus, aber equals() liefert false (equals nicht oder falsch ueberschrieben?)";
+    }
+
+    private static List<?> alsListe(Object o) {
+        if (o instanceof List<?> l)  return l;
+        if (o instanceof Object[] x) return Arrays.asList(x);
+        return null;
     }
 
     private static boolean tiefGleich(Object a, Object b) {
@@ -180,7 +203,7 @@ public final class Pruef {
 
     private static String zeige(Object o) {
         if (o == null) return "null";
-        if (o instanceof Object[] x)  return Arrays.deepToString(x);
+        if (o instanceof Object[] x)  return folge(Arrays.asList(x), o);
         if (o instanceof int[] x)     return Arrays.toString(x);
         if (o instanceof long[] x)    return Arrays.toString(x);
         if (o instanceof double[] x)  return Arrays.toString(x);
@@ -191,7 +214,31 @@ public final class Pruef {
         if (o instanceof boolean[] x) return Arrays.toString(x);
         if (o instanceof String s)    return "\"" + sichtbar(s) + "\"";
         if (o instanceof Character c) return "'" + sichtbar(String.valueOf(c)) + "'";
-        return o.toString();
+        // Nur JDK-Collections: Eigene Klassen behalten ihr toString()
+        if (o instanceof Collection<?> c && ausDemJdk(o)) return folge(c, o);
+        if (o instanceof Map<?, ?> m && ausDemJdk(o)) {
+            List<String> paare = new ArrayList<>();
+            for (Map.Entry<?, ?> e : m.entrySet()) {
+                paare.add(zeigeTeil(e.getKey(), o) + "=" + zeigeTeil(e.getValue(), o));
+            }
+            return "{" + String.join(", ", paare) + "}";
+        }
+        return o.toString().replace("\r", "\\r");
+    }
+
+    /** Elemente einzeln anzeigen, damit Strings darin Anfuehrungszeichen und sichtbare \r\n bekommen. */
+    private static String folge(Iterable<?> elemente, Object ganzes) {
+        List<String> teile = new ArrayList<>();
+        for (Object e : elemente) teile.add(zeigeTeil(e, ganzes));
+        return "[" + String.join(", ", teile) + "]";
+    }
+
+    private static String zeigeTeil(Object teil, Object ganzes) {
+        return teil == ganzes ? "(dieselbe Sammlung)" : zeige(teil);
+    }
+
+    private static boolean ausDemJdk(Object o) {
+        return o.getClass().getName().startsWith("java.");
     }
 
     /** Macht \r, \n und \t sichtbar. Nach \n folgt weiter ein Zeilenumbruch, damit Text lesbar bleibt. */

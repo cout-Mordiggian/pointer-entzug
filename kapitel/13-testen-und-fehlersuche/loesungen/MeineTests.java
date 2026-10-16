@@ -1,5 +1,5 @@
 /**
- * Kapitel 13, Musterloesung Teil A mit Erklaerungen.
+ * Kapitel 13: Musterloesung zu Teil A, mit Erklaerungen.
  *
  * Aufbau: Jede Pruefung ist eine Zeile nach dem Muster
  *   Vorbereiten (die Eingabe waehlen), Ausfuehren (r.endpreisCent), Pruefen (gleich).

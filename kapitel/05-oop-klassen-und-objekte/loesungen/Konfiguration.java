@@ -1,5 +1,5 @@
 /**
- * Kapitel 05, Musterloesung Konfiguration: ein klassischer Singleton.
+ * Kapitel 05: Musterloesung Konfiguration, ein klassischer Singleton.
  *
  * Die drei Zutaten:
  *   1. private Konstruktor   -> niemand ausserhalb kann "new" sagen

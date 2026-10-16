@@ -98,7 +98,9 @@ werden?
 
 Erst `map(Person::getName)`, dann in Großbuchstaben umwandeln, **dann**
 `sorted()`. `toUpperCase(Locale.ROOT)` passt nicht als einfache
-Methodenreferenz, weil es ein Argument braucht, nimm dort ein Lambda.
+Methodenreferenz, weil es ein Argument braucht. Nimm dort ein Lambda. Ein
+Test stellt ein türkisches Locale ein: Ohne `Locale.ROOT` wird aus `"kim"`
+dort `"KİM"` (I mit Punkt).
 
 Denkfalle: Sortierst du *vor* dem Großschreiben, gilt die natürliche
 String-Ordnung, und da stehen alle Großbuchstaben vor allen Kleinbuchstaben:
@@ -135,7 +137,7 @@ die Variante mit drei: Trenner, Präfix, Suffix. Achte auf das Leerzeichen im
 Trenner (`"a, b"`, nicht `"a,b"`).
 
 Randfall leere Liste: Der Test erwartet `"[]"`. Präfix und Suffix bleiben bei
-`joining` auch dann stehen, wenn gar kein Element kommt, du brauchst also
+`joining` auch dann stehen, wenn gar kein Element kommt. Du brauchst also
 keinen Sonderfall.
 
 </details>
@@ -184,13 +186,13 @@ stehen: die ganze `Person` oder nur ihr Name?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-`groupingBy(Person::getStadt)` allein liefert `Map<String, List<Person>>`,
-der Compiler meckert dann über den Rückgabetyp. Das zweite Argument
+`groupingBy(Person::getStadt)` allein liefert `Map<String, List<Person>>`.
+Der Compiler meckert dann über den Rückgabetyp. Das zweite Argument
 (Downstream) bestimmt, was mit den Elementen einer Gruppe passiert:
 `Collectors.mapping(umwandlung, sammler)` wandelt jedes Element um und sammelt
 es dann.
 
-Die Tests erwarten `["Anna", "Cem"]` in genau dieser Reihenfolge, die
+Die Tests erwarten `["Anna", "Cem"]` in genau dieser Reihenfolge. Die
 Reihenfolge innerhalb einer Gruppe entspricht der Eingabe, das passt von
 selbst. Leere Liste ergibt eine leere Map, auch das ohne Sonderfall.
 
@@ -325,7 +327,7 @@ zurück.
 
 **Weg B, `reduce`:** Mit `dann` aus Aufgabe 9 alle Schritte zu *einer*
 Transformation verketten und diese einmal anwenden. `reduce(startwert, verknuepfung)`
-braucht dafür ein neutrales Element, eine Transformation, die nichts verändert.
+braucht dafür ein neutrales Element: eine Transformation, die nichts verändert.
 Die Verknüpfung ist genau `dann` (als Methodenreferenz).
 
 Vorsicht bei der Variante `reduce(eingabe, (text, t) -> t.anwenden(text), ...)`:
@@ -444,7 +446,8 @@ statt selbst zu rechnen: Jede Regel steht nur an einer Stelle.
 
 `Locale.ROOT`: Ohne Angabe richtet sich `toUpperCase` nach der Sprache des
 Rechners. Auf einem türkischen System wird aus `"i"` ein `"İ"`, und `"minus"`
-passt nicht mehr zu `"MINUS"`.
+passt nicht mehr zu `"MINUS"`. Genau das prüft der Test "ausCode: tuerkisches
+Locale".
 
 </details>
 
@@ -576,12 +579,12 @@ Standardwert teuer ist oder Seiteneffekte hat (`orElseGet(() -> ladeAusDatenbank
 1. Wenn du **Indizes** brauchst oder mehrere Sammlungen gleichzeitig
    durchläufst, z. B. `a[i]` mit `b[i]` vergleichen.
 2. Wenn es eigentlich nur um einen **Seiteneffekt** geht (ausgeben,
-   in eine bestehende Liste schreiben), `for (String n : namen)` ist dann
+   in eine bestehende Liste schreiben): `for (String n : namen)` ist dann
    klarer als `namen.stream().forEach(...)`.
 
 Weitere: Zustand, der über mehrere Elemente mitgeführt wird (Kapitel 11.5),
 frühes Abbrechen mit komplizierter Bedingung, oder checked Exceptions im
-Schleifenrumpf, die lassen sich in Lambdas nicht einfach weiterwerfen.
+Schleifenrumpf: Die lassen sich in Lambdas nicht einfach weiterwerfen.
 
 </details>
 

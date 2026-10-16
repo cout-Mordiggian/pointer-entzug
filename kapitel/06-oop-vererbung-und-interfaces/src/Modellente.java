@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Aufgabe 8c: ein Modell, das (noch) nicht fliegt.
+ * Kapitel 06: Aufgabe 8c. Ein Modell, das (noch) nicht fliegt.
  *
  *   Ente e = new Modellente();
  *   e.anzeigen()   // "Ich bin eine Modellente"

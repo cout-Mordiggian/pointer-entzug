@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Aufgabe 6: eine eigene ArrayList.
+ * Kapitel 14: eine eigene ArrayList (Aufgabe 6).
  * Pruefen:  ./lerne.sh 14
  *
  * Im Inneren: ein Array plus ein Zaehler, wie viele Plaetze davon belegt sind.
@@ -7,7 +7,7 @@
  *
  * Warum Object[] und nicht E[]? "new E[4]" verbietet der Compiler, weil der
  * Typparameter zur Laufzeit geloescht ist (Type Erasure, Kapitel 8.8).
- * Deshalb speichern wir Object und casten beim Herausgeben, so macht es
+ * Deshalb speichern wir Object und casten beim Herausgeben. So macht es
  * java.util.ArrayList auch. Siehe README, Abschnitt 14.5.
  */
 public class MeineListe<E> {

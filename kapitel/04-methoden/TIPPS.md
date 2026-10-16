@@ -46,7 +46,7 @@ Vergleich aber selbst schreiben. Für drei Werte **keine** neue Vergleichslogik
 bauen: Die Zwei-Parameter-Version zweimal aufrufen, wobei das Ergebnis des einen
 Aufrufs Argument des anderen ist. Der Compiler wählt anhand der
 Argumenttypen die passende Überladung. Die Tests setzen das Maximum an jede
-der drei Positionen, wer von Hand mit `if`-Ketten vergleicht, vergisst leicht
+der drei Positionen. Wer von Hand mit `if`-Ketten vergleicht, vergisst leicht
 einen Fall; die Wiederverwendung kann das nicht.
 
 </details>
@@ -66,7 +66,7 @@ max(a, b) double -> wie die int-Version, nur mit double-Parametern und -Rueckgab
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 4.4, Rekursion und "Wann Rekursion, wann Schleife?", das
+Abschnitt 4.4, Rekursion und "Wann Rekursion, wann Schleife?". Das
 `fib`-Beispiel dort ist die rekursive Variante. Für die iterative: die
 `for`-Schleife aus Kapitel 2, Abschnitt 2.4. Frag dich: Welche zwei Werte musst
 du dir merken, um den nächsten Fibonacci-Wert auszurechnen?
@@ -83,7 +83,7 @@ nach der Definition.
 `fib(0)` und `fib(1)`. In jedem Durchlauf den nächsten Wert als Summe
 berechnen und beide Variablen eine Position weiterschieben. Denkfalle beim
 Weiterschieben: Überschreibst du eine Variable, bevor du ihren alten Wert
-benutzt hast, ist er weg, nimm eine Hilfsvariable. Zähle genau, wie viele
+benutzt hast, ist er weg. Nimm eine Hilfsvariable. Zähle genau, wie viele
 Durchläufe du für `n` brauchst, und behandle `n = 0` so, dass `0` herauskommt.
 `long` ist Pflicht: `fib(90)` ist `2880067194370816120`.
 
@@ -126,7 +126,7 @@ Argumente aufruft?
 
 Innen ist `int... zahlen` ein ganz normales `int[]`. Du kannst also mit
 `for-each` darüberlaufen und in einer Variablen aufsummieren, die bei `0`
-startet. Ein leerer Aufruf übergibt ein **leeres Array**, nicht `null`, die
+startet. Ein leerer Aufruf übergibt ein **leeres Array**, nicht `null`. Die
 Schleife läuft dann einfach nicht, und `0` kommt ohne Sonderfall heraus.
 Negative Zahlen brauchen keine Extrabehandlung (`summeAlle(4, -5)` ist `-1`).
 
@@ -156,7 +156,7 @@ inklusiv; der Startaufruf steht im TODO). Ablauf pro Aufruf:
 3. Treffer -> Mitte zurückgeben. Sonst in der passenden Hälfte weitersuchen.
 
 Denkfalle: Die neue Grenze muss `mitte + 1` bzw. `mitte - 1` sein, nicht
-`mitte`: sonst schrumpft der Bereich irgendwann nicht mehr, und du bekommst
+`mitte`. Sonst schrumpft der Bereich irgendwann nicht mehr, und du bekommst
 einen `StackOverflowError`. Beim leeren Array ist `bis` gleich `-1`, der
 Basisfall greift sofort; genau das prüft der Test.
 
@@ -196,7 +196,7 @@ Aufrufer?
 Du musst jedes Element **über seinen Index** neu setzen, also eine klassische
 `for`-Schleife mit `i` und `*= 2`. Zwei Fallen, die beide still nichts tun:
 `for (int w : werte) w *= 2;` verändert nur die lokale Kopie `w`, nicht das
-Array, `for-each` taugt hier nicht. Und `werte = new int[]{...}` biegt nur die
+Array. `for-each` taugt hier nicht. Und `werte = new int[]{...}` biegt nur die
 lokale Kopie der Referenz um; der Aufrufer sieht weiter sein altes Array. Ein
 `return` brauchst du nicht, die Methode ist `void`.
 
@@ -218,7 +218,7 @@ Zuerst eine echte Kopie mit `werte.clone()` oder `Arrays.copyOf(...)`, dann nur
 in der Kopie tauschen und sie zurückgeben. `int[] kopie = werte;` wäre keine
 Kopie, und der Test "Original ist unverändert" schlüge fehl. Denkfalle beim
 Tauschen: `kopie[i] = kopie[j]; kopie[j] = kopie[i];` schreibt zweimal
-denselben Wert, der alte Inhalt von `kopie[i]` ist nach der ersten Zeile weg.
+denselben Wert: Der alte Inhalt von `kopie[i]` ist nach der ersten Zeile weg.
 Du brauchst eine Hilfsvariable. Der Fall `i == j` funktioniert mit dem
 Tausch über die Hilfsvariable automatisch.
 
@@ -244,9 +244,9 @@ public static int[] getauscht(int[] werte, int i, int j) {
 
 <details><summary>Warum wirkt `arr[0] = 99` in einer Methode nach außen, `arr = neuesArray` aber nicht?</summary>
 
-Java übergibt immer eine Kopie des Werts, bei Arrays und Objekten ist dieser
+Java übergibt immer eine Kopie des Werts. Bei Arrays und Objekten ist dieser
 Wert die **Referenz**. Methode und Aufrufer haben also zwei Variablen, die auf
-dasselbe Array zeigen. `arr[0] = 99` ändert das gemeinsame Array, das sieht
+dasselbe Array zeigen. `arr[0] = 99` ändert das gemeinsame Array, und das sieht
 der Aufrufer. `arr = neuesArray` lässt dagegen nur die lokale Kopie der
 Referenz auf ein anderes Array zeigen; die Variable des Aufrufers zeigt
 weiterhin auf das alte. Merksatz: Du kannst das Objekt verändern, aber nicht,
@@ -261,9 +261,10 @@ Compiler wählt die Überladung anhand der **Argumente** aus, und die wären bei
 `int wert()` und `long wert()` identisch. Da ein Aufruf wie `wert();` als
 Anweisung gültig ist und sein Ergebnis gar nicht verwendet, gäbe es keinen
 Anhaltspunkt, welche Methode gemeint ist. Deshalb meldet schon die zweite
-Deklaration einen Compilerfehler (`method wert() is already defined in class ...`,
-auf einem deutsch eingestellten System, etwa in der IDE:
-`Methode wert() ist bereits in Klasse ... definiert`).
+Deklaration einen Compilerfehler (`method wert() is already defined in class ...`;
+beim Kompilieren von Hand oder in IntelliJs Build-Ausgabe auf einem deutschen
+System `Methode wert() ist bereits in Klasse ... definiert`, VS Code formuliert
+eigene Texte).
 
 </details>
 
@@ -292,7 +293,7 @@ neu berechnet.
 <details><summary>Was ist der Unterschied im Vertrag zwischen `verdoppleAlle` und `getauscht`?</summary>
 
 `verdoppleAlle` ist `void` und verändert das übergebene Array **an Ort und
-Stelle**, die Wirkung ist eine Nebenwirkung, die der Aufrufer an seinem eigenen
+Stelle**. Die Wirkung ist eine Nebenwirkung, die der Aufrufer an seinem eigenen
 Array sieht. `getauscht` lässt das Original unangetastet und liefert das
 Ergebnis als **neues** Array zurück. Der zweite Stil ist leichter zu testen und
 überrascht niemanden; der erste spart Speicher, muss aber klar dokumentiert

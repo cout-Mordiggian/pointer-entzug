@@ -26,7 +26,7 @@ public final class Person implements Comparable<Person> {
 
     /**
      * Natuerliche Ordnung: nach Name.
-     * Negativ / 0 / positiv, String kann das schon selbst.
+     * Negativ / 0 / positiv: String kann das schon selbst.
      */
     @Override
     public int compareTo(Person andere) {

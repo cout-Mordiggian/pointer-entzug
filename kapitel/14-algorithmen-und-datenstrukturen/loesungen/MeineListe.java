@@ -2,14 +2,14 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Kapitel 14, Musterloesung: eine eigene ArrayList.
+ * Kapitel 14: Musterloesung fuer eine eigene ArrayList.
  */
 public class MeineListe<E> {
 
     private static final int ANFANGSKAPAZITAET = 4;
 
     // Object[] statt E[]: "new E[4]" verbietet der Compiler, weil E zur
-    // Laufzeit geloescht ist (Type Erasure, Kapitel 8.8) - ein Array muss
+    // Laufzeit geloescht ist (Type Erasure, Kapitel 8.8). Ein Array muss
     // aber wissen, welchen Elementtyp es hat. java.util.ArrayList macht es
     // intern genauso.
     private Object[] elemente = new Object[ANFANGSKAPAZITAET];
@@ -47,7 +47,7 @@ public class MeineListe<E> {
     public E get(int index) {
         pruefeIndex(index);
         return (E) elemente[index];
-        // Aufwand: O(1) - der Platz im Array wird direkt berechnet.
+        // Aufwand: O(1), der Platz im Array wird direkt berechnet.
     }
 
     public E set(int index, E element) {
@@ -92,7 +92,7 @@ public class MeineListe<E> {
         }
         return false;
         // Aufwand: O(n). Deshalb ist "contains in einer Schleife" bei Listen
-        // heimlich O(n^2) - fuer so etwas gibt es HashSet.
+        // heimlich O(n^2). Fuer so etwas gibt es HashSet.
     }
 
     /** Nur zum Beobachten: wie gross das innere Array gerade ist. */

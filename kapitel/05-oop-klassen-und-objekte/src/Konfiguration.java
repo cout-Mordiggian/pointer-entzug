@@ -1,5 +1,5 @@
 /**
- * Kapitel 05, Aufgabe 3: ein Singleton.
+ * Kapitel 05: Aufgabe 3. Ein Singleton.
  *
  * Im ganzen Programm soll es genau EINE Konfiguration geben. Im Moment kann
  * jeder beliebig viele erzeugen, und instanz() liefert jedes Mal eine neue,

@@ -1,5 +1,5 @@
 /**
- * Kapitel 13, Teil A: die Implementierungen, gegen die deine Tests laufen.
+ * Kapitel 13: die Implementierungen fuer Teil A, gegen die deine Tests laufen.
  *
  *   +-------------------------------------------------------------------+
  *   |  BITTE ERST NACH DER AUFGABE LESEN.                               |
@@ -19,17 +19,25 @@ public final class Kandidaten {
 
     private Kandidaten() { }
 
-    // Rechnen darf nur der Kandidat, den tests/Tests.java gerade an
-    // alleBestanden uebergibt. So kann MeineTests keinen anderen Kandidaten
-    // als "Orakel" fuer die erwarteten Werte befragen.
+    // Waehrend tests/Tests.java deine Methode aufruft, rechnet nur der
+    // uebergebene Kandidat. So taugt kein anderer als "Orakel" fuer die
+    // erwarteten Werte. Ausserhalb eines Testlaufs (freigegeben == null)
+    // rechnen alle, etwa wenn du mit einer eigenen main debuggst.
     private static Rabattrechner freigegeben;
 
+    /** Nur fuer tests/Tests.java. Null hebt die Freigabe wieder auf. */
     static void freigeben(Rabattrechner r) {
+        Class<?> aufrufer = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE)
+                .getCallerClass();
+        if (!aufrufer.getName().equals("Tests")) {
+            throw new IllegalStateException("Spielregel: freigeben ist nur fuer tests/Tests.java."
+                    + " Erwartete Werte rechnest du selbst aus.");
+        }
         freigegeben = r;
     }
 
     private static void pruefeFreigabe(Rabattrechner r) {
-        if (r != freigegeben) {
+        if (freigegeben != null && r != freigegeben) {
             throw new IllegalStateException("Spielregel: Rufe nur das uebergebene r auf."
                     + " Erwartete Werte rechnest du selbst aus.");
         }
@@ -126,7 +134,7 @@ public final class Kandidaten {
     }
 
     // Fehler: falsche Reihenfolge in der if-else-Kette. Wer 50 Stueck kauft,
-    // ist auch >= 10, der erste Zweig greift, 10 % werden nie erreicht.
+    // ist auch >= 10. Der erste Zweig greift, 10 % werden nie erreicht.
     public static final class Mutant4 implements Rabattrechner {
         @Override
         public long endpreisCent(long preisCent, int menge) {

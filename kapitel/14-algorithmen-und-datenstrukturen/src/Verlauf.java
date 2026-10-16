@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Aufgabe 10b: Rueckgaengig und Wiederholen.
+ * Kapitel 14: Rueckgaengig und Wiederholen (Aufgabe 10b).
  * Pruefen:  ./lerne.sh 14
  *
  *   Verlauf v = new Verlauf();

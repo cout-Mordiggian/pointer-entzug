@@ -21,9 +21,12 @@ deines Systems (`apt`, `dnf`, `pacman`, `brew`, `winget` …) bzw. mit
   Bei der Installation "Add to PATH" aktiviert lassen und zusätzlich
   "Set JAVA_HOME variable" einschalten (auf das Symbol davor klicken >
   "Will be installed on local hard drive"), denn das ist nicht voreingestellt.
-  Der Kurs-Runner braucht nur den `PATH`, Maven und Gradle (Kapitel 12)
-  später auch `JAVA_HOME`.
-  Alternativ in PowerShell: `winget install EclipseAdoptium.Temurin.21.JDK`.
+  Der Kurs-Runner braucht nur den `PATH`. Maven und Gradle (Kapitel 12)
+  kommen laut ihrer Anleitung ebenfalls mit `java` im `PATH` aus, viele
+  Werkzeuge und Anleitungen erwarten aber `JAVA_HOME`, und bei mehreren
+  JDKs legt es fest, welches benutzt wird.
+  Alternativ in PowerShell: `winget install EclipseAdoptium.Temurin.21.JDK`
+  (installiert alle Bestandteile, setzt also auch `JAVA_HOME`).
   Danach Terminal und IDE **neu starten**, sonst finden sie `java` noch nicht.
   Ob `JAVA_HOME` gesetzt ist, zeigt dann `echo $env:JAVA_HOME`.
   Zeigt `java -version` danach immer noch eine alte Version (z. B. `1.8`),
@@ -158,6 +161,12 @@ Zeigt IntelliJ oben in einer Datei "Java file is located outside of the module
 source root", ist ihr Ordner nicht markiert. Meldet es "duplicate class", sind
 zwei Kapitel gleichzeitig markiert (oder `loesungen/`).
 
+Hast du den Kurs schon in einer älteren Fassung geöffnet, in der
+`kapitel/12-.../werkzeuge/` noch eine `pom.xml` bzw. `build.gradle.kts`
+enthielt, hat IntelliJ dort womöglich ein Maven- oder Gradle-Projekt
+eingebunden. Das zeigt das Maven- bzw. Gradle-Fenster am rechten Rand. Dort
+auf das Projekt rechtsklicken und *Unlink* wählen.
+
 Das Terminal (*View > Tool Windows > Terminal*) öffnet unter Windows eine
 PowerShell, dort heißt der Runner `.\lerne NN`.
 
@@ -283,8 +292,14 @@ src/Aufgaben.java:12: Fehler: Symbol nicht gefunden
 1 Fehler
 ```
 
-Der Kurs-Runner lässt den Compiler immer englisch melden, passend zum
-Spickzettel, der beide Fassungen nennt.
+Der Kurs-Runner (und `projekt/starte.sh`) lässt den Compiler immer englisch
+melden, passend zum Spickzettel, der beide Fassungen nennt.
+
+Die roten Markierungen im Editor stammen nicht immer von `javac`: VS Code
+prüft mit dem Eclipse-Compiler, der eigene englische Texte hat (statt
+`cannot find symbol` etwa `breit cannot be resolved to a variable`), und auch
+IntelliJ formuliert im Editor eigene Texte. Die Ursache ist dieselbe; im
+Zweifel zeigt `./lerne.sh NN` die `javac`-Meldung.
 
 Der **erste** Fehler ist der echte. Folgefehler verschwinden oft von allein,
 wenn du den ersten behebst. Nicht von "37 errors" einschüchtern lassen.

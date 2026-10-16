@@ -1,5 +1,5 @@
 /**
- * Kapitel 13, Teil B: Fehlersuche.
+ * Kapitel 13: Fehlersuche (Teil B).
  * Pruefen:  ./lerne.sh 13
  *
  * Jede Methode unten kompiliert, und jede enthaelt GENAU EINEN klassischen

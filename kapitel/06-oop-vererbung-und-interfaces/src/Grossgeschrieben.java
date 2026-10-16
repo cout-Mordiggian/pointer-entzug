@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Aufgabe 7b: ein Dekorierer, der jede Zeile gross schreibt (6.9).
+ * Kapitel 06: Aufgabe 7b. Ein Dekorierer, der jede Zeile gross schreibt (6.9).
  * Pruefen:  ./lerne.sh 06
  *
  *   new Grossgeschrieben(basis).schreibe("Hallo")   // basis bekommt "HALLO"

@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Musterloesung: Anwendungen des Stapels.
+ * Kapitel 14: Musterloesung fuer die Anwendungen des Stapels.
  */
 public class Anwendungen {
 
@@ -33,7 +33,7 @@ public class Anwendungen {
 
     public static String umkehren(String s) {
         // Alles hineinlegen, alles wieder herausnehmen: Ein Stapel dreht die
-        // Reihenfolge um. (StringBuilder.reverse() kann das auch, hier geht es
+        // Reihenfolge um. (StringBuilder.reverse() kann das auch. Hier geht es
         // darum, den Stapel zu benutzen.)
         Stapel<Character> stapel = new Stapel<>();
         for (int i = 0; i < s.length(); i++) {

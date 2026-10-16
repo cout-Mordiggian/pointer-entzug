@@ -1,8 +1,8 @@
 /**
- * Kapitel 10, Musterloesung: record mit Validierung.
+ * Kapitel 10: Musterloesung. Ein record mit Validierung.
  *
  * Was dieser Einzeiler ersetzt: drei private final Felder, einen
- * Konstruktor, drei Zugriffsmethoden, equals, hashCode und toString,
+ * Konstruktor, drei Zugriffsmethoden, equals, hashCode und toString:
  * ungefaehr 60 Zeilen Code, die alle gleich aussehen und trotzdem
  * jedes Mal falsch sein koennen.
  */
@@ -39,7 +39,7 @@ public record Artikel(String name, long preisCent, int menge) {
     /**
      * "Wither"-Methode: Records sind unveraenderlich, also gibt jede
      * Aenderung ein neues Objekt zurueck. Bei vielen Komponenten wird
-     * das muehsam, dann lohnt ein Builder.
+     * das muehsam. Dann lohnt ein Builder.
      */
     public Artikel mitMenge(int neueMenge) {
         return new Artikel(name, preisCent, neueMenge);

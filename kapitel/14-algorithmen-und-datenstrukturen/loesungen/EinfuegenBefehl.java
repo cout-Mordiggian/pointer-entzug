@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Musterloesung: Befehl "Text einfuegen".
+ * Kapitel 14: Musterloesung fuer den Befehl "Text einfuegen".
  */
 public class EinfuegenBefehl implements Befehl {
 

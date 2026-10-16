@@ -30,7 +30,7 @@ public class Aufgaben {
 
     /**
      * Aufgabe 3: Flaeche eines Kreises.
-     * A = pi * r^2, nutze Math.PI
+     * A = pi * r^2. Nutze Math.PI.
      * kreisFlaeche(1.0) -> 3.14159...
      */
     public static double kreisFlaeche(double radius) {

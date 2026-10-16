@@ -47,9 +47,9 @@ public class Aufgaben {
     public static int maximum(int[] werte) {
         // Startwert ist das ERSTE Element, nicht 0. Mit 0 als Startwert
         // wuerde maximum({-5,-2,-9}) faelschlich 0 liefern.
-        // Alternative: Integer.MIN_VALUE als Startwert, funktioniert auch.
+        // Alternative: Integer.MIN_VALUE als Startwert; das funktioniert auch.
         // Bei einem leeren Array verhalten sich beide aber verschieden:
-        // werte[0] wirft sofort eine Exception (Fehler faellt auf), MIN_VALUE
+        // werte[0] wirft sofort eine Exception (Fehler faellt auf); MIN_VALUE
         // liefert still einen falschen Wert (Fehler bleibt verborgen).
         int max = werte[0];
         for (int i = 1; i < werte.length; i++) {

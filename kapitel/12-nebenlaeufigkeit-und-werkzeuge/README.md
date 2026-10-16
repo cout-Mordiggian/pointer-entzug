@@ -1,7 +1,7 @@
 # Kapitel 12: Nebenläufigkeit und Werkzeuge
 
 **Ziel:** Du weißt, warum `zaehler++` aus zwei Threads falsch zählt, nutzt
-`ExecutorService` statt roher Threads, und findest dich in einem echten
+`ExecutorService` statt roher Threads und findest dich in einem echten
 Java-Projekt mit Maven, Gradle und JUnit zurecht.
 
 ---
@@ -18,7 +18,7 @@ t.join();       // warten, bis er fertig ist
 
 Rohe Threads sind teuer (jeder reserviert rund 1 MB Stack) und unbequem:
 Ergebnisse zurückzubekommen ist mühsam, und eine Exception im Thread landet
-nur als Stacktrace auf der Konsole, der startende Thread erfährt nichts davon.
+nur als Stacktrace auf der Konsole. Der startende Thread erfährt nichts davon.
 In echtem Code nimmt man den `ExecutorService`.
 
 `join()` (und später `Future.get()`) können eine checked
@@ -41,7 +41,7 @@ public void erhoehen() {
 ```
 1. lies zaehler          (Thread A liest 5)
 2. addiere 1             (Thread B liest ebenfalls 5)
-3. schreib zurueck       (beide schreiben 6, eine Erhoehung ist verloren)
+3. schreib zurueck       (beide schreiben 6: eine Erhoehung verloren)
 ```
 
 Das nennt man **Race Condition**. Sie tritt nicht immer auf, sondern
@@ -199,8 +199,18 @@ auf asynchrone Callback-Ketten auszuweichen.
 Und eine Eigenheit von Java 21 bis 23: Blockiert ein virtueller Thread
 *innerhalb* von `synchronized` (etwa beim Warten auf Netzwerk), hält er seinen
 Träger-Thread fest (*pinning*), und bei vielen solchen Threads geht der Vorteil
-verloren. Dort nimmt man stattdessen `ReentrantLock` (12.7). Seit Java 24 ist
-das behoben.
+verloren. Dort nimmt man stattdessen ein `ReentrantLock` aus
+`java.util.concurrent.locks`. Das `unlock()` gehört immer in ein `finally`:
+
+```java
+private final ReentrantLock sperre = new ReentrantLock();
+
+sperre.lock();
+try { zaehler++; } finally { sperre.unlock(); }
+```
+
+Seit Java 24 tritt dieses Pinning nicht mehr auf. Dort ist `synchronized`
+wieder unbedenklich.
 
 ## 12.6 Nebenläufige Collections
 
@@ -305,7 +315,8 @@ dazu [`werkzeuge/settings.gradle.kts.vorlage`](werkzeuge/settings.gradle.kts.vor
 
 `gradlew` ist der *Wrapper*: ein kleines Skript im Projekt, das die passende
 Gradle-Version selbst holt. In einem neuen Projekt erzeugt ihn einmalig
-`gradle wrapper`, danach braucht niemand mehr ein installiertes Gradle.
+`gradle wrapper` (dafür muss ein aktuelles Gradle installiert sein,
+mindestens 8.2), danach braucht niemand mehr ein installiertes Gradle.
 
 Unter Windows (PowerShell, cmd) heißt der Wrapper `.\gradlew` (das ist die
 Datei `gradlew.bat`). In IntelliJ und VS Code reicht es, den Projektordner mit
@@ -423,8 +434,8 @@ den `ExecutorService` schließt, beides sieht man dem Ergebnis nicht an.
 **Rechner mit nur einem Prozessorkern** (manche VMs und Cloud-Umgebungen):
 Dort laufen Threads nie wirklich gleichzeitig, und Race Conditions treten
 viel seltener auf. In Versuchen wurde dort eine Lösung ganz ohne
-`synchronized` in etwa der Hälfte der Läufe grün. Die Tests warnen dann zu
-Beginn und am Ende; nimm grüne Haken dort nicht als Beweis.
+`synchronized` fast immer grün. Die Tests warnen dann zu Beginn und am Ende;
+nimm grüne Haken dort nicht als Beweis.
 
 ### `Aufgaben.java`
 
@@ -527,7 +538,7 @@ System.out.println(Teuer.INSTANZ == Teuer.INSTANZ);
 
 <details><summary>Auflösung</summary>
 
-`start gebaut hallo hallo true`: Die JVM lädt und initialisiert eine Klasse erst, wenn sie zum ersten Mal gebraucht wird, hier beim ersten `hallo()`. Dabei laufen die `static`-Initialisierungen, also entsteht `INSTANZ` genau dann, und zwar genau einmal. Diese Initialisierung sichert die JVM selbst gegen gleichzeitige Threads ab. Deshalb braucht der Singleton mit `static final`-Feld kein `synchronized`.
+`start gebaut hallo hallo true`: Die JVM initialisiert eine Klasse erst, wenn sie zum ersten Mal gebraucht wird, hier beim ersten `hallo()`. Dabei laufen die `static`-Initialisierungen, also entsteht `INSTANZ` genau dann, und zwar genau einmal. Diese Initialisierung sichert die JVM selbst gegen gleichzeitige Threads ab. Deshalb braucht der Singleton mit `static final`-Feld kein `synchronized`.
 
 </details>
 

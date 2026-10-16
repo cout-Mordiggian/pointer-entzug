@@ -161,7 +161,7 @@ Ergebnis mit `yield` zurück, nicht mit `return` (das würde die ganze Methode
 verlassen und kompiliert hier nicht).
 
 Test: Dreieck 3/4/5 hat Fläche `6.0`. Achte darauf, `(a + b + c) / 2` mit
-`double` zu rechnen, sind `a`, `b`, `c` `double`, passt das von selbst.
+`double` zu rechnen. Sind `a`, `b`, `c` `double`, passt das von selbst.
 
 </details>
 

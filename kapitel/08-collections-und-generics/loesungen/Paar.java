@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 08, Musterloesung: generische Klasse.
+ * Kapitel 08: Musterloesung, generische Klasse.
  */
 public final class Paar<A, B> {
 

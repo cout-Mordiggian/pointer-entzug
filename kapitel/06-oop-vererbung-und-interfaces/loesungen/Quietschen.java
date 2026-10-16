@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Musterloesung: Quietschen wie eine Gummiente.
+ * Kapitel 06: Musterloesung. Quietschen wie eine Gummiente.
  */
 public class Quietschen implements QuakVerhalten {
 

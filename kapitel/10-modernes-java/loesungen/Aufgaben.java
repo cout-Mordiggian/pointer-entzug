@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Kapitel 10, Musterloesung mit Erklaerungen.
+ * Kapitel 10: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -47,8 +47,8 @@ public class Aufgaben {
 
             // Guarded Patterns: Typ + Bedingung. Die REIHENFOLGE zaehlt,
             // das erste passende Muster gewinnt. Deshalb muessen die
-            // eingeschraenkten Faelle vor dem allgemeinen "case Integer i" stehen,
-            // andernfalls meldet der Compiler den spaeteren als unerreichbar.
+            // eingeschraenkten Faelle vor dem allgemeinen "case Integer i" stehen.
+            // Andernfalls meldet der Compiler den spaeteren als unerreichbar.
             case Integer i when i < 0 -> "negative Zahl";
             case Integer i when i == 0 -> "null";
             case Integer i -> "positive Zahl";

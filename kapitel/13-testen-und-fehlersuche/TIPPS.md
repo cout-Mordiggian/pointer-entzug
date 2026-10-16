@@ -34,17 +34,27 @@ Eine gute Tabelle deckt mindestens ab:
 Zwei Fallen: Wirft ein Aufruf, bei dem du *keine* Exception erwartest, fliegt
 sie aus deiner Methode heraus. Das zählt zwar als "nicht bestanden", aber du
 siehst nur eine Zeilennummer statt deiner Beschreibung, und alle Prüfungen
-dahinter laufen gar nicht mehr. Pack solche Aufrufe in ein
-`try`/`catch`, das `fehlschlag(...)` meldet. Und: Steig nicht mit `return false`
-bei der ersten Abweichung aus. Wenn alle Prüfungen laufen, siehst du alle
-Meldungen auf einmal.
+dahinter laufen gar nicht mehr. Pack solche Aufrufe in ein `try`/`catch`, das
+`fehlschlag(...)` meldet. Und: Steig nicht mit `return false` bei der ersten
+Abweichung aus. Wenn alle Prüfungen laufen, siehst du alle Meldungen auf
+einmal.
 
 Ist schon die Prüfung gegen die **korrekte** Implementierung rot, stimmt
 einer deiner erwarteten Werte nicht. Die Meldung `[deine Pruefung] ...` davor
-sagt dir, welcher. Rechne ihn noch einmal von Hand nach. Ist nur die Prüfung
-"Zweiter Durchlauf ... dasselbe Ergebnis" rot, merkt sich deine Methode etwas
-zwischen zwei Aufrufen, etwa in einem `static`-Feld, das du am Anfang nicht
-zurücksetzt.
+sagt dir, welcher. Rechne ihn noch einmal von Hand nach.
+
+Steht statt einer solchen Meldung `Hinweis: alleBestanden lieferte false, ohne
+eine Pruefung zu melden` da, oder ist nur "Auch zum Schluss ... noch einmal
+bestanden" rot, merkt sich deine Methode etwas zwischen zwei Aufrufen. Meist
+ist es ein `static`-Feld, das du am Anfang nicht zurücksetzt. Der letzte
+Durchlauf kommt immer nach allen Mutanten, ein solcher Fehler fällt dort also
+jedes Mal auf.
+
+Zum Debuggen schreibst du dir eine kleine Klasse mit `main` in `src/`, die
+`MeineTests.alleBestanden(new Kandidaten.Referenz())` aufruft. Außerhalb eines
+Testlaufs rechnen alle Kandidaten frei, dort kannst du in Ruhe Breakpoints
+setzen. Hängt der Testlauf, bricht er nach 10 Sekunden mit einer Meldung ab
+(im Debugger nicht).
 
 </details>
 

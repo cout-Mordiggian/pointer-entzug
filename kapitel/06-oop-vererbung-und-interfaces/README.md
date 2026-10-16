@@ -37,16 +37,16 @@ Oberklasse keinen parameterlosen Konstruktor hat. Das ist eine der häufigsten
 Fehlermeldungen beim Einstieg in Vererbung.
 
 Reihenfolge bei `new Hund("Rex")`: erst der `Tier`-Konstruktor, dann der
-`Hund`-Konstruktor. Von oben nach unten, der `Tier`-Anteil des Objekts muss
+`Hund`-Konstruktor. Von oben nach unten: Der `Tier`-Anteil des Objekts muss
 fertig sein, bevor der `Hund`-Teil darauf aufbaut.
 
 > *Seit Java 25* dürfen vor `super(...)` Anweisungen stehen, die das Objekt
 > noch nicht lesen: Parameter prüfen oder umrechnen, sogar eigene Felder
-> zuweisen. Das Prinzip bleibt: Keine Methodenaufrufe am Objekt und kein Lesen
+> zuweisen, sofern sie keinen Initialisierer haben. Das Prinzip bleibt: Keine Methodenaufrufe am Objekt und kein Lesen
 > seiner Felder, bevor die Oberklasse initialisiert ist.
 
-`super.laut()` ruft die überschriebene Version der Oberklasse auf, nützlich,
-wenn du sie erweitern statt ersetzen willst.
+`super.laut()` ruft die überschriebene Version der Oberklasse auf. Das ist
+nützlich, wenn du sie erweitern statt ersetzen willst.
 
 ## 6.2 Überschreiben (Overriding) vs. Überladen (Overloading)
 
@@ -58,8 +58,8 @@ wenn du sie erweitern statt ersetzen willst.
 | Annotation | `@Override` | keine |
 
 Beim Überschreiben darf die Sichtbarkeit nie **enger** werden: Sie bleibt
-gleich oder wird weiter (`protected` -> `public`). Der Rückgabetyp darf **spezifischer** werden
-(*kovarianter Rückgabetyp*):
+gleich oder wird weiter (`protected` -> `public`). Der Rückgabetyp darf
+**spezifischer** werden (*kovarianter Rückgabetyp*):
 
 ```java
 class Rechteck { Rechteck skaliert(double f) { ... } }
@@ -80,13 +80,13 @@ for (Tier t : tiere) {
 
 Die Variable hat den Typ `Tier` (**statischer Typ**), das Objekt dahinter ist
 ein `Hund` (**dynamischer Typ**). Beim Aufruf entscheidet der **dynamische**
-Typ, das nennt man *dynamic dispatch* oder *späte Bindung*.
+Typ. Das nennt man *dynamic dispatch* oder *späte Bindung*.
 
 Der Nutzen: Die Schleife kennt `Hund` und `Katze` gar nicht. Du kannst morgen
 `Papagei` hinzufügen, ohne diese Zeile anzufassen. Das ist das
 *Open-Closed-Prinzip*: offen für Erweiterung, geschlossen für Änderung.
 
-> **Wichtig:** Nur **Methoden** sind polymorph. **Felder** nicht, sie werden
+> **Wichtig:** Nur **Methoden** sind polymorph. **Felder** nicht: Sie werden
 > nach dem statischen Typ aufgelöst. Ein weiterer Grund, Felder `private` zu
 > halten.
 
@@ -139,7 +139,7 @@ Umkehrung ("die Basis ruft die Ableitung") heißt *Template Method*
 abstrakter Klassen.
 
 Warum `protected` beim Konstruktor? Er ist für Unterklassen gedacht, die ihn
-für `super(...)` brauchen, `public` würde ihn unnötig allen anbieten.
+für `super(...)` brauchen. `public` würde ihn unnötig allen anbieten.
 (Genau genommen sieht ihn auch jede Klasse im selben Paket; in diesem Kurs
 liegen alle Klassen im selben, unbenannten Paket. Und `new Figur(...)` bleibt
 ohnehin verboten, weil die Klasse abstrakt ist.)
@@ -163,7 +163,7 @@ public class Kreis extends Figur implements Skalierbar { ... }
 ```
 
 Ein Interface beschreibt **Fähigkeiten**, keine Herkunft. Eine Klasse kann
-beliebig viele implementieren, hier kommt die Mehrfachvererbung von *Verhalten*
+beliebig viele implementieren. Hier kommt die Mehrfachvererbung von *Verhalten*
 zurück, ohne die Probleme der Mehrfachvererbung von *Zustand*.
 
 Regeln:
@@ -228,7 +228,7 @@ public final void kritisch() { ... }     // nicht ueberschreibbar
 | `protected` | X | X | X | |
 | `public` | X | X | X | X |
 
-`protected` ist keine Abkürzung für "fast public", es ist Teil der
+`protected` ist keine Abkürzung für "fast public", sondern Teil der
 öffentlichen Zusage an alle, die von dir erben.
 
 ## 6.8 `Object`, die Wurzel
@@ -424,11 +424,11 @@ Aufgabe 7, `FlugVerhalten.java` und `QuakVerhalten.java` zu Aufgabe 8.
 - `public String beschreibung()` -> für einen Kreis mit Radius 1:
   `"Kreis: Flaeche=3.14, Umfang=6.28"`.
   Nutze `String.format(Locale.ROOT, "%s: Flaeche=%.2f, Umfang=%.2f", ...)`.
-  **`Locale.ROOT` ist Pflicht**: sonst hängt die Ausgabe von den
+  **`Locale.ROOT` ist Pflicht**, sonst hängt die Ausgabe von den
   Systemeinstellungen ab und wird auf einem deutschen System zu `3,14`.
   Der Test stellt deshalb absichtlich ein deutsches Locale ein.
 - Die beiden abstrakten Methoden sind in `src/` schon vorgegeben, weil
-  `Kreis` und `Rechteck` sie mit `@Override` überschreiben, ohne sie
+  `Kreis` und `Rechteck` sie mit `@Override` überschreiben. Ohne sie
   würde nichts kompilieren.
 
 ### 2. `Skalierbar.java`: Interface

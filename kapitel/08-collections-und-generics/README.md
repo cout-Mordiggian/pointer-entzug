@@ -44,7 +44,7 @@ Elementen ca. 20 Schritte).
 
 `ArrayList` ist in über 90 % der Fälle richtig. `LinkedList` wirkt in der
 Theorie oft besser, ist in der Praxis wegen schlechter Cache-Nutzung fast immer
-langsamer, nimm sie nur, wenn du wirklich ständig vorn einfügst.
+langsamer. Nimm sie nur, wenn du wirklich ständig vorn einfügst.
 
 ## 8.2 Gegen Interfaces programmieren
 
@@ -176,16 +176,18 @@ for (int v : alter.values()) { ... }
 "erst prüfen, dann einfügen"-Sequenz durch eine Zeile, und du wirst sie in
 diesem Kapitel brauchen.
 
-> **Neu: `Integer::sum` und `k -> new ArrayList<>()`.** Beide Methoden
-> bekommen keinen fertigen Wert, sondern ein Stück Code, das sie bei Bedarf
-> selbst aufrufen. `k -> new ArrayList<>()` ist ein *Lambda* ("zu `k` eine
-> neue Liste"), `Integer::sum` eine *Methodenreferenz* ("nimm die fertige
-> Methode `Integer.sum`"). Hier benutzt du sie als Rezept, genau so
-> abgeschrieben, ebenso bei `removeIf` (8.6) und `Comparator` (8.7). Wie das
-> genau funktioniert, erklärt Kapitel 9.
+> **Neu: `Integer::sum` und `k -> new ArrayList<>()`.** `merge` und
+> `computeIfAbsent` bekommen außer Schlüssel und Wert auch ein Stück Code, das
+> sie bei Bedarf selbst aufrufen. `k -> new ArrayList<>()` ist ein *Lambda*
+> ("zu `k` eine neue Liste"), `Integer::sum` eine *Methodenreferenz* ("nimm die
+> fertige Methode `Integer.sum`"). In 8.7 kommt eine zweite Form dazu:
+> `Person::getName` steht für `p -> p.getName()`, also "ruf an jeder Person
+> `getName()` auf". Hier benutzt du das als Rezept, genau so abgeschrieben,
+> ebenso bei `removeIf` (8.6) und `Comparator` (8.7). Wie das genau
+> funktioniert, erklärt Kapitel 9.
 
 Die Reihenfolge beim Durchlaufen einer `HashMap` ist **nicht festgelegt** und
-kann sich zwischen Java-Versionen ändern. Verlass dich nie darauf, brauchst
+kann sich zwischen Java-Versionen ändern. Verlass dich nie darauf. Brauchst
 du eine Ordnung, nimm `TreeMap` (sortiert) oder `LinkedHashMap` (Einfügereihenfolge).
 
 ### Seit Java 21: erstes und letztes Element
@@ -258,7 +260,7 @@ schwankst, welche Ordnung "die richtige" ist, ist es ein `Comparator`.
 
 Sinnvoll: `compareTo` sollte mit `equals` konsistent sein
 (`a.compareTo(b) == 0` genau dann, wenn `a.equals(b)`). `TreeSet` benutzt
-nämlich `compareTo` statt `equals`, bei Inkonsistenz verschwinden Elemente.
+nämlich `compareTo` statt `equals`. Bei Inkonsistenz verschwinden Elemente.
 
 ## 8.8 Generics
 
@@ -369,7 +371,7 @@ public Paar<B, A> getauscht()          // Typen tauschen!
 public static <A, B> Paar<A, B> von(A a, B b)   // statische Fabrikmethode
 ```
 
-Die statische Fabrikmethode braucht eigene Typparameter, die der Klasse
+Die statische Fabrikmethode braucht eigene Typparameter: Die der Klasse
 gelten nur für Instanzmethoden. Das ist der Klassiker, an dem Generics
 "klick" machen.
 

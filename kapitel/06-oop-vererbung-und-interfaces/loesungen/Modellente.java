@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Musterloesung: ein Modell, das (noch) nicht fliegt.
+ * Kapitel 06: Musterloesung. Ein Modell, das (noch) nicht fliegt.
  */
 public class Modellente extends Ente {
 

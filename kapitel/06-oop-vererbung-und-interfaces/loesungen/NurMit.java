@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 6, Musterloesung: Dekorierer, der nur Zeilen durchlaesst, die
+ * Kapitel 06: Musterloesung. Dekorierer, der nur Zeilen durchlaesst, die
  * einen bestimmten Text enthalten.
  */
 public class NurMit implements Protokoll {

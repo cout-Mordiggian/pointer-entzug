@@ -1,5 +1,5 @@
 /**
- * Kapitel 12: ein Singleton fuer viele Threads (README 12.3).
+ * Kapitel 12: Ein Singleton fuer viele Threads (README 12.3).
  * Pruefen:  ./lerne.sh 12
  *
  * Das Singleton selbst ist schon fertig: Ein enum mit genau einer Konstante
@@ -18,7 +18,7 @@ public enum IdGenerator {
 
     // TODO: ein Zaehler-Feld
 
-    /** Liefert 1, 2, 3, ..., jede Zahl genau einmal, auch bei mehreren Threads. */
+    /** Liefert der Reihe nach 1, 2, 3 und jede Zahl genau einmal, auch bei mehreren Threads. */
     public long naechsteId() {
         // TODO
         return 0;

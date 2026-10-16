@@ -1,5 +1,6 @@
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -25,45 +26,44 @@ public class Tests {
             new Kandidaten.Mutant7(), new Kandidaten.Mutant8(), new Kandidaten.Mutant9()
         };
 
-        // Jeder Mutant laeuft einmal, die korrekte Implementierung (Index 0)
-        // zweimal, und zwar in zufaelliger Reihenfolge. Ehrliche Tests ohne
-        // Zustand zwischen den Aufrufen liefern trotzdem jedes Mal dasselbe
-        // Ergebnis. Wer stattdessen Aufrufe mitzaehlt, faellt auf.
-        int[] reihenfolge = new int[kandidaten.length + 1];
+        // Alle Kandidaten (Index 0 ist die korrekte Implementierung) laufen
+        // einmal in zufaelliger Reihenfolge, danach die korrekte noch einmal
+        // ganz am Schluss. Ehrliche Tests ohne Zustand liefern dabei immer
+        // dasselbe. Wer Aufrufe mitzaehlt oder sich Fehler aus frueheren
+        // Aufrufen merkt, faellt spaetestens beim letzten Durchlauf auf.
+        int[] reihenfolge = new int[kandidaten.length];
         for (int i = 0; i < kandidaten.length; i++) reihenfolge[i] = i;
-        reihenfolge[kandidaten.length] = 0;
         mischen(reihenfolge, new Random());
+
+        Pruef.abschnitt("Teil A: Deine Tests laufen (elf Durchlaeufe)");
+        System.out.println("  Deine Ausgaben erscheinen gesammelt, sobald alle Durchlaeufe fertig sind.");
 
         boolean[] ergebnis = new boolean[kandidaten.length];
         String[] meldungen = new String[kandidaten.length];
-        boolean referenzSchonGelaufen = false;
-        boolean referenzZweiterLauf = false;
-        String meldungenZweiterLauf = "";
         for (int k : reihenfolge) {
             ByteArrayOutputStream puffer = new ByteArrayOutputStream();
-            boolean bestanden = mitgeschnitten(kandidaten[k], puffer);
-            String text = puffer.toString(StandardCharsets.UTF_8);
-            if (k == 0 && referenzSchonGelaufen) {
-                referenzZweiterLauf = bestanden;
-                meldungenZweiterLauf = text;
-            } else {
-                ergebnis[k] = bestanden;
-                meldungen[k] = text;
-                if (k == 0) referenzSchonGelaufen = true;
-            }
+            ergebnis[k] = mitgeschnitten(kandidaten[k], puffer);
+            meldungen[k] = puffer.toString(StandardCharsets.UTF_8);
         }
+        ByteArrayOutputStream pufferZumSchluss = new ByteArrayOutputStream();
+        boolean zumSchluss = mitgeschnitten(kandidaten[0], pufferZumSchluss);
+        String meldungenZumSchluss = pufferZumSchluss.toString(StandardCharsets.UTF_8);
 
         // Ausgabe in fester Reihenfolge, egal in welcher gerechnet wurde.
         Pruef.abschnitt("Teil A: Deine Tests gegen die korrekte Implementierung");
         // Verglichen wird der Rueckgabewert von alleBestanden: true = alles bestanden.
         System.out.print(meldungen[0]);
         Pruef.gleich(true, ergebnis[0], "Deine Tests bestehen mit der korrekten Implementierung");
-        if (ergebnis[0] != referenzZweiterLauf) {
-            System.out.print(meldungenZweiterLauf);
+        hinweisZustand(ergebnis[0], meldungen[0]);
+        System.out.print(meldungenZumSchluss);
+        Pruef.gleich(true, zumSchluss, "Auch zum Schluss, nach allen Mutanten, noch einmal bestanden");
+        if (ergebnis[0] && !zumSchluss) {
+            System.out.println("       Hinweis: Erst bestanden, nach den Mutanten nicht mehr. Deine Methode");
+            System.out.println("       merkt sich etwas zwischen zwei Aufrufen, etwa ein static-Feld,");
+            System.out.println("       das am Anfang von alleBestanden nicht zurueckgesetzt wird.");
+        } else {
+            hinweisZustand(zumSchluss, meldungenZumSchluss);
         }
-        Pruef.gleich(ergebnis[0], referenzZweiterLauf,
-                "Zweiter Durchlauf mit der korrekten Implementierung: dasselbe Ergebnis"
-                + " (deine Tests merken sich nichts zwischen zwei Aufrufen)");
 
         Pruef.abschnitt("Teil A: Deine Tests gegen die Mutanten");
         for (int i = 1; i < kandidaten.length; i++) {
@@ -135,16 +135,71 @@ public class Tests {
     /**
      * Wie laeuftDurch, schreibt aber alle Ausgaben in den Puffer statt auf
      * den Bildschirm. Nur der uebergebene Kandidat darf in dieser Zeit rechnen.
+     * Endet der Aufruf nicht normal (Error, System.exit, Endlosschleife),
+     * wird der Puffer trotzdem ausgegeben, damit deine Meldungen nicht fehlen.
      */
     private static boolean mitgeschnitten(Rabattrechner r, ByteArrayOutputStream puffer) {
         PrintStream original = System.out;
+        // Endet das Programm mitten in alleBestanden (System.exit, Strg+C),
+        // gilt das als Fehlschlag.
+        Thread beendet = new Thread(() -> abbruch(original, puffer,
+                "Das Programm wurde mitten in alleBestanden beendet (System.exit oder Strg+C)."));
+        Runtime.getRuntime().addShutdownHook(beendet);
+        Thread waechter = waechter(original, puffer);
         System.setOut(new PrintStream(puffer, true, StandardCharsets.UTF_8));
         Kandidaten.freigeben(r);
+        boolean normal = false;
         try {
-            return laeuftDurch(r);
+            boolean bestanden = laeuftDurch(r);
+            normal = true;
+            return bestanden;
         } finally {
             Kandidaten.freigeben(null);
             System.setOut(original);
+            if (waechter != null) waechter.interrupt();
+            Runtime.getRuntime().removeShutdownHook(beendet);
+            if (!normal) System.out.print(puffer.toString(StandardCharsets.UTF_8));
+        }
+    }
+
+    /**
+     * Bricht nach 10 Sekunden ab: Deine Pruefungen brauchen Millisekunden,
+     * laenger dauert nur eine Endlosschleife. Im Debugger (Breakpoints) aus.
+     */
+    private static Thread waechter(PrintStream original, ByteArrayOutputStream puffer) {
+        if (ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("jdwp")) {
+            return null;
+        }
+        Thread t = new Thread(() -> {
+            try {
+                Thread.sleep(10_000);
+            } catch (InterruptedException e) {
+                return;   // rechtzeitig fertig
+            }
+            abbruch(original, puffer,
+                    "alleBestanden laeuft seit 10 Sekunden. Vermutlich eine Endlosschleife.");
+        });
+        t.setDaemon(true);
+        t.start();
+        return t;
+    }
+
+    /** Gibt den Puffer und den Grund aus und beendet sofort mit Exit-Code 1. */
+    private static void abbruch(PrintStream original, ByteArrayOutputStream puffer, String grund) {
+        original.print(puffer.toString(StandardCharsets.UTF_8));
+        original.println();
+        original.println("  ABBRUCH: " + grund);
+        original.println("  Darueber stehen deine Ausgaben bis zu diesem Moment.");
+        original.flush();
+        Runtime.getRuntime().halt(1);
+    }
+
+    /** Hinweis, wenn alleBestanden false liefert, ohne eine Pruefung zu melden. */
+    private static void hinweisZustand(boolean bestanden, String meldungen) {
+        if (!bestanden && meldungen.isBlank()) {
+            System.out.println("       Hinweis: alleBestanden lieferte false, ohne eine Pruefung zu melden.");
+            System.out.println("       Merkt sich deine Methode etwas zwischen zwei Aufrufen, etwa ein");
+            System.out.println("       static-Feld, das am Anfang nicht zurueckgesetzt wird?");
         }
     }
 

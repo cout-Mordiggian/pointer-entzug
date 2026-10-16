@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Musterloesung: fliegen mit Fluegeln.
+ * Kapitel 06: Musterloesung. Fliegen mit Fluegeln.
  */
 public class FliegtMitFluegeln implements FlugVerhalten {
 

@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Kapitel 14, Musterloesung: ein Stapel (LIFO) als verkettete Liste.
+ * Kapitel 14: Musterloesung fuer einen Stapel (LIFO) als verkettete Liste.
  */
 public class Stapel<E> implements Iterable<E> {
 
@@ -28,8 +28,8 @@ public class Stapel<E> implements Iterable<E> {
 
     public void push(E element) {
         // Der neue Knoten zeigt auf den bisherigen obersten und wird selbst
-        // der oberste. Bei leerem Stapel ist "oben" null, das passt genau,
-        // der neue Knoten hat dann niemanden unter sich.
+        // der oberste. Bei leerem Stapel ist "oben" null. Das passt genau: Der
+        // neue Knoten hat dann niemanden unter sich.
         oben = new Knoten<>(element, oben);
         anzahl++;
         // Aufwand: O(1). Kein Umkopieren, keine Kapazitaet, die voll werden kann.
@@ -73,10 +73,11 @@ public class Stapel<E> implements Iterable<E> {
         return new StapelIterator();
     }
 
-    // Nicht static: Eine verschachtelte Klasse ohne static (innere Klasse) haelt einen versteckten
-    // Verweis auf das Stapel-Objekt, das sie erzeugt hat. Genau den braucht
-    // der Iterator: "oben" im Feld aktuell ist eigentlich Stapel.this.oben. Knoten
-    // dagegen braucht keinen Stapel und ist deshalb static.
+    // Nicht static: Eine verschachtelte Klasse ohne static (innere Klasse)
+    // haelt einen versteckten Verweis auf das Stapel-Objekt, das sie erzeugt
+    // hat. Genau den braucht der Iterator: "oben" im Feld aktuell ist
+    // eigentlich Stapel.this.oben. Knoten dagegen braucht keinen Stapel und
+    // ist deshalb static.
     // Weil die Klasse nicht static ist, sieht sie auch das E von Stapel und
     // braucht kein eigenes.
     private class StapelIterator implements Iterator<E> {

@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Musterloesung: Befehl "Text loeschen".
+ * Kapitel 14: Musterloesung fuer den Befehl "Text loeschen".
  */
 public class LoeschenBefehl implements Befehl {
 

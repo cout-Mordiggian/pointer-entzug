@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Aufgabe 3.
+ * Kapitel 06: Aufgabe 3.
  */
 public class Kreis extends Figur implements Skalierbar {
 

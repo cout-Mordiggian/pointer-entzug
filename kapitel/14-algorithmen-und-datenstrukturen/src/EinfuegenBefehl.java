@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Aufgabe 10a: der Befehl "Text einfuegen".
+ * Kapitel 14: der Befehl "Text einfuegen" (Aufgabe 10a).
  * Pruefen:  ./lerne.sh 14
  *
  *   Textpuffer t = ...;                          // "Hallo"
@@ -7,7 +7,7 @@
  *   b.ausfuehren();                              // "Hallo Welt"
  *   b.rueckgaengig();                            // "Hallo"
  *
- * Der Konstruktor merkt sich nur, WAS zu tun ist, er tut es noch nicht.
+ * Der Konstruktor merkt sich nur, WAS zu tun ist. Er tut es noch nicht.
  */
 public class EinfuegenBefehl implements Befehl {
 

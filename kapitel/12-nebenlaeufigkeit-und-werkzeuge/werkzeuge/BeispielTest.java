@@ -28,7 +28,7 @@ class BeispielTest {
 
     private Konto konto;
 
-    /** Laeuft vor JEDEM Test neu, jeder Test startet auf gruener Wiese. */
+    /** Laeuft vor JEDEM Test neu: Jeder Test startet auf gruener Wiese. */
     @BeforeEach
     void aufbauen() {
         konto = new Konto("Anna", 1000);
@@ -49,14 +49,14 @@ class BeispielTest {
         assertEquals(1000, konto.getGuthaben(), "Guthaben darf sich nicht geaendert haben");
     }
 
-    /** Ein Test pro Wert, die Meldung nennt den fehlgeschlagenen. */
+    /** Ein Test pro Wert: Die Meldung nennt den fehlgeschlagenen. */
     @ParameterizedTest
     @ValueSource(ints = {0, -1, -100})
     void ungueltigeBetraegeWerdenAbgelehnt(int betrag) {
         assertThrows(IllegalArgumentException.class, () -> konto.einzahlen(betrag));
     }
 
-    /** Verwandte Tests gruppieren, die Ausgabe wird dadurch lesbar. */
+    /** Verwandte Tests gruppieren: Die Ausgabe wird dadurch lesbar. */
     @Nested
     class Ueberweisungen {
 

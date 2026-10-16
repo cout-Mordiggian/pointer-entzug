@@ -82,7 +82,8 @@ try {
 ```
 
 Reihenfolge der `catch`-Blöcke: **spezifisch vor allgemein**. Steht
-`catch (Exception e)` zuerst, ist alles danach unerreichbar, Compilerfehler.
+`catch (Exception e)` zuerst, ist alles danach unerreichbar. Der Compiler meldet
+dann `exception NumberFormatException has already been caught`.
 
 `finally` läuft **immer**: nach normalem Ende, nach gefangener Exception, sogar
 nach einem `return` im `try`-Block. (Die einzige praktische Ausnahme:
@@ -238,7 +239,7 @@ Caused by: ...
 ```
 
 Lies **von oben**: Die erste Zeile ist der Ort des Fehlers, darunter der Weg
-dorthin. Suche die oberste Zeile, die zu **deinem** Code gehört, dort
+dorthin. Suche die oberste Zeile, die zu **deinem** Code gehört. Dort
 fängst du an.
 
 ---
@@ -254,7 +255,7 @@ Drei Dateien in [`src/`](src/), prüfen mit `./lerne.sh 07`.
 
 1. **`sicherTeilen(int a, int b)`**: `a / b`, aber `0` statt einer
    `ArithmeticException`. Löse es mit `try`/`catch`, nicht mit `if`
-   (auch wenn `if` hier die bessere Praxis wäre, der Punkt ist die Übung).
+   (`if` wäre hier die bessere Praxis, aber es geht um die Übung).
 2. **`parseOderStandard(String text, int standard)`**: `Integer.parseInt`,
    bei `null` oder Unsinn den Standardwert.
 3. **`auswerten(String[] werte, int index)`**: Element als Zahl liefern,

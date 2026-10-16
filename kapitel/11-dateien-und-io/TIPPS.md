@@ -59,7 +59,7 @@ Denkfallen:
 
 - `Files.write(pfad, zeilen, ...)` hängt den **Plattform**-Zeilentrenner an,
   unter Linux `\n`, unter Windows `\r\n`. Dann sind die Tests nur auf manchen
-  Systemen grün.
+  Systemen grün. Dasselbe gilt für `BufferedWriter.newLine()` aus 11.5.
 - `String.join("\n", zeilen) + "\n"` klingt praktisch, liefert für die leere
   Liste aber `"\n"` statt `""`. Der Test "leere Liste" fällt dann durch.
 - Den Zeichensatz explizit angeben, der Test schreibt Umlaute hin und zurück.
@@ -313,8 +313,8 @@ UTF-8. Dieselbe Datei las sich dann je nach Rechner richtig oder mit kaputten
 Umlauten. Seit Java 18 ist UTF-8 auch dort der Standard, deshalb ist das Risiko
 kleiner. Ausnahme ist die Konsole: `System.out` und die Tastatureingabe in
 cmd oder PowerShell benutzen weiter die Codepage des Terminals (11.7). Den
-Zeichensatz hinzuschreiben bleibt trotzdem gut: Es dokumentiert
-die Absicht und schützt auf älteren JVMs.
+Zeichensatz hinzuschreiben bleibt trotzdem gut: Es dokumentiert die Absicht
+und schützt auf älteren JVMs.
 
 </details>
 
@@ -353,6 +353,7 @@ dagegen einen `InputStream` ein, der Bytes liefert, und ist selbst ein `Reader`,
 der Zeichen liefert. Er übersetzt eine Schnittstelle in eine andere, das ist die
 Aufgabe eines Adapters. Dass er dabei dekodiert und damit auch Verhalten
 hinzufügt, ist der Grund für den Streit, ob er nicht doch beides ist.
-Faustregel: gleicher Typ außen wie innen, Dekorierer, anderer Typ, Adapter.
+Faustregel: Gleicher Typ außen wie innen ist ein Dekorierer, ein anderer Typ
+ein Adapter.
 
 </details>

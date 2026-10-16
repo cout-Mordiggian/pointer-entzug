@@ -31,13 +31,13 @@ Syntax:
 x -> x * 2                      // ein Parameter, Klammern optional
 (x, y) -> x + y                 // mehrere Parameter
 (String s) -> s.length()        // Typ explizit (selten noetig)
-x -> {                          // Block: return ist dann Pflicht
+x -> {                          // Block: liefert er einen Wert, ist return Pflicht
     int y = x * 2;
     return y + 1;
 }
 ```
 
-Ein Lambda ist **kein** Objekt-Ersatz für beliebige Interfaces, es
+Ein Lambda ist **kein** Objekt-Ersatz für beliebige Interfaces. Es
 funktioniert nur bei **funktionalen Interfaces**: Interfaces mit **genau einer**
 abstrakten Methode.
 
@@ -105,7 +105,7 @@ also nach der Initialisierung nicht mehr verändert werden. Grund: Das Lambda
 kann das Ende der Methode überleben; Java kopiert den Wert, statt eine
 Referenz auf den Stack-Slot zu halten.
 
-Instanzfelder dürfen sich dagegen ändern, die sind über `this` erreichbar.
+Instanzfelder dürfen sich dagegen ändern: Sie sind über `this` erreichbar.
 
 ## 9.5 Streams
 
@@ -124,7 +124,7 @@ Drei Eigenschaften, die alles erklären:
 1. **Faul**: Zwischenoperationen tun nichts, bis eine Terminaloperation kommt.
    Ohne `toList()` am Ende passiert gar nichts.
 2. **Einmalig**: Ein Stream lässt sich nur einmal durchlaufen.
-   Zweimal -> `IllegalStateException: stream has already been operated upon`.
+   Zweimal -> `IllegalStateException: stream has already been operated upon or closed`.
 3. **Nicht-verändernd**: Die Quelle bleibt unberührt.
 
 ### Quellen
@@ -188,7 +188,7 @@ import static java.util.stream.Collectors.*;
 ```
 
 `groupingBy` mit einem zweiten Collector ("Downstream") ist das
-mächtigste Werkzeug der ganzen API, damit baust du Auswertungen, die
+mächtigste Werkzeug der ganzen API. Damit baust du Auswertungen, die
 sonst zwanzig Zeilen kosten. `mapping(f, toList())` wandelt dabei jedes Element
 einer Gruppe um, bevor es gesammelt wird.
 
@@ -432,7 +432,7 @@ zum Muster.
 1. **`geradeQuadrate(List<Integer>)`**: gerade Zahlen filtern, quadrieren.
 2. **`laengstesWort(List<String>)`** -> `Optional<String>`.
    Bei Gleichstand das **erste**. *Denkfalle:* Was macht `max` bei Gleichstand
-   überhaupt? Die Javadoc sagt es nicht deutlich, schreib dir zwei Zeilen
+   überhaupt? Die Javadoc sagt es nicht deutlich. Schreib dir zwei Zeilen
    und probier es aus, bevor du dich auf eine Annahme verlässt.
 3. **`grossgeschriebenSortiert(List<Person>)`** -> `List<String>`,
    Namen in Großbuchstaben (`toUpperCase(Locale.ROOT)`), alphabetisch.
@@ -445,7 +445,7 @@ zum Muster.
 7. **`volljaehrigkeit(List<Person>)`** -> `Map<Boolean, List<Person>>`
    mit `partitioningBy`. Volljährig heißt `alter >= 18`.
 8. **`namenLaengen(List<Person>)`** -> `Map<String, Integer>` mit `toMap`.
-   Du darfst annehmen, dass die Namen eindeutig sind, eine Merge-Funktion
+   Du darfst annehmen, dass die Namen eindeutig sind. Eine Merge-Funktion
    für doppelte Schlüssel ist nicht nötig.
 9. **`Transformation.dann(...)`**: eine `default`-Methode, die zwei
    Transformationen hintereinanderschaltet (Komposition).

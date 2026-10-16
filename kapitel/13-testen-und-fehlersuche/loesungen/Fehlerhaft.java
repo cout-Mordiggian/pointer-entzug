@@ -1,5 +1,5 @@
 /**
- * Kapitel 13, Musterloesung Teil B: die korrigierten Methoden.
+ * Kapitel 13: Musterloesung zu Teil B, die korrigierten Methoden.
  * Jede reparierte Stelle ist mit "BUG WAR:" markiert.
  */
 public class Fehlerhaft {
@@ -11,8 +11,8 @@ public class Fehlerhaft {
         }
         // BUG WAR: return summe / zahlen.length;
         // int / int ist Ganzzahldivision: 3 / 2 ergibt 1, und erst DANACH wird
-        // das Ergebnis fuer den Rueckgabetyp double zu 1.0 erweitert. Zu spaet,
-        // die Nachkommastellen sind schon weg. Der Cast muss VOR der Division
+        // das Ergebnis fuer den Rueckgabetyp double zu 1.0 erweitert. Zu spaet:
+        // Die Nachkommastellen sind schon weg. Der Cast muss VOR der Division
         // stehen, damit mit double gerechnet wird.
         return (double) summe / zahlen.length;
     }
@@ -60,7 +60,7 @@ public class Fehlerhaft {
                 break;
             case 5:
                 name = "Freitag";
-                break; // BUG WAR: dieses break fehlte, Freitag fiel in "Samstag" durch.
+                break; // BUG WAR: dieses break fehlte. Freitag fiel in "Samstag" durch.
             case 6:
                 name = "Samstag";
                 break;

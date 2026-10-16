@@ -23,8 +23,9 @@ Die Tests lassen 8 Threads gleichzeitig `erhoehen()` aufrufen, dann 8 Threads
 `erhoeheUm(2)`, und zuletzt beides gemischt auf demselben Zähler. Vergisst du
 `synchronized` bei einer der beiden, gehen Erhöhungen verloren. Dasselbe
 passiert, wenn die beiden Methoden auf **verschiedene** Objekte sperren: Dann
-schließen sie sich gegenseitig nicht aus. Bei `wert()` sieht der Test den Fehler nicht (die README erklärt,
-warum), setz es trotzdem, sonst ist die Sichtbarkeit nicht garantiert.
+schließen sie sich gegenseitig nicht aus. Bei `wert()` sieht der Test den
+Fehler nicht (die README erklärt, warum). Setz es trotzdem, sonst ist die
+Sichtbarkeit nicht garantiert.
 `erhoeheUm(-3)` ist erlaubt; du musst negative Schritte nicht abfangen.
 
 </details>
@@ -68,7 +69,7 @@ Typische Fehler:
 
 - `t.run()` statt `t.start()`: Dann läuft alles im aktuellen Thread.
 - `start()` und `join()` in derselben Schleife: Dann wartet jeder Thread, bis er
-  fertig ist, bevor der nächste startet, korrektes Ergebnis, aber nichts
+  fertig ist, bevor der nächste startet. Das Ergebnis stimmt, aber nichts
   läuft parallel. Den Fehler sieht der Test nicht.
 - `threads = 0` (Test "keine Threads"): Beide Schleifen laufen nicht, es kommt
   `0` heraus, dafür brauchst du keinen Sonderfall.

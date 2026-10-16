@@ -2,7 +2,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Kapitel 6, Musterloesung: Dekorierer, der jede Zeile gross schreibt.
+ * Kapitel 06: Musterloesung. Dekorierer, der jede Zeile gross schreibt.
  */
 public class Grossgeschrieben implements Protokoll {
 

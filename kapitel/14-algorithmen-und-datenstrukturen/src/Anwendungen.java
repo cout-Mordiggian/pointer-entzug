@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Aufgabe 8: Anwendungen fuer DEINEN Stapel.
+ * Kapitel 14: Anwendungen fuer DEINEN Stapel (Aufgabe 8).
  * Pruefen:  ./lerne.sh 14
  *
  * Erst Stapel.java fertig machen, diese Aufgaben bauen darauf auf.
@@ -26,7 +26,7 @@ public class Anwendungen {
     }
 
     /**
-     * Aufgabe 8b: Kehrt einen String um, mit deinem Stapel.
+     * Aufgabe 8b: Kehrt einen String mit deinem Stapel um.
      *   "abc" -> "cba",  "" -> ""
      */
     public static String umkehren(String s) {

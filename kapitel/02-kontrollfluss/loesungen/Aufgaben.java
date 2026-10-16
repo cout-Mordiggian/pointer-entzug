@@ -50,7 +50,7 @@ public class Aufgaben {
 
     public static long fakultaet(int n) {
         // Der Akkumulator MUSS long sein. Waere er int, wuerde schon 13!
-        // still ueberlaufen. Mit long ist bei 20! Schluss, 21! passt nicht mehr.
+        // still ueberlaufen. Mit long ist bei 20! Schluss; 21! passt nicht mehr.
         long ergebnis = 1L;
         for (int i = 2; i <= n; i++) {
             ergebnis *= i;

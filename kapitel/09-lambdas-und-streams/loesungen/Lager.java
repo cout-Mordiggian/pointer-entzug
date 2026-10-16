@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Kapitel 09, Musterloesung zu Aufgabe 13: Beobachter (Observer).
+ * Kapitel 09: Musterloesung zu Aufgabe 13, Beobachter (Observer).
  */
 public class Lager {
 

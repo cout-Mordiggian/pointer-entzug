@@ -7,7 +7,7 @@
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 8.8, Unterabschnitt "Eigene generische Typen", die `Box<T>` dort ist
+Abschnitt 8.8, Unterabschnitt "Eigene generische Typen". Die `Box<T>` dort ist
 dasselbe Prinzip mit einem statt zwei Typparametern. Frag dich bei
 `getauscht()`: Was verrät dir der Rückgabetyp `Paar<B, A>` darüber, welcher
 Wert an welche Stelle muss?
@@ -51,9 +51,9 @@ Und was passiert, wenn `erstes` `null` ist?
   Der Test "null-Inhalte sind erlaubt" baut `Paar.von(null, null)`, und
   `null.equals(...)` würde eine `NullPointerException` werfen.
 - `hashCode`: `Objects.hash(...)` über genau die beiden Felder, das ist
-  ebenfalls null-sicher. Der Platzhalter `super.hashCode()` muss weg, er
-  liefert für jedes Objekt einen eigenen Wert, und der Test "hashCode passt
-  zu equals" bleibt rot.
+  ebenfalls null-sicher. Der Platzhalter `super.hashCode()` muss weg: Er
+  liefert in aller Regel für jedes Objekt einen eigenen Wert, und der Test
+  "hashCode passt zu equals" bleibt rot.
 
 </details>
 
@@ -86,7 +86,7 @@ laut Aufgabe definiert, und kann `String` sich nicht schon selbst vergleichen?
 
 `compareTo` vergleicht **nur den Namen** und reicht dazu das Ergebnis von
 `String.compareTo` durch. Negativ / 0 / positiv musst du nicht selbst basteln.
-Der Test "gleicher Name -> 0" vergleicht Anna(34) mit Anna(99), nimmst du das
+Der Test "gleicher Name -> 0" vergleicht Anna(34) mit Anna(99). Nimmst du das
 Alter mit in `compareTo` auf, wird er rot.
 
 Für numerische Vergleiche gilt allgemein: `Integer.compare(a, b)` statt `a - b`
@@ -105,12 +105,13 @@ Welche Felder entscheiden laut Tests, ob zwei Personen gleich sind?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Anders als `compareTo` beachtet `equals` **beide** Felder, der Test "equals
-beachtet auch das Alter" prüft das. Also: gleiche Referenz, `instanceof Person p`,
+Anders als `compareTo` beachtet `equals` **beide** Felder, das prüft der Test "equals
+beachtet auch das Alter". Also: gleiche Referenz, `instanceof Person p`,
 dann `alter` mit `==` (bei `int` völlig in Ordnung) und `name` mit `equals`
 (**nicht** `==`, Kapitel 3.2). `hashCode` mit `Objects.hash` über genau diese
-beiden Felder. Der Platzhalter `super.hashCode()` liefert für jedes Objekt einen
-eigenen Wert, damit erkennt das `HashSet` im Test das Duplikat nicht.
+beiden Felder. Der Platzhalter `super.hashCode()` liefert in aller Regel für
+jedes Objekt einen eigenen Wert. Dann bleibt der Test "hashCode passt zu equals"
+rot, und das `HashSet` erkennt das Duplikat meistens nicht.
 
 Gut zu wissen: `compareTo` und `equals` sind damit absichtlich **inkonsistent**
 (Abschnitt 8.7). In einem `TreeSet` gälten Anna(34) und Anna(99) als ein und
@@ -132,15 +133,17 @@ einen String, der mit Leerzeichen **beginnt**? Probier es in `jshell` aus.
 
 Die drei Randfälle der Tests hängen alle an `split`:
 
-- `"".split("\\s+")` liefert **nicht** ein leeres Array, sondern `[""]`, ohne
+- `"".split("\\s+")` liefert **nicht** ein leeres Array, sondern `[""]`. Ohne
   Sonderbehandlung zählst du ein leeres Wort.
-- `"  a b".split("\\s+")` liefert `["", "a", "b"]`, führender Whitespace
+- `"  a b".split("\\s+")` liefert `["", "a", "b"]`: Führender Whitespace
   erzeugt vorne ein leeres Wort. (Leere Stücke **am Ende** wirft `split` dagegen
   von selbst weg.)
 - Deshalb: erst `strip()`, dann auf leer prüfen und ggf. die leere Map
   zurückgeben, erst dann trennen.
 
-Kleinschreiben mit `toLowerCase(Locale.ROOT)`. Zum Zählen `merge(wort, 1, Integer::sum)`:
+Kleinschreiben mit `toLowerCase(Locale.ROOT)`. Ein Test stellt dafür ein
+türkisches Locale ein: Ohne `Locale.ROOT` wird aus `"IGEL"` dort `"ıgel"`
+(i ohne Punkt), und das ist ein anderes Wort als `"igel"`. Zum Zählen `merge(wort, 1, Integer::sum)`:
 Ist das Wort neu, wird 1 eingetragen, sonst wird die alte Zahl plus 1 gespeichert.
 `\\s` erfasst übrigens auch Zeilenumbrüche, deshalb klappt auch der Test mit `\n`.
 
@@ -176,7 +179,7 @@ Einfügereihenfolge?
 erwarten aber `[b, a, c]` aus `[b, a, b, c, a]`. Die richtige Implementierung
 steht in der Landkarte direkt zwischen den beiden. Fast alle Collections haben
 einen Konstruktor, der eine andere Collection entgegennimmt und alle Elemente
-übernimmt, damit brauchst du nicht einmal eine Schleife. Der Rückgabetyp ist
+übernimmt. Damit brauchst du nicht einmal eine Schleife. Der Rückgabetyp ist
 aber `List`, du musst also am Ende wieder eine Liste daraus machen.
 
 </details>
@@ -207,7 +210,7 @@ schreibst du den Comparator als Lambda `(x, y) -> ...` und vergleichst selbst mi
 
 Randfälle der Tests: `n` größer als die Map (dann eben alle), leere Map (dann
 leere Liste). Ein `subList(0, n)` ohne Begrenzung würde bei `n = 99` eine
-`IndexOutOfBoundsException` werfen, begrenze mit `Math.min` oder brich die
+`IndexOutOfBoundsException` werfen. Begrenze mit `Math.min` oder brich die
 Schleife ab, sobald `n` Einträge gesammelt sind.
 
 </details>
@@ -286,8 +289,8 @@ Deine Schleifenvariable ist also vom Typ `Number` (nicht `Integer`, denn es
 könnte ja eine `List<Double>` sein). Mit einer `Number` kannst du nicht direkt
 rechnen: `summe += z` kompiliert nicht, weil `Number` kein Wrapper eines
 bestimmten primitiven Typs ist. Aber jede `Number` kann sich selbst als
-`double` liefern, der Kommentar im TODO nennt die Methode. Eine leere Liste
-ergibt von selbst `0.0`.
+`double` liefern. Die Methode dafür nennt der Kommentar im TODO. Eine leere
+Liste ergibt von selbst `0.0`.
 
 </details>
 
@@ -341,8 +344,8 @@ Schlüssel, und was passiert bei `"".charAt(0)`?
 
 - Nimm eine `LinkedHashMap`. Mit einer `HashMap` kommen die Schlüssel des Tests
   `[Bert, Anna, Cem]` als `[A, B, C]` statt `[B, A, C]` heraus.
-- Leere Wörter überspringst du (`continue`), bevor du `charAt(0)` aufrufst,
-  auf einem leeren String wirft das eine `StringIndexOutOfBoundsException`.
+- Leere Wörter überspringst du (`continue`), bevor du `charAt(0)` aufrufst.
+  Auf einem leeren String wirft das eine `StringIndexOutOfBoundsException`.
 - Der `char` aus `charAt(0)` wird automatisch zu `Character` geboxt, passend zum
   Schlüsseltyp.
 - `computeIfAbsent(schluessel, k -> new ArrayList<>())` liefert die Liste zu

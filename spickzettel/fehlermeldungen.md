@@ -1,10 +1,16 @@
 # Die häufigsten Fehlermeldungen, und was sie wirklich bedeuten
 
-Der Kurs-Runner (`./lerne.sh`) lässt den Compiler immer englisch melden. Beim
-Kompilieren von Hand und in der IDE kommen die Meldungen auf einem deutschen
-System dagegen oft auf Deutsch. Deshalb steht bei jedem Compilerfehler
-die deutsche Fassung dabei (gesucht wird am besten nach einem Stück der
-Meldung, ohne Datei- und Variablennamen).
+Der Kurs-Runner (`./lerne.sh`) und `projekt/starte.sh` lassen den Compiler
+immer englisch melden. Beim Kompilieren von Hand und in der IDE kommen die
+Meldungen auf einem deutschen System dagegen oft auf Deutsch. Deshalb steht
+bei jedem Compilerfehler die deutsche Fassung dabei (gesucht wird am besten
+nach einem Stück der Meldung, ohne Datei- und Variablennamen).
+
+Die Markierungen im Editor formulieren oft anders: VS Code prüft mit dem
+Eclipse-Compiler, der eigene englische Texte hat (etwa `breit cannot be
+resolved to a variable` oder `Cannot make a static reference to the
+non-static field x`), und auch IntelliJ schreibt im Editor eigene Texte. Die
+Ursachen sind dieselben, die Liste hier ist nicht vollständig.
 
 ## Compilerfehler (das Programm startet gar nicht)
 
@@ -68,7 +74,10 @@ Hinzufügen eines eigenen Konstruktors: Der parameterlose Standardkonstruktor
 ist damit verschwunden. Gibt es nur einen Konstruktor und stimmt bloß ein
 Typ nicht, meldet javac stattdessen kürzer
 `incompatible types: int cannot be converted to String` (dazu der Hinweis
-`Some messages have been simplified`).
+`Some messages have been simplified`). Hat die Klasse mehrere Konstruktoren,
+heißt es `no suitable constructor found for Konto(no arguments)` (deutsch:
+`Konstruktor für Konto(keine Argumente) nicht geeignet`), darunter
+steht für jeden Konstruktor, warum er nicht passt.
 
 ### `class X is public, should be declared in a file named X.java`
 Deutsch: `Klasse X ist öffentlich und muss in einer Datei namens X.java deklariert werden`
@@ -112,6 +121,21 @@ Deutsch: `Der Switch-Ausdruck deckt nicht alle möglichen Eingabewerte ab`
 Ein `switch`-Ausdruck über ein Enum oder einen `sealed`-Typ vergisst einen
 Fall. Fall ergänzen, genau diese Meldung ist der Sinn von `sealed`.
 
+### `illegal character: '﻿'`
+Deutsch: `Unzulässiges Zeichen: "﻿"`
+
+Die Datei beginnt mit einer BOM (Byte Order Mark), einem unsichtbaren
+Zeichen, das manche Windows-Editoren beim Speichern als "UTF-8 mit BOM"
+voranstellen. Die Datei als "UTF-8" (ohne BOM) speichern.
+
+### `unmappable character (0xFC) for encoding UTF-8`
+Deutsch: `Nicht zuordenbares Zeichen (0xFC) für Codierung UTF-8`
+
+Die Datei ist nicht als UTF-8 gespeichert, sondern z. B. als "ANSI"
+(Windows-1252); `0xFC` ist dort ein `ü`. Die Datei im Editor als UTF-8 neu
+speichern (Kodierung meist unten rechts in der Statusleiste) und die
+Umlaute danach kontrollieren.
+
 ## Laufzeitfehler (das Programm läuft und bricht ab)
 
 Die Texte der Exceptions sind immer englisch.
@@ -120,7 +144,8 @@ Die Texte der Exceptions sind immer englisch.
 Methodenaufruf auf `null`. Seit Java 15 nennt die Meldung die genaue
 Referenz (in Java 14 nur mit einem Schalter), lies sie, sie sagt dir direkt,
 welche Variable leer war.
-(Steht dort `"<local1>"`, wurde ohne `javac -g` kompiliert.)
+(Steht dort `"<local1>"`, wurde ohne `javac -g` kompiliert, das passiert auch
+beim Schnellstart `java Datei.java`. Der Kurs-Runner kompiliert mit `-g`.)
 
 ### `Error: Could not find or load main class Aufgaben`
 Deutsch: `Fehler: Hauptklasse Aufgaben konnte nicht gefunden oder geladen werden`

@@ -67,7 +67,7 @@ public class Hund {
 Merkmale: heißt wie die Klasse, hat **keinen** Rückgabetyp (auch nicht `void`).
 
 `this` ist die Referenz auf das aktuelle Objekt. Man braucht es, wenn Parameter
-und Feld gleich heißen (was guter Stil ist, der Name ist ja derselbe Begriff).
+und Feld gleich heißen (was guter Stil ist, denn der Name ist ja derselbe Begriff).
 
 **Der Standardkonstruktor:** Schreibst du gar keinen Konstruktor, erzeugt der
 Compiler einen parameterlosen, mit derselben Sichtbarkeit wie die Klasse (bei
@@ -89,7 +89,7 @@ public Konto(String inhaber, long startguthaben) {
 }
 ```
 
-Wenn der Konstruktor durchläuft, ist das Objekt gültig, diese Zusage nennt
+Wenn der Konstruktor durchläuft, ist das Objekt gültig. Diese Zusage nennt
 man **Invariante**. Sie ist der eigentliche Zweck von Kapselung.
 
 (Die `throw`-Syntax lernst du in Kapitel 7 richtig. Für jetzt reicht: Diese
@@ -155,9 +155,10 @@ Eine `static`-Methode hat **kein** `this` und kann deshalb nicht direkt auf
 Instanzfelder zugreifen, nur über ein konkretes Objekt (`anderesKonto.nummer`).
 Ein direkter Zugriff ist ein häufiger Compilerfehler:
 `non-static variable x cannot be referenced from a static context`.
-Auf einem deutsch eingestellten System, etwa in der IDE, erscheinen die
-Meldungen übersetzt, hier: `Variable x ist nicht statisch und kann nicht aus
-einem statischen Kontext referenziert werden`.
+Kompilierst du auf einem deutschen System von Hand oder in IntelliJ, steht in
+der Build-Ausgabe die Übersetzung: `Variable x ist nicht statisch und kann
+nicht aus einem statischen Kontext referenziert werden`. VS Code formuliert
+eigene Texte.
 
 **Konstanten:**
 
@@ -217,7 +218,7 @@ public boolean equals(Object o) {
 Warum `Double.compare` statt `==`? Bei `double` hat `==` zwei Ecken:
 `Double.NaN == Double.NaN` ist `false` (zwei Punkte mit `NaN` wären nie gleich),
 und `0.0 == -0.0` ist `true`, obwohl `Objects.hash` für beide verschiedene
-Hashwerte liefert, damit wäre der `hashCode`-Vertrag (unten) gebrochen.
+Hashwerte liefert. Damit wäre der `hashCode`-Vertrag (unten) gebrochen.
 Für `int`, `long`, `char`, `boolean` ist `==` völlig in Ordnung; für
 Objekt-Felder nimmst du `Objects.equals(a, b)` (null-sicher).
 
@@ -253,8 +254,8 @@ Exception in thread "main" java.lang.NullPointerException:
     Cannot invoke "String.length()" because "name" is null
 ```
 
-Seit Java 15 sagen die Meldungen standardmäßig sehr genau, *welche* Referenz `null` war,
-lies sie, sie ersparen dir das Raten. (Steht dort `"<local1>"` statt eines
+Seit Java 15 sagen die Meldungen standardmäßig sehr genau, *welche* Referenz `null` war.
+Lies sie, sie ersparen dir das Raten. (Steht dort `"<local1>"` statt eines
 Namens, wurde ohne Debug-Infos kompiliert; `javac -g` behebt das. `lerne.sh`
 macht das bereits für dich.)
 
@@ -376,8 +377,8 @@ public final class Konfiguration {
 Die JVM legt `INSTANZ` genau einmal an, wenn die Klasse initialisiert wird,
 also beim ersten Zugriff auf sie. Der private Konstruktor wird dabei innerhalb
 der eigenen Klasse aufgerufen, das ist erlaubt. Jeder andere bekommt den
-Compilerfehler `Konfiguration() has private access` (deutsch: `hat
-private-Zugriff`). Wichtig: Schreibst du **gar keinen** Konstruktor, erzeugt
+Compilerfehler `Konfiguration() has private access` (von Hand oder in IntelliJ
+auf Deutsch: `hat private-Zugriff`). Wichtig: Schreibst du **gar keinen** Konstruktor, erzeugt
 der Compiler bei einer `public class` einen öffentlichen (5.2), und das
 Singleton ist keins.
 
@@ -410,7 +411,7 @@ Zu bauen:
   verbraucht **keine** Kontonummer.
 - Getter für alle drei Felder, aber **keinen** Setter für `guthaben`
 - `einzahlen(long betrag)`: nur positive Beträge, sonst `IllegalArgumentException`
-- `abheben(long betrag)`: gibt `boolean` zurück: `false` bei zu wenig Deckung,
+- `abheben(long betrag)`: gibt `boolean` zurück, `false` bei zu wenig Deckung,
   `IllegalArgumentException` bei nicht-positivem Betrag. Das komplette Guthaben
   abzuheben ist erlaubt.
 - `ueberweiseAn(Konto ziel, long betrag)`: `boolean`; nur wenn das Abheben klappt

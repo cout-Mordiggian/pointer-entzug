@@ -1,5 +1,5 @@
 /**
- * Kapitel 10, Musterloesung: enum mit Zustand und Verhalten.
+ * Kapitel 10: Musterloesung. Ein enum mit Zustand und Verhalten.
  */
 public enum Wochentag {
 

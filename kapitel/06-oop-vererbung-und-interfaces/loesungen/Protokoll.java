@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, schon fertig: die gemeinsame Schnittstelle fuer das
+ * Kapitel 06: Schon fertig. Die gemeinsame Schnittstelle fuer das
  * Dekorierer-Muster (Abschnitt 6.9).
  *
  * Das echte Protokoll (TextProtokoll) und alle Dekorierer implementieren

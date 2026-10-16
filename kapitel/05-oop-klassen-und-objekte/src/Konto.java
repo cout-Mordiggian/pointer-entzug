@@ -1,5 +1,5 @@
 /**
- * Kapitel 05, Aufgabe 1: Ein gekapseltes Bankkonto.
+ * Kapitel 05: Aufgabe 1. Ein gekapseltes Bankkonto.
  *
  * Betraege sind IMMER Cent-Betraege als long, nie double.
  *
@@ -10,7 +10,7 @@ public class Konto {
     // TODO: statischer Zaehler fuer die fortlaufende Kontonummer
     // private static int anzahlKonten = 0;
 
-    // TODO: Felder: nummer (final int), inhaber (final String), guthaben (long)
+    // TODO: Felder nummer (final int), inhaber (final String), guthaben (long)
 
     /**
      * Erzeugt ein Konto und vergibt die naechste freie Nummer (beginnend bei 1).

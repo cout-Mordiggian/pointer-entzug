@@ -1,5 +1,5 @@
 /**
- * Freie Spielwiese. Aendere hier, was du willst, und starte mit:
+ * Kapitel 01: Freie Spielwiese. Aendere hier, was du willst, und starte mit:
  *
  *     ./lerne.sh 01 -r Spielwiese
  */

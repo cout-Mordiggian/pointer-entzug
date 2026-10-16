@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Musterloesung: die ganz normale Ente.
+ * Kapitel 06: Musterloesung. Die ganz normale Ente.
  */
 public class Stockente extends Ente {
 

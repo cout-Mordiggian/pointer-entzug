@@ -21,7 +21,7 @@ Jedes Wort hat eine Aufgabe:
 |------|-----------|
 | `public` | Sichtbar von überall (mehr dazu in Kapitel 6) |
 | `class Hallo` | Java kennt keinen Code außerhalb von Klassen. Alles wohnt in einer Klasse. |
-| `static` | Gehört zur Klasse, nicht zu einem Objekt, die JVM kann sie aufrufen, ohne vorher ein `Hallo`-Objekt zu bauen. |
+| `static` | Gehört zur Klasse, nicht zu einem Objekt. Die JVM kann `main` deshalb aufrufen, ohne vorher ein `Hallo`-Objekt zu bauen. |
 | `void` | Der Rückgabetyp: "gibt nichts zurück". |
 | `main` | Der genaue Name, nach dem die JVM sucht. |
 | `String[] args` | Kommandozeilenargumente. `java Hallo abc` füllt `args[0] = "abc"`. |
@@ -56,7 +56,8 @@ var name = "Greg";           // seit Java 10: Typ wird abgeleitet -> String
 ```
 
 `var` ist **keine** dynamische Typisierung. `var name = "Greg"` erzeugt eine
-Variable vom Typ `String`, endgültig. Der Compiler tippt nur weniger.
+Variable vom Typ `String`, endgültig. Du tippst nur weniger, den Typ setzt der
+Compiler selbst ein.
 
 ### Die acht primitiven Typen
 
@@ -99,7 +100,7 @@ String name = "Anna";
 String satz = "Hallo " + name + ", du bist " + 34 + ".";   // "Hallo Anna, du bist 34."
 ```
 
-Leerzeichen und Satzzeichen musst du selbst mit hineinschreiben, `+` fügt
+Leerzeichen und Satzzeichen musst du selbst mit hineinschreiben; `+` fügt
 nichts hinzu. Eine Falle bei `+` mit Zahlen und Strings zeigt Kapitel 2.1.
 
 ## 1.4 Drei Fallstricke, die jeden Anfänger erwischen
@@ -136,7 +137,7 @@ System.out.println(gross + gross);   // -294967296  (!!)
 `int` läuft still über. Kein Fehler, kein Hinweis, nur ein falsches Ergebnis.
 Lösung: `long` verwenden und beim Literal `L` anhängen. Willst du einen
 Überlauf lieber als Fehler sehen, gibt es `Math.addExact(a, b)` und
-`Math.multiplyExact(a, b)`: die werfen eine `ArithmeticException`, statt
+`Math.multiplyExact(a, b)`: Die werfen eine `ArithmeticException`, statt
 still falsch zu rechnen. Die Grenzen stehen in `Integer.MAX_VALUE` und
 `Integer.MIN_VALUE`.
 
@@ -153,18 +154,18 @@ System.out.println(0.1 + 0.2);   // 0.30000000000000004
 ```
 
 Das ist kein Java-Bug, sondern der IEEE-754-Standard: `0.1` ist im Binärsystem
-periodisch. Für Geldbeträge deshalb **niemals** `double`, nimm `BigDecimal`
+periodisch. Für Geldbeträge deshalb **niemals** `double`. Nimm `BigDecimal`
 oder rechne in Cent mit `long`.
 
 ## 1.5 Casting: Typen umwandeln
 
 ```java
-// Erweiternd (widening): passiert automatisch, kein Datenverlust:
+// Erweiternd (widening) geht automatisch und ohne Datenverlust:
 int i = 42;
 long l = i;
 double d = l;
 
-// Einengend (narrowing): musst du explizit hinschreiben, Daten koennen verloren gehen:
+// Einengend (narrowing) musst du explizit hinschreiben; dabei koennen Daten verloren gehen:
 double pi = 3.99;
 int abgeschnitten = (int) pi;   // 3  <- schneidet ab, rundet NICHT
 ```
@@ -173,7 +174,7 @@ int abgeschnitten = (int) pi;   // 3  <- schneidet ab, rundet NICHT
 
 Achtung: `Math.round(double)` liefert einen `long`, keinen `int`.
 `int r = Math.round(3.99);` ist deshalb ein Compilerfehler
-(`possible lossy conversion from long to int`), du brauchst
+(`possible lossy conversion from long to int`); du brauchst
 `int r = (int) Math.round(3.99);`.
 
 ## 1.6 Ausgabe formatieren
@@ -187,11 +188,13 @@ String s = String.format("%.2f EUR", 19.999);   // "20,00 EUR" (Locale-abhaengig
 
 Wichtige Platzhalter: `%s` String, `%d` Ganzzahl, `%f` Kommazahl,
 `%.2f` zwei Nachkommastellen, `%02d` zweistellig mit führender Null,
-`%n` Zeilenumbruch (plattformrichtig), `%%` ein echtes Prozentzeichen.
+`%n` Zeilenumbruch (plattformrichtig, unter Windows `\r\n`), `%%` ein echtes
+Prozentzeichen.
 
 `printf` und `String.format` richten sich nach der Spracheinstellung deines
 Systems (*Locale*): Unter Deutsch wird `%.2f` zu `20,00`, unter Englisch zu
-`20.00`. Wundere dich also nicht, wenn bei dir ein Komma erscheint.
+`20.00`. In manchen Sprachen, etwa Arabisch, ändern sich sogar die Ziffern.
+Wundere dich also nicht, wenn bei dir ein Komma erscheint.
 
 ## 1.7 Kommentare
 
@@ -224,7 +227,7 @@ Prüfen mit:
 ```
 
 Unter Windows (PowerShell, cmd, Terminal in IntelliJ oder VS Code) heißt das
-`.\lerne 01`, so auch bei allen folgenden `./lerne.sh`-Befehlen. In der IDE
+`.\lerne 01`; das gilt auch für alle folgenden `./lerne.sh`-Befehle. In der IDE
 kannst du stattdessen `tests/Tests.java` per Klick starten, siehe
 [`SETUP.md`](../../SETUP.md#3-editor-und-ide).
 
@@ -242,7 +245,7 @@ $ ./lerne.sh 01
 ```
 
 Das ist keine Niederlage, sondern die Aufgabenstellung: Die Methode liefert
-bisher `""` (den Platzhalter), gewünscht ist `"Hallo, Anna!"`. Den Test dazu
+bisher `""` (den Platzhalter); gewünscht ist `"Hallo, Anna!"`. Den Test dazu
 findest du in `tests/Tests.java`:
 
 ```java
@@ -265,7 +268,7 @@ return "Hallo," + name + "!";
 ```
 
 Fast. Vergleiche Zeichen für Zeichen: Das Leerzeichen nach dem Komma fehlt.
-Solche Kleinigkeiten sind der häufigste Grund für rote Tests, die
+Solche Kleinigkeiten sind der häufigste Grund für rote Tests. Die
 Anführungszeichen in der Ausgabe helfen dir, auch Leerzeichen am Rand zu sehen.
 
 **4. Korrigieren, prüfen, grün:**
@@ -276,7 +279,7 @@ Anführungszeichen in der Ausgabe helfen dir, auch Leerzeichen am Rand zu sehen.
 ```
 
 **Und wenn es gar nicht kompiliert?** Vergisst du das Semikolon, läuft kein
-einziger Test, stattdessen meldet der Compiler:
+einziger Test. Stattdessen meldet der Compiler:
 
 ```
 .../kapitel/01-erste-schritte/src/Aufgaben.java:17: error: ';' expected
@@ -286,7 +289,7 @@ einziger Test, stattdessen meldet der Compiler:
 
 Datei, Zeile, Art des Fehlers, und das `^` zeigt auf die Stelle. Vor
 `kapitel` steht bei dir der vollständige Pfad zum Kursordner (unter Windows
-z. B. `C:\Users\...\kapitel\...`), hier ist er mit `...` abgekürzt. Details dazu
+z. B. `C:\Users\...\kapitel\...`); hier ist er mit `...` abgekürzt. Details dazu
 stehen in [`SETUP.md`](../../SETUP.md), Abschnitt 5.
 
 Diesen Kreislauf, **prüfen, kleinsten Schritt schreiben, prüfen**, machst
@@ -330,7 +333,7 @@ System.out.println(7 / 2 * 2.0);
 
 <details><summary>Auflösung</summary>
 
-`6.0`: Von links nach rechts: `7 / 2` ist Ganzzahldivision und ergibt `3`, erst dann wird mit `2.0` multipliziert. Mit `7 / 2.0 * 2` käme `7.0` heraus.
+`6.0`: Java rechnet von links nach rechts. `7 / 2` ist Ganzzahldivision und ergibt `3`; erst dann wird mit `2.0` multipliziert. Mit `7 / 2.0 * 2` käme `7.0` heraus.
 
 </details>
 

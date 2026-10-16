@@ -1,20 +1,20 @@
 /**
- * Kapitel 14, Musterloesung: Suchen.
+ * Kapitel 14: Musterloesung fuer das Suchen.
  */
 public class Suchen {
 
     public static int ersteGroesserGleich(int[] sortiert, int wert) {
         // Halboffener Bereich [von, bis): "von" gehoert noch zum Suchbereich,
-        // "bis" nicht mehr. Deshalb startet bis bei sortiert.length (nicht
-        // length - 1) - "kein Element ist gross genug" ist ja auch eine
-        // moegliche Antwort, und die lautet length.
+        // "bis" nicht mehr. Deshalb startet bis bei sortiert.length, nicht bei
+        // length - 1: Auch "kein Element ist gross genug" ist eine moegliche
+        // Antwort, und die lautet length.
         int von = 0;
         int bis = sortiert.length;
 
         // Invariante:  alles LINKS von "von" ist < wert,
         //              alles AB "bis"       ist >= wert.
         // Der Bereich dazwischen ist noch unbekannt. Er schrumpft in jedem
-        // Schritt, bis von == bis, dann ist "von" genau die gesuchte Grenze.
+        // Schritt, bis von == bis gilt. Dann ist "von" genau die gesuchte Grenze.
         while (von < bis) {
             int mitte = von + (bis - von) / 2;   // ueberlaufsicher, siehe Kapitel 4
             if (sortiert[mitte] < wert) {

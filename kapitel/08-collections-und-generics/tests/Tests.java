@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ public class Tests {
         Pruef.gleich(0, anna.compareTo(new Person("Anna", 99)), "gleicher Name -> 0");
         Pruef.wahr(anna.equals(new Person("Anna", 34)), "equals");
         Pruef.falsch(anna.equals(new Person("Anna", 35)), "equals beachtet auch das Alter");
+        Pruef.gleich(anna.hashCode(), new Person("Anna", 34).hashCode(), "hashCode passt zu equals");
         Set<Person> menge = new HashSet<>(List.of(new Person("Anna", 34), new Person("Anna", 34)));
         Pruef.gleich(1, menge.size(), "HashSet erkennt Duplikat");
 
@@ -46,6 +48,15 @@ public class Tests {
                 Aufgaben.haeufigkeiten("hallo   welt\nhallo"), "mehrfacher Whitespace");
         Pruef.gleich(Map.of("a", 1, "b", 1), Aufgaben.haeufigkeiten("  a b  "),
                 "fuehrender/abschliessender Whitespace erzeugt kein leeres Wort");
+        // Tuerkisches Locale: ohne Locale.ROOT wird aus "I" ein i ohne Punkt
+        Locale vorher = Locale.getDefault();
+        Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+        try {
+            Pruef.gleich(Map.of("igel", 2), Aufgaben.haeufigkeiten("Igel IGEL"),
+                    "Locale.ROOT: gleiches Ergebnis auf einem tuerkischen System");
+        } finally {
+            Locale.setDefault(vorher);
+        }
 
         Pruef.abschnitt("Aufgabe 2: deduplizieren");
         Pruef.gleich(List.of("b", "a", "c"),

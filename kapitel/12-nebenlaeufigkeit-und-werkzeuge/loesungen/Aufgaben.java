@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Kapitel 12, Musterloesung mit Erklaerungen.
+ * Kapitel 12: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -35,8 +35,8 @@ public class Aufgaben {
         }
         return zaehler.wert();
         // "zaehler" ist im Lambda effektiv final (Kapitel 9): die REFERENZ
-        // aendert sich nie. Das Objekt dahinter darf sich sehr wohl aendern,
-        // genau deshalb muss es selbst thread-sicher sein.
+        // aendert sich nie. Das Objekt dahinter darf sich sehr wohl aendern.
+        // Genau deshalb muss es selbst thread-sicher sein.
     }
 
     public static int zaehleMitAtomic(int threads, int proThread) throws InterruptedException {
@@ -69,7 +69,7 @@ public class Aufgaben {
         // ExecutorService ist seit Java 19 AutoCloseable: close() wartet auf
         // alle laufenden Aufgaben und faehrt den Pool herunter. Frueher
         // brauchte es shutdown() + awaitTermination() in einem finally-Block.
-        // Ohne Herunterfahren beendet sich das Programm NICHT, die
+        // Ohne Herunterfahren beendet sich das Programm NICHT: Die
         // Pool-Threads sind keine Daemon-Threads.
         try (ExecutorService pool = Executors.newFixedThreadPool(threads)) {
             List<Future<Long>> ergebnisse = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Aufgaben {
             for (long von = 1; von <= bis; von += proAbschnitt) {
                 long start = von;
                 long ende = Math.min(von + proAbschnitt - 1, bis);
-                // start und ende sind lokale Kopien, sie sind effektiv final
+                // start und ende sind lokale Kopien: Sie sind effektiv final
                 // und duerfen deshalb im Lambda benutzt werden. "von" direkt
                 // waere ein Compilerfehler, weil die Schleife es veraendert.
                 ergebnisse.add(pool.submit(() -> teilsumme(start, ende)));

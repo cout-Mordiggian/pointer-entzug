@@ -47,7 +47,7 @@ Integer.parseInt(null)
 `Integer.parseInt(null)` wirft **keine** `NullPointerException`, sondern eine
 `NumberFormatException` mit der Meldung `Cannot parse null string`. Ein
 einziger `catch`-Block für `NumberFormatException` deckt also `null`, `""` und
-`"abc"` ab, alle drei stehen in den Tests. Eine zusätzliche `if`-Prüfung
+`"abc"` ab. Alle drei stehen in den Tests. Eine zusätzliche `if`-Prüfung
 auf `null` ist nicht nötig.
 
 </details>
@@ -85,7 +85,7 @@ Wichtig: Auch der Arrayzugriff muss **im** `try` stehen. Holst du
 `werte[index]` vorher in eine Variable, fliegt die Exception, bevor der
 `try`-Block beginnt.
 
-Die beiden Typen dürfen nicht voneinander erben,
+Die beiden Typen dürfen nicht voneinander erben:
 `NumberFormatException | IllegalArgumentException` wäre ein Compilerfehler,
 weil der zweite den ersten schon enthält.
 
@@ -115,8 +115,8 @@ Exception die alte mit, damit im Stacktrace `Caused by` erscheint?
 <details><summary>Tipp 2: Ansatz</summary>
 
 Fang die `NumberFormatException` und wirf **in** ihrem `catch`-Block eine neue
-`IllegalStateException`. Sie hat einen Konstruktor `(String message, Throwable cause)`,
-das zweite Argument ist die gefangene Exception.
+`IllegalStateException`. Sie hat einen Konstruktor `(String message, Throwable cause)`.
+Das zweite Argument ist die gefangene Exception.
 
 Die Tests prüfen zwei Dinge: die Nachricht zeichengenau
 (`"Ungueltiger Konfigurationswert: abc"`) und dass `getCause()` eine
@@ -177,8 +177,8 @@ wirfst. (Voraussetzung: `UnzureichendeDeckungException` ist fertig.)
   das 250, nicht 350 und nicht -250.
 - Sonst das neue Guthaben zurückgeben.
 
-Der Test "exakt aufgebraucht" (500 von 500) muss `0` liefern, nicht werfen,
-die Deckung fehlt erst, wenn der Betrag **größer** ist.
+Der Test "exakt aufgebraucht" (500 von 500) muss `0` liefern, nicht werfen.
+Die Deckung fehlt erst, wenn der Betrag **größer** ist.
 
 Das `throws UnzureichendeDeckungException` steht schon in der Signatur; ohne es
 würde der Compiler das `throw` der checked Exception ablehnen.
@@ -237,8 +237,9 @@ eigentlich `getMessage()`, und wie kommt deine Nachricht dorthin?
 `extends Exception` steht schon da und macht sie **checked**. Die Nachricht
 gibst du per `super(...)` an `Exception` weiter; `getMessage()` musst du nicht
 selbst schreiben. `super(...)` muss (in Java 21) die erste Anweisung sein, also
-baust du die Nachricht direkt aus dem **Parameter** `fehlbetrag` zusammen, nicht
-aus dem Feld, das ist in dem Moment noch gar nicht gesetzt.
+baust du die Nachricht direkt aus dem **Parameter** `fehlbetrag` zusammen. Auf
+das Feld (`this.fehlbetrag`) darfst du vor `super(...)` gar nicht zugreifen,
+das wäre ein Compilerfehler.
 
 Danach setzt du das Feld `private final long fehlbetrag`, und `getFehlbetrag()`
 gibt es zurück. Die Nachricht muss zeichengenau `"Es fehlen 250 Cent"` lauten.
@@ -273,7 +274,7 @@ zweites `close()` richtig reagieren können?
 Zwei Felder: der übergebene `StringBuilder` (`final`) und ein `boolean offen`.
 
 - Konstruktor: Feld setzen, `offen = true`, `"geoeffnet|"` anhängen.
-- `benutzen()`: ist der Tresor zu, `IllegalStateException`, es liegt am
+- `benutzen()`: ist der Tresor zu, wirf eine `IllegalStateException`: Es liegt am
   **Zustand** des Objekts, nicht an einem Argument. Sonst `"benutzt|"` anhängen.
 - `close()`: ist der Tresor schon zu, sofort zurückkehren. Sonst `offen = false`
   und `"geschlossen"` (ohne `|`) anhängen.
@@ -356,7 +357,7 @@ du eine Exception nicht sinnvoll behandeln, reich sie weiter.
 Das zweite Argument ist die **Ursache** (cause). Mit ihr hängt die neue
 Exception die alte samt ihrem Stacktrace an, und im Log erscheint die Zeile
 `Caused by: ...` mit dem Ort, an dem es wirklich schiefging. Ohne `e` siehst du
-nur die neue, allgemeine Meldung und die Stelle, an der übersetzt wurde, die
+nur die neue, allgemeine Meldung und die Stelle, an der übersetzt wurde. Die
 eigentliche Fehlerquelle ist verloren. Abfragen kannst du sie später mit
 `getCause()`.
 

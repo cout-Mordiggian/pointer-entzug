@@ -56,7 +56,7 @@ nicht alles auf einmal bauen.
   `boolean istUeberfaellig(LocalDate heute)`: der Aufrufer übergibt das Datum,
   und `istUeberfaellig()` ruft einfach `istUeberfaellig(LocalDate.now())` auf.
 
-`LocalDate` erklärt Kapitel 10, Abschnitt 10.7, das Wichtigste:
+`LocalDate` erklärt Kapitel 10 in Abschnitt 10.7. Das Wichtigste:
 `LocalDate.now()`, `LocalDate.parse("2026-09-05")`, `d.isBefore(andere)`.
 Nutze **niemals** `java.util.Date`, die Klasse ist seit 2014 abgelöst.
 
@@ -162,10 +162,11 @@ Klasse `Konsole` mit der Menüschleife. Anforderungen:
   fangen und eine verständliche Meldung ausgeben, oder `main` bekommt
   `throws IOException`. Entscheide dich; ein Stacktrace ist keine Meldung
   für Benutzer.
-- Umlaute in Eingaben: In der klassischen Windows-Konsole (cmd, PowerShell)
-  kommen Zeichen wie `ä` bei `Scanner` oft kaputt an, weil Konsole und Java
-  verschiedene Zeichensätze benutzen. Abhilfe: das Terminal in IntelliJ oder
-  VS Code nehmen oder vor dem Start `chcp 65001` eingeben.
+- Umlaute in Eingaben: In der Windows-Konsole (cmd, PowerShell) kommen
+  Zeichen wie `ä` bei `Scanner` oft kaputt an, weil Konsole und Java
+  verschiedene Zeichensätze benutzen. Abhilfe: vor dem Start `chcp 65001`
+  eingeben, oder in IntelliJ über den grünen Run-Pfeil starten (das
+  Run-Fenster liest UTF-8).
 
 ### M6: Ausbau (freiwillig)
 
@@ -218,7 +219,7 @@ In `src/` liegen bereits drei Startdateien:
   (die stehen nur im Kommentar), damit `starte.sh` von Anfang an läuft.
   Den Kommentar ersetzt du nach und nach durch echten Code.
 - `Prioritaet.java`: fertig.
-- `Aufgabe.java`: das Gerüst für M1: die Komponenten stehen, der kompakte
+- `Aufgabe.java`: das Gerüst für M1. Die Komponenten stehen, der kompakte
   Konstruktor und die beiden Methoden sind noch `TODO` (die Methoden werfen
   bis dahin `UnsupportedOperationException`).
 

@@ -39,7 +39,7 @@ public class Tests {
 
         Pruef.abschnitt("beschreibung (Locale.ROOT!)");
         // Absichtlich ein deutsches Locale einstellen: Ohne Locale.ROOT kaeme
-        // dann "12,00" statt "12.00" heraus, egal, wie dein System eingestellt ist.
+        // dann "12,00" statt "12.00" heraus, egal wie dein System eingestellt ist.
         Locale systemLocale = Locale.getDefault();
         Locale.setDefault(Locale.GERMANY);
         Pruef.gleich("Rechteck: Flaeche=12.00, Umfang=14.00", r.beschreibung(), "Rechteck");
@@ -60,7 +60,7 @@ public class Tests {
 
         Pruef.abschnitt("Kovarianter Rueckgabetyp");
         // Wenn skaliert() in Quadrat richtig ueberschrieben ist, braucht diese
-        // Zeile KEINEN Cast, der Compiler kennt den Typ Quadrat.
+        // Zeile KEINEN Cast: Der Compiler kennt den Typ Quadrat.
         Quadrat q2 = q.skaliert(2);
         Pruef.fastGleich(6.0, q2.getSeite(), "Quadrat.skaliert liefert ein Quadrat");
         Pruef.gleich("Quadrat", q2.getName(), "und es heisst auch so");
@@ -80,7 +80,7 @@ public class Tests {
 
         Pruef.abschnitt("Dynamische Bindung");
         // Statischer Typ ist Figur, dynamischer Typ ist Kreis.
-        // Aufgerufen wird die Kreis-Version, das ist der ganze Trick.
+        // Aufgerufen wird die Kreis-Version. Das ist der ganze Trick.
         Figur alsFigur = new Kreis(1);
         Pruef.fastGleich(Math.PI, alsFigur.flaeche(), "Figur-Variable, Kreis-Verhalten");
         Pruef.gleich("Kreis", alsFigur.getName(), "Name stammt aus dem Kreis-Konstruktor");
@@ -103,7 +103,9 @@ public class Tests {
         TextProtokoll pg2 = new TextProtokoll();
         new Grossgeschrieben(pg2).schreibe("info");
         Locale.setDefault(systemLocale);
-        Pruef.gleich("INFO\n", pg2.inhalt(), "info -> INFO, auch auf einem tuerkischen System (Locale.ROOT)");
+        // Unter Windows zeigt die Konsole das I mit Punkt oft nur als "?".
+        Pruef.gleich("INFO\n", pg2.inhalt(), "info -> INFO auf einem tuerkischen System (Locale.ROOT;"
+                + " ein \"?\" in der Ausgabe ist ein I mit Punkt, U+0130)");
 
         Pruef.abschnitt("Aufgabe 7c: NurMit (Dekorierer)");
         String[] eingabe = {"INFO Start", "FEHLER Platte voll", "INFO weiter", "FEHLER Netz weg"};

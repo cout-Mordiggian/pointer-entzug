@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 14, Musterloesung: Sortieren.
+ * Kapitel 14: Musterloesung fuer das Sortieren.
  */
 public class Sortieren {
 

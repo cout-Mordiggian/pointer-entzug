@@ -1,7 +1,7 @@
 import java.util.Locale;
 
 /**
- * Kapitel 06, Musterloesung: abstrakte Basisklasse.
+ * Kapitel 06: Musterloesung. Abstrakte Basisklasse.
  */
 public abstract class Figur {
 
@@ -27,7 +27,7 @@ public abstract class Figur {
     /**
      * "Template Method": eine fertige Methode in der Basis, die Bausteine
      * aufruft, die erst die Unterklasse liefert. Figur weiss nicht, WIE
-     * eine Flaeche berechnet wird, nur DASS es geht.
+     * eine Flaeche berechnet wird, sondern nur, DASS es geht.
      */
     public String beschreibung() {
         // Locale.ROOT erzwingt den Punkt als Dezimaltrennzeichen. Ohne diesen

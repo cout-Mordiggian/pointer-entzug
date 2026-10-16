@@ -1,7 +1,7 @@
 import java.util.Locale;
 
 /**
- * Kapitel 06, Aufgabe 1: Abstrakte Basisklasse fuer geometrische Figuren.
+ * Kapitel 06: Aufgabe 1. Abstrakte Basisklasse fuer geometrische Figuren.
  */
 public abstract class Figur {
 
@@ -26,7 +26,7 @@ public abstract class Figur {
 
     /**
      * Format (Kreis mit Radius 1): "Kreis: Flaeche=3.14, Umfang=6.28"
-     * Locale.ROOT ist Pflicht, sonst kaeme auf einem deutschen System 3,14 heraus.
+     * Locale.ROOT ist Pflicht. Sonst kaeme auf einem deutschen System 3,14 heraus.
      */
     public String beschreibung() {
         // TODO: String.format(Locale.ROOT, "%s: Flaeche=%.2f, Umfang=%.2f", ...)

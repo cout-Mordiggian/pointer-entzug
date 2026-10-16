@@ -20,7 +20,7 @@ public static double durchschnitt(int a, int b) {
 }
 ```
 
-**Signatur** = Name + Parametertypen. *Nicht* der Rückgabetyp, das ist wichtig
+**Signatur** = Name + Parametertypen. *Nicht* der Rückgabetyp. Das ist wichtig
 für Überladung (4.3).
 
 `void` bedeutet "gibt nichts zurück". Ein `return;` ohne Wert ist trotzdem
@@ -90,7 +90,7 @@ ersetzen(a);
 System.out.println(a[0]);   // 1, unveraendert!
 ```
 
-Als Bild, beim Aufruf `ersetzen(a)` wird der **Pfeil** kopiert:
+Als Bild: Beim Aufruf `ersetzen(a)` wird der **Pfeil** kopiert.
 
 ```
    vor der Zuweisung in ersetzen:      nach  arr = new int[]{7, 7, 7}:
@@ -160,7 +160,7 @@ Exception in thread "main" java.lang.StackOverflowError
 Jeder Aufruf belegt einen **Stack-Frame** (Parameter, lokale Variablen,
 Rücksprungadresse). Der Stack ist klein, typischerweise etwa 1 MB pro
 Thread (einstellbar mit `java -Xss4m ...`). Rekursionstiefen von einigen
-Tausend bis Zehntausend sind die Grenze, Java hat keine
+Tausend bis Zehntausend sind die Grenze, denn Java hat keine
 Endrekursionsoptimierung (*tail call optimization*).
 
 ### Wann Rekursion, wann Schleife?
@@ -179,7 +179,7 @@ static long fib(int n) {
 ```
 
 `fib(50)` braucht rund **40 Milliarden** Aufrufe, weil dieselben Werte immer
-wieder neu berechnet werden (`fib(48)` zweimal, `fib(47)` dreimal, …), die
+wieder neu berechnet werden (`fib(48)` zweimal, `fib(47)` dreimal, …). Die
 Anzahl wächst mit etwa 1,6^n. Iterativ sind es 50 Schritte. In Aufgabe 3
 baust du beides und siehst den Unterschied selbst.
 
@@ -208,7 +208,7 @@ Math.max(3, 5);        // static: an der Klasse aufgerufen
 
 Eine `static`-Methode kennt kein `this` und kann deshalb nicht direkt auf
 Objektfelder zugreifen, nur über ein konkretes Objekt. In diesem Kapitel ist
-noch alles `static`, ab Kapitel 5 wird sich das umkehren.
+noch alles `static`. Ab Kapitel 5 wird sich das umkehren.
 
 Faustregel für später: `static` nur für echte Hilfsfunktionen, die
 ausschließlich von ihren Parametern abhängen.
@@ -236,15 +236,16 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 04`.
 2. **`max` dreifach überladen**: `max(int,int)`, `max(int,int,int)` und
    `max(double,double)`. Kann die Drei-Parameter-Version die andere nutzen?
 3. **`fibRekursiv` und `fibIterativ`**: `fib(0)=0, fib(1)=1, fib(n)=fib(n-1)+fib(n-2)`.
-   Der Test ruft `fibIterativ(90)` auf, die rekursive Variante würde daran
+   Der Test ruft `fibIterativ(90)` auf. Die rekursive Variante würde daran
    praktisch nie fertig werden. Genau das ist der Punkt.
 4. **`summeAlle(int...)`**: Varargs, leerer Aufruf ergibt `0`.
 5. **`binaereSuche(int[], int)`**: Index des gesuchten Werts im **sortierten**
-   Array, `-1` wenn nicht enthalten. Schreibe eine private rekursive
+   Array, `-1` wenn nicht enthalten. Schreibe eine `private` rekursive
    Hilfsmethode mit `von`/`bis` und rufe sie aus der öffentlichen Methode auf.
+   (`private` heißt: nur innerhalb der eigenen Klasse aufrufbar, mehr in 5.3.)
    *Denkfalle:* `(von + bis) / 2` kann bei sehr großen Indizes überlaufen.
    Ehrlicher Hinweis: Die Tests prüfen nur die Ergebnisse. Eine simple Schleife
-   über alle Elemente würde sie auch bestehen, ob du wirklich binär und
+   über alle Elemente würde sie auch bestehen. Ob du wirklich binär und
    rekursiv suchst, musst du selbst kontrollieren (Musterlösung vergleichen).
 6. **`verdoppleAlle(int[])`**: `void`. Verändere das übergebene Array
    **an Ort und Stelle**. Der Test prüft, dass der Aufrufer die Änderung sieht.

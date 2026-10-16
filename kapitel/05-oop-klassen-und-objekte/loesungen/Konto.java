@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 05, Musterloesung Konto, mit Erklaerungen.
+ * Kapitel 05: Musterloesung Konto, mit Erklaerungen.
  */
 public class Konto {
 
@@ -10,7 +10,7 @@ public class Konto {
     private static int anzahlKonten = 0;
 
     // final: nach dem Konstruktor unveraenderlich. Eine Kontonummer, die sich
-    // aendern kann, waere ein Widerspruch in sich, der Compiler haelt das fest.
+    // aendern kann, waere ein Widerspruch in sich. Der Compiler haelt das fest.
     private final int nummer;
     private final String inhaber;
 
@@ -20,7 +20,7 @@ public class Konto {
 
     public Konto(String inhaber, long startguthaben) {
         // Erst pruefen, dann zuweisen. Wirft der Konstruktor, existiert
-        // gar kein halbfertiges Objekt, die Invariante bleibt heil.
+        // gar kein halbfertiges Objekt. Die Invariante bleibt heil.
         if (inhaber == null || inhaber.isBlank()) {
             throw new IllegalArgumentException("Inhaber darf nicht leer sein");
         }

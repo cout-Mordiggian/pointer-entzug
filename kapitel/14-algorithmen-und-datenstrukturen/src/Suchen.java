@@ -1,5 +1,5 @@
 /**
- * Kapitel 14, Algorithmen und Datenstrukturen: Suchen.
+ * Kapitel 14: Suchen (Aufgaben 4 und 5).
  * Pruefen:  ./lerne.sh 14
  */
 public class Suchen {

@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Musterloesung zur Bonus-Aufgabe Zahlenraten (Kapitel 02).
+ * Kapitel 02: Musterloesung zur Bonus-Aufgabe Zahlenraten.
  *
  * Starten:  ./lerne.sh 02 -l -r Zahlenraten
  */

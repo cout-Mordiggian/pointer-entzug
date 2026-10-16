@@ -21,7 +21,7 @@ Zählen und Zuweisen passieren?
 <details><summary>Tipp 2: Ansatz</summary>
 
 - `nummer` und `inhaber` sind `private final`, `guthaben` ist `private long`
-  (nicht `final`, es ändert sich ja).
+  (nicht `final`, denn es ändert sich ja).
 - Der Zähler ist `private static int anzahlKonten`. Jedes Konto bekommt den
   Zählerstand **nach** dem Hochzählen als Nummer, so beginnt die erste bei 1
   (der Test prüft das).
@@ -74,7 +74,7 @@ fachlich keine Einzahlung?
 <details><summary>Tipp 2: Ansatz</summary>
 
 Die Getter geben nur das jeweilige Feld zurück. Einen `setGuthaben` gibt es
-**nicht**: das ist Absicht.
+mit Absicht **nicht**.
 
 `einzahlen` lehnt jeden Betrag ab, der nicht **positiv** ist. Die Tests prüfen
 beide Grenzfälle: `0` **und** negative Beträge. Eine Prüfung auf `< 0` lässt
@@ -100,7 +100,7 @@ Programmierfehler (Exception) oder ein normaler Geschäftsfall (`false`)?
 - Sonst abziehen und `true` zurückgeben.
 
 **Die Falle der Tests:** "Das komplette Guthaben abzuheben ist erlaubt." Emil hat
-300 Cent und hebt 300 ab, das muss `true` liefern. Die Deckung fehlt also erst,
+300 Cent und hebt 300 ab. Das muss `true` liefern. Die Deckung fehlt also erst,
 wenn der Betrag **größer** als das Guthaben ist, nicht schon bei Gleichheit.
 Achte außerdem auf die Reihenfolge: Die Betragsprüfung kommt zuerst, sonst
 liefert `abheben(-5)` womöglich `true` und *erhöht* das Guthaben.
@@ -139,12 +139,12 @@ wenn das Abheben scheitert?
 
 Rufe `abheben(betrag)` auf dem eigenen Konto auf und werte den `boolean` aus.
 Nur bei `true` zahlst du beim Ziel ein. Sonst wäre Geld aus dem Nichts
-entstanden, genau das prüft der Test "Empfänger bei Misserfolg unverändert".
+entstanden. Genau das prüft der Test "Empfänger bei Misserfolg unverändert".
 
 Der Javadoc verlangt eine `NullPointerException`, wenn `ziel` `null` ist. Prüfe
 das **vor** dem Abheben, am besten mit `Objects.requireNonNull(ziel, "ziel")`
 (Abschnitt 5.7). Prüfst du erst danach bzw. gar nicht, ist das Geld beim
-Sender schon abgebucht, wenn `ziel.einzahlen(...)` knallt, es wäre verschwunden.
+Sender schon abgebucht, wenn `ziel.einzahlen(...)` knallt, und es wäre verschwunden.
 Der Test prüft deshalb auch, dass der Sender nach `ueberweiseAn(null, ...)` sein
 Guthaben noch hat.
 
@@ -180,7 +180,7 @@ welche Felder darf sie deshalb zugreifen?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-`getAnzahlKonten` gibt nur den statischen Zähler zurück, auf `nummer` oder
+`getAnzahlKonten` gibt nur den statischen Zähler zurück. Auf `nummer` oder
 `guthaben` kann sie ohne ein konkretes Konto gar nicht zugreifen (kein `this`).
 
 `toString` baut den String per Verkettung mit `+`. Das Format muss **zeichengenau**
@@ -204,9 +204,9 @@ deshalb `this.x = x`?
 
 Zwei Felder `private final double x` und `y`, im Konstruktor gesetzt, die Getter
 geben sie zurück. Wenn du ein `final`-Feld im Konstruktor vergisst, meldet der
-Compiler `variable x might not have been initialized` (deutsch: `Variable x
-wurde möglicherweise nicht initialisiert`), das ist der Compiler,
-der dich an deine Invariante erinnert. Die Tests rufen `new Punkt(3, 4)` mit
+Compiler `variable x might not have been initialized` (von Hand oder in IntelliJ
+auf Deutsch: `Variable x wurde möglicherweise nicht initialisiert`). So erinnert
+dich der Compiler an deine Invariante. Die Tests rufen `new Punkt(3, 4)` mit
 `int`-Werten auf; die werden automatisch zu `double` erweitert.
 
 </details>
@@ -231,7 +231,7 @@ egal, weil quadriert wird.
 Du darfst auf `anderer.x` direkt zugreifen, obwohl `x` `private` ist:
 `private` gilt pro **Klasse**, nicht pro Objekt.
 
-`abstandZumUrsprung` braucht keine zweite Formel, ein Aufruf von `abstand` mit
+`abstandZumUrsprung` braucht keine zweite Formel. Ein Aufruf von `abstand` mit
 dem passenden Punkt reicht. Eine Stelle, die stimmen muss, statt zwei.
 
 </details>
@@ -256,7 +256,7 @@ public double abstandZumUrsprung() {
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 5.8: Ein unveränderliches Objekt ändert sich nie, "ändernde"
+Abschnitt 5.8: Ein unveränderliches Objekt ändert sich nie. "Ändernde"
 Methoden liefern stattdessen ein **neues** Objekt. Frag dich: Wie kannst du
 einen Punkt "verschieben", ohne `x` und `y` anzufassen?
 
@@ -270,9 +270,10 @@ gar nicht kompilieren, gut so. Der Test prüft ausdrücklich, dass das
 Original unverändert bleibt und `p == q` falsch ist.
 
 `toString` liefert `Punkt(3.0, 4.0)`. Ein `double` in einer String-Verkettung
-erscheint automatisch als `3.0`, du brauchst **kein** `String.format`.
+erscheint automatisch als `3.0`. Du brauchst **kein** `String.format`.
 (`String.format("%.1f", x)` wäre sogar gefährlich: Auf einem deutschen System
-käme `3,0` heraus.)
+käme `3,0` heraus, und `%.1f` macht aus `-2.25` ein `-2.3`. Deshalb prüft der
+Test auch `new Punkt(1.5, -2.25)`.)
 
 </details>
 
@@ -292,14 +293,14 @@ abfangen, bevor es überhaupt Felder vergleichen kann? Und welche Felder muss
 Drei Schritte in `equals`:
 
 1. Gleiche Referenz? Dann sofort `true`.
-2. `instanceof Punkt p` mit Pattern Matching, das erledigt `null` **und** den
+2. `instanceof Punkt p` mit Pattern Matching: Das erledigt `null` **und** den
    falschen Typ in einem Schritt (`null instanceof Punkt` ist `false`).
 3. Die Felder mit `Double.compare(a, b) == 0` vergleichen, nicht mit `==`.
 
 **Die Falle der Tests:** Mit `==` scheitern zwei Prüfungen. `Double.NaN == Double.NaN`
-ist `false`, der Test "zwei NaN-Punkte sind equals" wird rot. Und `0.0 == -0.0`
+ist `false`, also wird der Test "zwei NaN-Punkte sind equals" rot. Und `0.0 == -0.0`
 ist `true`, aber `Objects.hash(0.0, 0.0)` und `Objects.hash(-0.0, 0.0)` sind
-verschieden, damit wären zwei `equals`-gleiche Punkte in verschiedenen
+verschieden. Damit wären zwei `equals`-gleiche Punkte in verschiedenen
 Hash-Eimern. `Double.compare` behandelt beide Ecken genau so wie
 `Double.hashCode`, deshalb passt alles zusammen.
 
@@ -338,8 +339,8 @@ public int hashCode() {
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 5.10, "Die statische Fabrikmethode". Beide Methoden sind `static`,
-es gibt also kein `this`, sie liefern einen Punkt. Frag dich bei `ursprung`: Wie
+Abschnitt 5.10, "Die statische Fabrikmethode". Beide Methoden sind `static`
+(es gibt also kein `this`) und liefern einen Punkt. Frag dich bei `ursprung`: Wie
 bekommst du **dasselbe** Objekt bei jedem Aufruf, obwohl `new` jedes Mal ein
 neues erzeugt? Und bei `polar`: Was muss vor `Math.cos` mit dem Winkel passieren?
 
@@ -403,7 +404,7 @@ nach deiner Änderung noch `new Konfiguration()` schreiben?
 
 Wenn du willst, schreib testweise in eine Methode von `Punkt` die Zeile
 `new Konfiguration();`: Der Compiler meldet jetzt *has private access*
-(deutsch: *hat private-Zugriff*). Genau das soll er. (Danach
+(von Hand oder in IntelliJ auf Deutsch: *hat private-Zugriff*). Genau das soll er. (Danach
 wieder löschen.)
 
 </details>
@@ -437,7 +438,7 @@ public final class Konfiguration {
 Er verschwindet. Der Compiler erzeugt den parameterlosen Standardkonstruktor
 nur, wenn die Klasse **gar keinen** Konstruktor hat. Sobald du z. B.
 `Konto(String, long)` schreibst, ist `new Konto()` ein Compilerfehler. Willst du
-beides, musst du den parameterlosen Konstruktor selbst hinschreiben, oft ist
+beides, musst du den parameterlosen Konstruktor selbst hinschreiben. Oft ist
 es aber gerade gewollt, dass niemand ein Konto ohne Inhaber anlegen kann.
 
 </details>
@@ -455,13 +456,13 @@ Namen nach.
 
 <details><summary>Warum darf eine <code>static</code>-Methode nicht direkt auf Instanzfelder zugreifen?</summary>
 
-Eine `static`-Methode gehört der Klasse, nicht einem Objekt, sie wird z. B. als
+Eine `static`-Methode gehört der Klasse, nicht einem Objekt. Sie wird z. B. als
 `Konto.getAnzahlKonten()` ohne jedes Objekt aufgerufen. Deshalb gibt es in ihr
 kein `this`. Instanzfelder wie `guthaben` existieren aber nur pro Objekt: Welches
 Konto sollte gemeint sein? Der Compiler meldet
 `non-static variable guthaben cannot be referenced from a static context`
-(deutsch: `Variable guthaben ist nicht statisch und kann nicht aus einem
-statischen Kontext referenziert werden`). Statische Felder wie `anzahlKonten`
+(von Hand oder in IntelliJ auf Deutsch: `Variable guthaben ist nicht statisch
+und kann nicht aus einem statischen Kontext referenziert werden`). Statische Felder wie `anzahlKonten`
 darf sie dagegen benutzen. Und bekommt sie ein konkretes Konto, etwa als
 Parameter `k`, darf sie auch `k.guthaben` lesen: Dann ist klar, welches gemeint ist.
 

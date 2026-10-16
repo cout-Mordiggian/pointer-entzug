@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Aufgabe 7c: ein Dekorierer, der nur passende Zeilen durchlaesst (6.9).
+ * Kapitel 06: Aufgabe 7c. Ein Dekorierer, der nur passende Zeilen durchlaesst (6.9).
  * Pruefen:  ./lerne.sh 06
  *
  *   Protokoll p = new NurMit("FEHLER", basis);

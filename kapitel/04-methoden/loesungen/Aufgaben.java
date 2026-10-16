@@ -1,5 +1,5 @@
 /**
- * Kapitel 04, Musterloesung mit Erklaerungen.
+ * Kapitel 04: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -7,7 +7,7 @@ public class Aufgaben {
         // Euklid: der ggT aendert sich nicht, wenn man die groessere Zahl
         // durch den Rest der Division ersetzt. Der Rest wird streng kleiner,
         // also ist der Basisfall b == 0 garantiert erreichbar.
-        // ggT(18, 48) -> ggT(48, 18) : der erste Schritt dreht das von selbst um,
+        // ggT(18, 48) -> ggT(48, 18): Der erste Schritt dreht das von selbst um,
         // weil 18 % 48 == 18.
         if (b == 0) return a;
         return ggT(b, a % b);
@@ -26,7 +26,7 @@ public class Aufgaben {
 
     public static double max(double a, double b) {
         // Ueberladung: gleicher Name, andere Parametertypen. Der Compiler
-        // waehlt anhand der Argumente aus, bei max(3.2, 5.5) diese hier.
+        // waehlt anhand der Argumente aus. Bei max(3.2, 5.5) ist es diese hier.
         return a > b ? a : b;
     }
 
@@ -48,7 +48,7 @@ public class Aufgaben {
         }
         return letzte;
         // O(n) Zeit, O(1) Speicher. fib(92) ist der letzte Wert, der in long
-        // passt, ab fib(93) laeuft die Rechnung still ueber.
+        // passt. Ab fib(93) laeuft die Rechnung still ueber.
     }
 
     public static int summeAlle(int... zahlen) {
@@ -60,17 +60,17 @@ public class Aufgaben {
     }
 
     public static int binaereSuche(int[] sortiert, int gesucht) {
-        // Die oeffentliche Methode ist die bequeme Fassade; die Rekursion
+        // Die oeffentliche Methode ist der bequeme Einstieg; die Rekursion
         // braucht zusaetzliche Parameter, die den Aufrufer nicht interessieren.
-        // Dieses Muster (public Fassade + private Rekursionsmethode) siehst du
-        // in der Standardbibliothek staendig.
+        // Diese Aufteilung (public Einstieg + private Rekursionsmethode) siehst
+        // du in der Standardbibliothek staendig.
         return suche(sortiert, gesucht, 0, sortiert.length - 1);
     }
 
     private static int suche(int[] a, int gesucht, int von, int bis) {
         if (von > bis) return -1;              // Bereich leer -> nicht gefunden
 
-        // NICHT (von + bis) / 2 : bei sehr grossen Indizes kann die Summe
+        // NICHT (von + bis) / 2: Bei sehr grossen Indizes kann die Summe
         // den int-Bereich sprengen und negativ werden. Diese Form kann das nicht.
         int mitte = von + (bis - von) / 2;
 
@@ -86,8 +86,8 @@ public class Aufgaben {
         for (int i = 0; i < werte.length; i++) {
             werte[i] *= 2;
         }
-        // Achtung: "werte = new int[]{...}" haette KEINE Wirkung nach aussen,
-        // das wuerde nur die lokale Kopie der Referenz umbiegen.
+        // Achtung: "werte = new int[]{...}" haette KEINE Wirkung nach aussen.
+        // Das wuerde nur die lokale Kopie der Referenz umbiegen.
     }
 
     public static int[] getauscht(int[] werte, int i, int j) {

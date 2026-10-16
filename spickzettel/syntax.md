@@ -67,7 +67,7 @@ break;  continue;  return wert;
 
 ```java
 public static int summe(int a, int b) { return a + b; }
-public static int summeAlle(int... zahlen) { return zahlen.length; } // Varargs: innen ein Array
+public static int anzahl(int... zahlen) { return zahlen.length; }  // Varargs: innen ein Array
 private void tuWas() { }
 ```
 

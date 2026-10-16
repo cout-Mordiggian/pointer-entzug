@@ -1,5 +1,5 @@
 /**
- * Fertig vorgegeben: zeigt eine Race Condition live.
+ * Kapitel 12: Schon fertig. Zeigt eine Race Condition live.
  *
  *     ./lerne.sh 12 -r Demo
  *
@@ -9,7 +9,7 @@
  */
 public class Demo {
 
-    // Bewusst UNGESCHUETZT, genau darum geht es.
+    // Bewusst UNGESCHUETZT: Genau darum geht es.
     private static int unsicher = 0;
 
     public static void main(String[] args) throws InterruptedException {

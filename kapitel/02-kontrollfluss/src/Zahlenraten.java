@@ -2,8 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Bonus-Aufgabe zu Kapitel 02: dein erstes interaktives Programm.
- * Es gibt keine automatischen Tests, du pruefst, indem du spielst.
+ * Kapitel 02: Bonus-Aufgabe Zahlenraten, dein erstes interaktives Programm.
+ * Es gibt keine automatischen Tests: Du pruefst, indem du spielst.
  *
  * Starten:  ./lerne.sh 02 -r Zahlenraten
  *

@@ -1,5 +1,5 @@
 /**
- * Kapitel 07, Musterloesung: AutoCloseable-Ressource.
+ * Kapitel 07: Musterloesung, AutoCloseable-Ressource.
  */
 public class Tresor implements AutoCloseable {
 

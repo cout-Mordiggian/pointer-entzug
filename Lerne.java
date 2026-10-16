@@ -1,4 +1,8 @@
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -29,7 +32,6 @@ public class Lerne {
     private static final Path BASE = basis();
     // Die Wrapper setzen den Namen, unter dem der Runner aufgerufen wurde
     private static final String AUFRUF = System.getProperty("lerne.aufruf", "java Lerne.java");
-    private static final Pattern MAIN = Pattern.compile("\\bvoid\\s+main\\s*\\(");
 
     public static void main(String[] args) throws Exception {
         if (Runtime.version().feature() < MIN_JAVA) {
@@ -56,6 +58,10 @@ public class Lerne {
                 System.exit(fehler ? 1 : 0);
             }
             default -> {
+                if (erstes.startsWith("-")) {
+                    System.err.println("Zuerst das Kapitel, dann die Optionen, z. B. " + AUFRUF + " 01 -l");
+                    System.exit(1);
+                }
                 boolean loesung = false;
                 String klasse = "Tests";
                 for (int i = 1; i < args.length; i++) {
@@ -129,9 +135,11 @@ public class Lerne {
         try {
             loesche(out);
             Files.createDirectories(out);
-        } catch (IOException e) {
+        } catch (IOException | UncheckedIOException e) {
+            // Files.walk meldet Fehler beim Durchlaufen als UncheckedIOException
+            Throwable grund = e instanceof UncheckedIOException u ? u.getCause() : e;
             System.out.println("  Der Ordner " + BASE.relativize(out) + " laesst sich nicht neu anlegen ("
-                    + e.getClass().getSimpleName() + ": " + e.getMessage() + ").");
+                    + grund.getClass().getSimpleName() + ": " + grund.getMessage() + ").");
             System.out.println("  Vermutlich haelt ein anderes Programm eine Datei darin fest (laufendes Programm,");
             System.out.println("  Explorer, Virenscanner, OneDrive) oder der Kursordner ist schreibgeschuetzt.");
             System.out.println("  Schliesse das Programm oder loesche den Ordner build von Hand und starte erneut.");
@@ -157,17 +165,23 @@ public class Lerne {
             return false;
         }
 
-        String klasse = hauptklasse.replaceFirst("\\.(java|class)$", "");
-        if (!Files.isRegularFile(out.resolve(klasse.replace('.', '/') + ".class"))) {
+        // Auch "src/Demo.java" (Tab-Vervollstaendigung) wird zu "Demo"
+        String klasse = hauptklasse.replaceFirst("^.*[/\\\\]", "").replaceFirst("\\.(java|class)$", "");
+        if (!hatMain(out, klasse)) {
             List<String> kandidaten = new ArrayList<>();
             for (Path p : List.of(quelle, dir.resolve("tests"))) {
                 for (String datei : javaDateien(p)) {
-                    if (MAIN.matcher(Files.readString(Path.of(datei), StandardCharsets.UTF_8)).find()) {
-                        kandidaten.add(Path.of(datei).getFileName().toString().replaceFirst("\\.java$", ""));
-                    }
+                    String name = Path.of(datei).getFileName().toString().replaceFirst("\\.java$", "");
+                    if (hatMain(out, name)) kandidaten.add(name);
                 }
             }
-            System.out.println("  Keine Klasse '" + klasse + "' in " + BASE.relativize(quelle) + " oder tests.");
+            if (klassendateiExakt(out, klasse)) {
+                System.out.println("  Die Klasse '" + klasse + "' hat keine main-Methode.");
+            } else {
+                System.out.println("  Keine Klasse '" + klasse + "' in " + BASE.relativize(quelle) + " oder tests.");
+            }
+            kandidaten.stream().filter(k -> k.equalsIgnoreCase(klasse) && !k.equals(klasse)).findFirst()
+                    .ifPresent(k -> System.out.println("  Gross-/Kleinschreibung beachten: " + k));
             System.out.println("  Klassen mit main: " + (kandidaten.isEmpty() ? "keine" : String.join(", ", kandidaten)));
             return false;
         }
@@ -176,6 +190,30 @@ public class Lerne {
         String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
         Process p = new ProcessBuilder(java, "-cp", out.toString(), klasse).inheritIO().start();
         return p.waitFor() == 0;
+    }
+
+    /** Laedt die Klasse ohne sie zu initialisieren und sucht eine Methode main. */
+    private static boolean hatMain(Path out, String klasse) {
+        // Platform-Loader als Eltern: nur Klassen aus out, nichts aus dem Arbeitsverzeichnis
+        try (URLClassLoader lader = new URLClassLoader(new URL[] {out.toUri().toURL()},
+                ClassLoader.getPlatformClassLoader())) {
+            Class<?> c = Class.forName(klasse, false, lader);
+            for (Method m : c.getMethods()) if (m.getName().equals("main")) return true;
+            for (Method m : c.getDeclaredMethods()) if (m.getName().equals("main")) return true;
+            return false;
+        } catch (ClassNotFoundException | LinkageError | IOException e) {
+            // LinkageError: z. B. "wrong name", wenn nur die Gross-/Kleinschreibung abweicht
+            return false;
+        }
+    }
+
+    /** Prueft auch die Gross-/Kleinschreibung, die Windows und macOS sonst ignorieren. */
+    private static boolean klassendateiExakt(Path out, String klasse) throws IOException {
+        Path datei = out.resolve(klasse.replace('.', '/') + ".class");
+        if (!Files.isRegularFile(datei)) return false;
+        try (Stream<Path> s = Files.list(datei.getParent())) {
+            return s.anyMatch(p -> p.getFileName().toString().equals(datei.getFileName().toString()));
+        }
     }
 
     private static Path basis() {

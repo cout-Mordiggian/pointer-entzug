@@ -1,14 +1,14 @@
 import java.time.LocalDate;
 
 /**
- * Abschlussprojekt, Meilenstein 1: das Datenmodell.
+ * Abschlussprojekt: das Datenmodell (Meilenstein 1).
  *
  * Ein record ist hier richtig, weil eine Aufgabe vor allem DATEN
  * transportiert (Kapitel 10). Der Compiler erzeugt Konstruktor,
  * Zugriffsmethoden, equals, hashCode und toString.
  *
  * Was er NICHT erzeugt, ist die Frage, was ueberhaupt eine gueltige
- * Aufgabe ist. Das entscheidest du, im kompakten Konstruktor.
+ * Aufgabe ist. Das entscheidest du im kompakten Konstruktor.
  */
 public record Aufgabe(int id,
                       String titel,

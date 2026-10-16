@@ -115,12 +115,14 @@ Die Klasse `Versand` mit `versandCent` gibt es noch nicht, die schreibst du
 dafür selbst, ebenfalls in `src/`. Ohne sie kompiliert das ganze Kapitel
 nicht mehr. Liegen beide in `src/`, startest du die Tests mit
 `./lerne.sh 13 -r VersandTests`.
+
 `490L` statt `490`, weil `gleich` Objekte vergleicht: Ein `Integer` ist nie
 `equals` zu einem `Long`. Ohne das `L` gibt es ein FEHL, obwohl auf beiden
-Seiten 490 steht; `Pruef` nennt dann die beiden Typen. Und
-`() -> Versand.versandCent(-1)` ist ein **Lambda**: ein Stück Code, das `wirft` erst selbst in einem `try` ausführt
-(mehr in Kapitel 9). Ohne Framework prüfst du Werte mit `if` und Exceptions
-mit `try`/`catch`, so wie in Teil A der Aufgaben:
+Seiten 490 steht. `Pruef` nennt dann die beiden Typen. Und
+`() -> Versand.versandCent(-1)` ist ein **Lambda**: ein Stück Code, das
+`wirft` erst selbst in einem `try` ausführt (mehr in Kapitel 9). Ohne
+Framework prüfst du Werte mit `if` und Exceptions mit `try`/`catch`, so wie
+in Teil A der Aufgaben:
 
 ```java
 try {
@@ -135,8 +137,8 @@ try {
 
 In echten Projekten nimmt man **JUnit**: `assertEquals` statt `Pruef.gleich`,
 `assertThrows` statt `Pruef.wirft`, jeder Test eine Methode mit `@Test`, die
-Maven, Gradle oder die IDE automatisch finden. Beispiel in Abschnitt 12.12
-(JUnit), Projektvorlagen in [`../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/`](../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/).
+Maven, Gradle oder die IDE automatisch finden. Ein Beispiel steht in
+Abschnitt 12.12, die Projektvorlagen in [`../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/`](../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/).
 Die Regeln für gute Testfälle gelten dort unverändert.
 
 ## 13.6 Fehlersuche systematisch
@@ -315,8 +317,8 @@ Pruef.gleich("Guten Morgen, Anna", new Begruessung(new NeunUhr()).text("Anna"), 
 ```
 
 Das kennst du schon: In Teil A dieses Kapitels bekommt `alleBestanden` den
-`Rabattrechner` **hineingereicht**. Nur deshalb kann derselbe Test einmal die
-richtige Implementierung und neunmal einen Mutanten prüfen. Hätte
+`Rabattrechner` **hineingereicht**. Nur deshalb kann derselbe Test die richtige
+Implementierung und neun Mutanten prüfen. Hätte
 `alleBestanden` sich selbst einen Rabattrechner erzeugt, ginge das nicht.
 
 **Und Singletons?** Ein Singleton ist bequem, weil jeder es findet. Genau das ist
@@ -370,18 +372,20 @@ Schreibe in [`src/MeineTests.java`](src/MeineTests.java) die Methode
 `static boolean alleBestanden(Rabattrechner r)`: deine Prüfungen gegen `r`,
 Ergebnis `true`, wenn alle stimmen. Benutze die Helfer `gleich(...)` und
 `fehlschlag(...)`, für erwartete Exceptions `try`/`catch` wie in 13.4. Die
-Tests rufen deine Methode für jeden Mutanten einmal und für die korrekte
-Implementierung zweimal auf, in zufälliger Reihenfolge. Mit der korrekten
-Implementierung muss beide Male `true` herauskommen, sonst ist einer
-**deiner** erwarteten Werte falsch. Mit jedem Mutanten muss `false`
-herauskommen: Deine Tests haben ihn **entlarvt**. Ein Mutant, der überlebt,
-zeigt eine Lücke in deinen Tests.
+Tests rufen deine Methode für jeden Kandidaten einmal auf, in zufälliger
+Reihenfolge, und für die korrekte Implementierung zum Schluss noch ein
+zweites Mal. Mit der korrekten Implementierung muss beide Male `true`
+herauskommen, sonst ist einer **deiner** erwarteten Werte falsch. Mit jedem
+Mutanten muss `false` herauskommen: Deine Tests haben ihn **entlarvt**. Ein
+Mutant, der überlebt, zeigt eine Lücke in deinen Tests.
 
 Das heißt **Mutationstest** (Werkzeuge wie PIT erzeugen Mutanten automatisch).
 Spielregeln: Prüfe nur über `r.endpreisCent(...)`, kein `instanceof` und
 keine anderen Kandidaten als Rechenhilfe. Jeder Aufruf steht für sich, deine
 Prüfungen merken sich nichts vom vorigen Aufruf. Genau deshalb darf die
-Reihenfolge zufällig sein: Am Ergebnis ändert sie nichts.
+Reihenfolge zufällig sein: Am Ergebnis ändert sie nichts. Mit Reflection oder
+einem geänderten `Kandidaten.java` ließe sich das alles aushebeln, damit
+betrügst du aber nur dich selbst.
 
 ### Teil B: Fehlersuche
 

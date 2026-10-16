@@ -38,7 +38,7 @@ public class Aufgaben {
      * Aufgabe 3: Namen in Grossbuchstaben, alphabetisch sortiert.
      */
     public static List<String> grossgeschriebenSortiert(List<Person> personen) {
-        // TODO: toUpperCase(Locale.ROOT), ohne Locale haengt das Ergebnis
+        // TODO: toUpperCase(Locale.ROOT). Ohne Locale haengt das Ergebnis
         //       von der Systemsprache ab (Stichwort: tuerkisches i).
         return List.of();
     }
@@ -79,7 +79,7 @@ public class Aufgaben {
 
     /**
      * Aufgabe 8: Name -> Laenge des Namens.
-     * Die Namen sind eindeutig, doppelte Schluessel musst du nicht behandeln.
+     * Die Namen sind eindeutig: Doppelte Schluessel musst du nicht behandeln.
      */
     public static Map<String, Integer> namenLaengen(List<Person> personen) {
         // TODO: Collectors.toMap(schluesselFunktion, wertFunktion)

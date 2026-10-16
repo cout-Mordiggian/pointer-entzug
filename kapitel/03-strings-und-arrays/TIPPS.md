@@ -18,7 +18,7 @@ wieder zurück?
 `String` selbst hat keine Umdreh-Methode (unveränderlich, Abschnitt 3.1), aber
 `StringBuilder` hat `reverse()`. Ein `StringBuilder` lässt sich direkt mit einem
 `String` im Konstruktor erzeugen. Denkfalle: `reverse()` gibt einen
-`StringBuilder` zurück, keinen `String`, du brauchst am Ende noch `toString()`,
+`StringBuilder` zurück, keinen `String`. Du brauchst am Ende noch `toString()`,
 sonst kompiliert die Rückgabe nicht. Leerer String und ein einzelnes Zeichen
 funktionieren ohne Sonderfall. Das Ganze passt in eine verkettete Zeile.
 
@@ -29,7 +29,7 @@ funktionieren ohne Sonderfall. Das Ganze passt in eine verkettete Zeile.
 ```java
 public static String umdrehen(String text) {
     return new StringBuilder(...)
-            ....()          // die passende Methode aus Abschnitt 3.4
+            .???()          // die passende Methode aus Abschnitt 3.4
             .toString();
 }
 ```
@@ -99,7 +99,7 @@ oder mit Leerraum **beginnt**?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-`"\\s+"` heißt "ein oder mehr Leerraumzeichen", das deckt Leerzeichen, Tab
+`"\\s+"` heißt "ein oder mehr Leerraumzeichen". Das deckt Leerzeichen, Tab
 und Zeilenumbruch ab (Test `"a\tb\nc"`) und fasst Mehrfachabstände zusammen.
 Zwei Fallen: Beginnt der Text mit Leerraum, liefert `split` vorne ein **leeres**
 Element (`"  a b".split("\\s+")` ergibt `["", "a", "b"]`), deshalb zuerst
@@ -172,12 +172,12 @@ und in welchem Typ findet die Division statt?
 
 Summe sammeln, durch `werte.length` teilen. Drei Fallen, alle vom Test geprüft:
 
-- **Leeres Array:** Ohne Sonderfall teilst du `0` durch `0`, je nach Typen gibt
+- **Leeres Array:** Ohne Sonderfall teilst du `0` durch `0`. Je nach Typen gibt
   das eine `ArithmeticException` oder `NaN`. Erwartet ist `0.0`, also vorher
   selbst zurückgeben.
 - **Ganzzahldivision:** `summe / werte.length` mit zwei Ganzzahlen ergibt bei
   `{1, 2}` den Wert `1.0` statt `1.5`. Auch `(double) (summe / werte.length)` ist zu
-  spät, der Cast muss auf einen **Operanden**, nicht auf das Ergebnis.
+  spät: Der Cast muss auf einen **Operanden**, nicht auf das Ergebnis.
 - **Überlauf:** `Integer.MAX_VALUE + Integer.MAX_VALUE` passt nicht in `int`
   (ergibt `-2`). Sammle die Summe deshalb in einem `long`.
 
@@ -213,7 +213,7 @@ anlegen, mit `Arrays.copyOf(werte, werte.length)` oder `werte.clone()`, und
 nur die Kopie sortieren. Denkfalle: `int[] kopie = werte;` ist **keine** Kopie,
 sondern ein zweiter Verweis auf dasselbe Array; dann sortierst du doch das
 Original, und der Test "Original ist unverändert" schlägt fehl. Zweite Falle:
-`Arrays.sort` gibt nichts zurück (`void`), `return Arrays.sort(kopie);`
+`Arrays.sort` gibt nichts zurück (`void`); `return Arrays.sort(kopie);`
 kompiliert also nicht.
 
 </details>
@@ -247,7 +247,7 @@ Spalten hat, und umgekehrt. Legst du es mit denselben Dimensionen wie die
 Eingabe an, bekommst du eine `ArrayIndexOutOfBoundsException`. Dann zwei
 verschachtelte Schleifen über die Eingabe; beim Schreiben ins Ergebnis tauschst
 du einfach die beiden Indizes. Randfall "leere Matrix": `matrix[0]` gibt es
-dann nicht, der Zugriff wirft eine Exception. Prüfe `matrix.length == 0`
+dann nicht; der Zugriff wirft eine Exception. Prüfe `matrix.length == 0`
 vorher und gib ein leeres `int[][]` zurück (z. B. `new int[0][]`).
 
 </details>
@@ -289,7 +289,7 @@ Bei `n` Teilen gibt es `n - 1` Trenner. Am saubersten: Hänge den Trenner
 den Index, also keine `for-each`-Schleife. Die Alternative "immer Trenner
 anhängen und am Ende das letzte Zeichen abschneiden" hat zwei Fallen: Bei
 leerem Array gibt es nichts abzuschneiden, und beim mehrzeichigen Trenner
-`", "` entfernst du nur eines der beiden Zeichen, genau das prüft der Test.
+`", "` entfernst du nur eines der beiden Zeichen. Genau das prüft der Test.
 `String.join` selbst ist hier natürlich tabu.
 
 </details>
@@ -318,7 +318,7 @@ public static String zusammenfuegen(String[] teile, String trenner) {
 `String` ist unveränderlich: `toUpperCase()` verändert das vorhandene Objekt
 nicht, sondern erzeugt ein **neues** `String`-Objekt mit dem Ergebnis und gibt
 es zurück. Ohne Zuweisung wird dieses neue Objekt einfach weggeworfen, und `s`
-zeigt weiter auf den alten Text. Richtig ist `s = s.toUpperCase();`, dann zeigt
+zeigt weiter auf den alten Text. Richtig ist `s = s.toUpperCase();`; dann zeigt
 `s` auf den neuen String. Das gilt für alle "ändernden" String-Methoden wie
 `trim`, `replace` oder `strip`.
 
@@ -330,7 +330,7 @@ zeigt weiter auf den alten Text. Richtig ist `s = s.toUpperCase();`, dann zeigt
 String-Literale aus dem Quelltext legt Java im String-Pool nur einmal an, also
 zeigen `a = "hallo"` und `b = "hallo"` tatsächlich auf dasselbe Objekt. Ein
 String, der zur Laufzeit entsteht (Eingabe, Datei, `new`, Verkettung mit einer
-Variablen), ist ein eigenes, neues Objekt, gleicher Inhalt, andere Adresse,
+Variablen), ist ein eigenes, neues Objekt: gleicher Inhalt, andere Adresse,
 also `false`. Deshalb immer `equals` für den Inhalt.
 
 </details>
@@ -339,7 +339,7 @@ also `false`. Deshalb immer `equals` für den Inhalt.
 
 Arrays überschreiben `toString()` nicht, also wird die Standardversion aus
 `Object` verwendet. Die liefert Typkennung plus `@` plus Hashcode in
-Hexadezimal, z. B. `[I@46fbb2c1`, `[I` bedeutet "Array von `int`". Den Inhalt
+Hexadezimal, z. B. `[I@46fbb2c1`; `[I` bedeutet "Array von `int`". Den Inhalt
 bekommst du mit `Arrays.toString(intArray)`, bei zweidimensionalen Arrays mit
 `Arrays.deepToString(matrix)`.
 

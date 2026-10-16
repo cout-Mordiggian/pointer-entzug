@@ -1,7 +1,7 @@
 /**
- * Kapitel 06, Aufgabe 5.
+ * Kapitel 06: Aufgabe 5.
  *
- * "Ein Quadrat IST ein Rechteck": hier geht die Vererbung gut, weil beide
+ * "Ein Quadrat IST ein Rechteck": Hier geht die Vererbung gut, weil beide
  * unveraenderlich sind (warum das wichtig ist: siehe Musterloesung).
  */
 public class Quadrat extends Rechteck {

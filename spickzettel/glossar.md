@@ -33,7 +33,7 @@ Alles unter `Exception` außer `RuntimeException`. Siehe Kapitel 7.
 andere hält. Beide stehen für immer.
 
 **Dekorierer (Decorator)**: Entwurfsmuster. Packt ein Objekt ein, hat
-dasselbe Interface und fügt Verhalten hinzu. `BufferedReader`. Siehe 6.9.
+dasselbe Interface und fügt Verhalten hinzu. `BufferedReader`. Siehe 6.9 und 11.9.
 
 **Dependency Injection**: Ein Objekt bekommt seine Abhängigkeiten von außen
 (meist per Konstruktor), statt sie sich selbst zu holen. Die Alternative zum Singleton. Siehe 13.8.
@@ -87,6 +87,10 @@ beliebig viele implementieren.
 **Invariante**: Eine Zusage, die für ein Objekt immer gilt
 ("das Guthaben ist nie negativ"). Konstruktoren stellen sie her, Methoden
 erhalten sie.
+
+**Iterator (Muster)**: Entwurfsmuster. Elemente einer Sammlung der Reihe
+nach durchlaufen, ohne ihren inneren Aufbau zu kennen. In Java: `Iterable`
+mit `iterator()`, dann klappt for-each auch für eigene Klassen. Siehe 14.9.
 
 **JDK / JRE / JVM**: Entwicklungswerkzeuge / Laufzeitumgebung / die
 virtuelle Maschine, die Bytecode ausführt.
@@ -146,6 +150,11 @@ Konstruktor, Zugriffsmethoden, `equals`, `hashCode`, `toString`.
 **Referenz**: Ein Verweis auf ein Objekt. Java-Variablen von Objekttypen
 enthalten Referenzen, nie das Objekt selbst.
 
+**Schablonenmethode (Template Method)**: Entwurfsmuster. Eine Methode der
+Oberklasse legt den Ablauf fest (gern `final`) und ruft für einzelne Schritte
+abstrakte Methoden auf, die Unterklassen füllen. Beispiel im JDK:
+`AbstractList`. Siehe 6.9.
+
 **Sealed**: Ein Typ, der nur von aufgezählten Untertypen abgeleitet werden
 darf. Ermöglicht vollständigkeitsgeprüfte `switch`-Ausdrücke.
 
@@ -153,13 +162,14 @@ darf. Ermöglicht vollständigkeitsgeprüfte `switch`-Ausdrücke.
 Rückgabetyp.
 
 **Singleton**: Entwurfsmuster. Von einer Klasse gibt es genau eine Instanz.
-Am einfachsten als `enum` mit einer Konstante. Globaler Zustand, sparsam einsetzen. Siehe 5.10.
+Am einfachsten als `enum` mit einer Konstante. Globaler Zustand, sparsam einsetzen.
+Siehe 5.10, 10.9 und 12.3.
 
 **Stacktrace**: Der Aufrufpfad zum Zeitpunkt einer Exception. Von oben lesen.
 
 **Statische Fabrikmethode**: Statische Methode, die statt `new` ein
 Objekt liefert: `List.of`, `Integer.valueOf`. Darf cachen und Untertypen
-liefern. Siehe 5.10.
+liefern. Kein GoF-Muster. Siehe 5.10 und 9.8.
 
 **Strategie (Strategy)**: Entwurfsmuster. Austauschbares Verhalten hinter
 einem Interface, z. B. `Comparator` für `sort`. Oft einfach ein Lambda. Siehe 6.9 und 9.8.
@@ -188,9 +198,9 @@ verlangt keine Behandlung; sie signalisieren Programmierfehler.
 **volatile**: Feld-Modifier. Änderungen werden sofort für alle Threads
 sichtbar. Macht `x++` aber nicht atomar.
 
-**Wildcard**: Das `?` in `List<? extends Number>`: ein unbekannter
-Typparameter, nach oben (`extends`) oder unten (`super`) begrenzt. Siehe
-Kapitel 8 und **PECS**.
+**Wildcard**: Das `?` in `List<?>` oder `List<? extends Number>`: ein
+unbekanntes Typargument, unbegrenzt oder nach oben (`extends`) bzw. unten
+(`super`) begrenzt. Siehe Kapitel 8 und **PECS**.
 
 **Wrapper-Klasse**: Objektfassung eines primitiven Typs: `Integer`,
 `Double`, `Boolean`, `Character`.

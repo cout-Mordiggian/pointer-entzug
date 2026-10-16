@@ -2,8 +2,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Kapitel 14, Aufgabe 7: ein Stapel (LIFO: last in, first out) als
- * verkettete Liste.
+ * Kapitel 14: ein Stapel (LIFO: last in, first out) als verkettete Liste
+ * (Aufgaben 7 und 9).
  * Pruefen:  ./lerne.sh 14
  *
  *   push(1), push(2), push(3):   oben -> [3] -> [2] -> [1] -> null
@@ -17,9 +17,10 @@ public class Stapel<E> implements Iterable<E> {
     /**
      * Ein Glied der Kette, schon fertig.
      *
-     * "private static class" ist eine statische verschachtelte Klasse: Sie gehoert zu
-     * Stapel, niemand ausserhalb sieht sie (private), und ein Knoten braucht
-     * kein Stapel-Objekt (static). Sie hat ihr eigenes E. Siehe README 14.6.
+     * "private static class" ist eine statische verschachtelte Klasse: Sie
+     * gehoert zu Stapel, niemand ausserhalb sieht sie (private), und ein
+     * Knoten braucht kein Stapel-Objekt (static). Sie hat ihr eigenes E.
+     * Siehe README 14.6.
      */
     private static class Knoten<E> {
         final E wert;

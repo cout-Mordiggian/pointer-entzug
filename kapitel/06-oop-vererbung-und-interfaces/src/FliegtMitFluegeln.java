@@ -1,5 +1,5 @@
 /**
- * Kapitel 6, Aufgabe 8b: ein FlugVerhalten (Strategie).
+ * Kapitel 06: Aufgabe 8b. Ein FlugVerhalten (Strategie).
  *
  *   new FliegtMitFluegeln().fliegen()   // "Ich fliege!"
  */

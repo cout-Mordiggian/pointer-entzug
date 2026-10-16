@@ -2,7 +2,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * Kapitel 14, Musterloesung: Rueckgaengig und Wiederholen mit zwei Stapeln.
+ * Kapitel 14: Musterloesung fuer Rueckgaengig und Wiederholen mit zwei Stapeln.
  */
 public class Verlauf {
 
@@ -36,7 +36,8 @@ public class Verlauf {
         }
         Befehl b = wiederholenStapel.pop();
         b.ausfuehren();
-        rueckgaengigStapel.push(b);  // NICHT ausfuehren(b) - das wuerde den Wiederholen-Stapel leeren
+        // NICHT ausfuehren(b) des Verlaufs: Das wuerde den Wiederholen-Stapel leeren.
+        rueckgaengigStapel.push(b);
         return true;
     }
 

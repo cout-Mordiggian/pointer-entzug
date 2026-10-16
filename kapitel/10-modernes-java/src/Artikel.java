@@ -1,5 +1,5 @@
 /**
- * Kapitel 10: ein record mit Validierung.
+ * Kapitel 10: Ein record mit Validierung.
  *
  * Der Compiler erzeugt automatisch: Felder, Konstruktor,
  * name()/preisCent()/menge(), equals, hashCode, toString.
@@ -27,7 +27,7 @@ public record Artikel(String name, long preisCent, int menge) {
         return new Artikel(name, preisCent, 1);
     }
 
-    /** Neues Objekt mit anderer Menge, dieses hier bleibt unveraendert. */
+    /** Neues Objekt mit anderer Menge. Dieses hier bleibt unveraendert. */
     public Artikel mitMenge(int neueMenge) {
         // TODO
         return this;

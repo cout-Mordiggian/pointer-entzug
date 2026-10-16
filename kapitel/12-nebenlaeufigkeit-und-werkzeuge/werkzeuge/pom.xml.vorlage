@@ -38,7 +38,7 @@
     <build>
         <plugins>
             <!--
-                Feste Version: Aeltere Maven-Versionen bringen sonst einen
+                Feste Version: Aeltere Maven-Versionen bringen sonst ein
                 Compiler-Plugin mit, der maven.compiler.release nicht kennt.
             -->
             <plugin>

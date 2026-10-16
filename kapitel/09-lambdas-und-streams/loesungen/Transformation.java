@@ -1,5 +1,5 @@
 /**
- * Kapitel 09, Musterloesung: funktionales Interface mit Komposition.
+ * Kapitel 09: Musterloesung, funktionales Interface mit Komposition.
  */
 @FunctionalInterface
 public interface Transformation {
@@ -7,7 +7,7 @@ public interface Transformation {
     String anwenden(String eingabe);
 
     /**
-     * Gibt eine NEUE Transformation zurueck, ausgefuehrt wird noch nichts.
+     * Gibt eine NEUE Transformation zurueck. Ausgefuehrt wird noch nichts.
      * Das Lambda faengt "this" und "naechste" ein und wendet sie erst an,
      * wenn jemand anwenden() aufruft.
      *

@@ -69,11 +69,13 @@ Läufe sind deutlich langsamer. Danach wird es aber nicht stetig schneller,
 oft sind spätere Läufe wieder langsamer als der dritte oder vierte. Der JIT
 übersetzt eine Methode unter Umständen mehrmals neu, dazu kommen GC und
 andere Programme. Genau deshalb misst man oft und nimmt den schnellsten oder
-mittleren Wert, nie einen einzelnen. Teil 2 und 3
-vergleichen lineare mit binärer Suche und Selection Sort mit `Arrays.sort`.
-Die absoluten Zahlen hängen vom Rechner ab, schau auf die Spalte **Faktor**:
-Doppelt so viele Daten kosten bei O(n^2) etwa viermal so viel Zeit (x 3,9), bei
-O(n log n) gut doppelt so viel (x 2,3). Genau das sagt die Tabelle aus 14.1.
+mittleren Wert, nie einen einzelnen. Teil 2 und 3 vergleichen lineare mit
+binärer Suche und Selection Sort mit `Arrays.sort`. `Arrays.sort` bekommt
+dabei viel größere n, sonst wäre jede Messung kürzer als eine Millisekunde
+(Falle 4). Die absoluten Zahlen hängen vom Rechner ab, schau auf die Spalte
+**Faktor**: Doppelt so viele Daten kosten bei O(n^2) etwa viermal so viel Zeit
+(x 3,9), bei O(n log n) gut doppelt so viel (x 2,1). Genau das sagt die
+Tabelle aus 14.1.
 
 ## 14.3 Suchen: linear oder binär
 
@@ -349,11 +351,10 @@ public class Stapel<E> implements Iterable<E> {
 **Diesmal ohne `static`.** In 14.6 hieß die Faustregel: verschachtelte Klassen
 `static` machen, außer man braucht das äußere Objekt. Hier braucht man es:
 Ein Iterator gehört zu genau einem Stapel und startet bei dessen oberstem
-Knoten. Eine verschachtelte Klasse ohne `static` heißt **innere Klasse** und
-trägt einen versteckten Verweis auf das Objekt, das sie erzeugt hat, deshalb
-darf sie `oben` einfach lesen
-(ausgeschrieben `Stapel.this.oben`). Sie sieht auch das `E` von `Stapel` und
-braucht kein eigenes. Ein Knoten dagegen weiß nichts von "seinem" Stapel und
+Knoten. Eine verschachtelte Klasse ohne `static` heißt **innere Klasse**. Sie
+trägt einen versteckten Verweis auf das Objekt, das sie erzeugt hat, und darf
+deshalb `oben` einfach lesen (ausgeschrieben `Stapel.this.oben`). Sie sieht
+auch das `E` von `Stapel` und braucht kein eigenes. Ein Knoten dagegen weiß nichts von "seinem" Stapel und
 bleibt `static`.
 
 Weil jeder Aufruf von `iterator()` einen neuen Iterator liefert, können zwei
@@ -417,15 +418,15 @@ Thread später ausführt.
 Die Dateien in [`src/`](src/), prüfen mit `./lerne.sh 14` (`Messung.java`,
 `Befehl.java` und `Textpuffer.java` sind fertig). Wirft dein Code eine
 Exception, melden die Tests sie als FEHL mit Datei und Zeile und laufen
-weiter. Die Sortier-Tests nutzen Randfälle (leer, ein
-Element, sortiert, umgekehrt, Duplikate, negativ) und Zufallsdaten gegen `Arrays.sort`.
+weiter. Die Sortier-Tests nutzen Randfälle (leer, ein Element, sortiert,
+umgekehrt, Duplikate, negativ) und Zufallsdaten gegen `Arrays.sort`.
 
 1. **`Sortieren.insertionSort`** sortiert **an Ort und Stelle** (wie `verdoppleAlle`, Kapitel 4).
 2. **`Sortieren.mergeSort`**: rekursiv, **neues** Array, Original unverändert, Mischen in `merge`.
 3. **`Sortieren.istSortiert`**: aufsteigend, gleiche Nachbarn erlaubt.
 4. **`Suchen.ersteGroesserGleich(sortiert, wert)`**: Index des ersten Elements
    `>= wert`, sonst `sortiert.length`. Binär, O(log n). Eine lineare Lösung
-   besteht die Tests auch, ob du halbierst, prüfst du selbst.
+   besteht die Tests auch. Ob du wirklich halbierst, prüfst du selbst.
 5. **`Suchen.zaehleVorkommen(sortiert, wert)`** in O(log n) mit Aufgabe 4. Auch
    hier merken die Tests nicht, ob du linear zählst.
 6. **`MeineListe<E>`**: `add`, `get`, `set` (liefert den alten Wert), `size`,

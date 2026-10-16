@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Musterloesung: Polymorphie ohne instanceof.
+ * Kapitel 06: Musterloesung. Polymorphie ohne instanceof.
  */
 public class Figuren {
 

@@ -31,9 +31,10 @@ public class Aufgaben {
      * Eine bestehende Datei wird ueberschrieben.
      */
     public static void schreibeZeilen(Path pfad, List<String> zeilen) throws IOException {
-        // TODO: Inhalt mit '\n' bauen, dann Files.writeString(pfad, inhalt, StandardCharsets.UTF_8).
-        //       Nicht Files.write(pfad, zeilen): Das nimmt den Zeilentrenner des
-        //       Systems, unter Windows \r\n, und der Test wird rot.
+        // TODO: Inhalt mit '\n' bauen, dann
+        //       Files.writeString(pfad, inhalt, StandardCharsets.UTF_8).
+        //       Nicht Files.write(pfad, zeilen): Das nimmt den Zeilentrenner
+        //       des Systems (unter Windows \r\n), und der Test wird rot.
     }
 
     /**

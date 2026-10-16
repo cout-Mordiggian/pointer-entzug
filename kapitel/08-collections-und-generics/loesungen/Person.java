@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 08, Musterloesung: Werttyp mit natuerlicher Ordnung.
+ * Kapitel 08: Musterloesung, Werttyp mit natuerlicher Ordnung.
  */
 public final class Person implements Comparable<Person> {
 
@@ -18,7 +18,7 @@ public final class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person andere) {
-        // String implementiert Comparable selbst, wir reichen einfach durch.
+        // String implementiert Comparable selbst, also reichen wir einfach durch.
         // Wichtig: NICHT this.alter - andere.alter fuer numerische Vergleiche
         // verwenden (Ueberlaufgefahr), sondern Integer.compare(a, b).
         return this.name.compareTo(andere.name);

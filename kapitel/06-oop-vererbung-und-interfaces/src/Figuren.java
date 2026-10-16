@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Aufgabe 6: Polymorphie in Reinform.
+ * Kapitel 06: Aufgabe 6. Polymorphie in Reinform.
  *
  * Regel fuer diese Datei: KEIN instanceof, KEIN Cast.
  * Diese Methoden funktionieren auch fuer Figuren, die es heute noch nicht gibt.

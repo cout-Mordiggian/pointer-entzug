@@ -62,8 +62,8 @@ public class Aufgaben {
                         Collectors.mapping(Person::getName,          // Downstream: erst
                                 Collectors.toList())));              // umwandeln, dann sammeln
         // Ohne mapping bekaemest du Map<String, List<Person>>.
-        // Der Downstream-Collector bestimmt, was PRO GRUPPE passiert,
-        // das ist der Hebel, mit dem groupingBy so maechtig wird:
+        // Der Downstream-Collector bestimmt, was PRO GRUPPE passiert.
+        // Das ist der Hebel, mit dem groupingBy so maechtig wird:
         //   counting()             -> Map<String, Long>
         //   summingInt(getAlter)   -> Map<String, Integer>
         //   averagingInt(getAlter) -> Map<String, Double>
@@ -101,7 +101,7 @@ public class Aufgaben {
         // Verlockend, aber vertragswidrig waere
         //     reduce(eingabe, (text, t) -> t.anwenden(text), (a, b) -> b)
         // Sequentiell funktioniert das zufaellig, aber der Combiner (a, b) -> b
-        // ist kein korrektes Zusammenfuegen, parallel kaeme Unsinn heraus.
+        // ist kein korrektes Zusammenfuegen. Parallel kaeme Unsinn heraus.
         //
         // Ehrlicherweise ist die schlichte Schleife genauso gut:
         //     String ergebnis = eingabe;

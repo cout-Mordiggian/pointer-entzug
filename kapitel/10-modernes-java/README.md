@@ -16,7 +16,7 @@ for (var e : map.entrySet()) { ... }
 
 Nur für **lokale Variablen** mit Initialisierung. Nicht für Felder, nicht für
 Methodenparameter, nicht für Rückgabetypen. (Einzige Ausnahme: Lambda-Parameter
-dürfen seit Java 11 `var` heißen, `(var a, var b) -> a + b`.)
+dürfen seit Java 11 mit `var` deklariert werden, `(var a, var b) -> a + b`.)
 
 **Nimm `var`,** wenn der Typ rechts ohnehin dasteht (`var x = new Kunde()`) oder
 der Typ so lang ist, dass er nichts erklärt.
@@ -129,11 +129,11 @@ public enum Rechenart {
 ```
 
 Im `switch`-**Ausdruck** (mit Ergebnis, Kapitel 2) prüft der Compiler bei
-Enums die Vollständigkeit, kommt eine Konstante dazu, zeigt er dir jede Stelle,
-die du anpassen musst. Eine `switch`-**Anweisung** ohne Ergebnis prüft er
-dagegen nicht, auch nicht in Pfeilform: Fehlt dort eine Konstante, passiert
-für sie einfach nichts. Ein weiterer Grund für den Ausdruck. Das ist der
-Hauptgrund, Enums statt `String`-Konstanten oder `int`-Codes zu verwenden.
+Enums die Vollständigkeit: Kommt eine Konstante dazu, zeigt er dir jede Stelle,
+die du anpassen musst. Das ist der Hauptgrund, Enums statt `String`-Konstanten
+oder `int`-Codes zu verwenden. Eine `switch`-**Anweisung** ohne Ergebnis prüft
+er dagegen nicht, auch nicht in Pfeilform: Fehlt dort eine Konstante, passiert
+für sie einfach nichts. Nimm deshalb wo möglich den Ausdruck.
 
 `ordinal()` hängt an der Deklarationsreihenfolge. Speicherst du den Wert
 irgendwo, bricht das erste Umsortieren deine Daten. Nutze `name()`.
@@ -206,8 +206,8 @@ double flaeche = switch (form) {
 Das Muster **zerlegt** den Record direkt in seine Komponenten, kein
 `k.radius()` nötig. Statt des Typs darfst du auch `var` schreiben
 (`case Kreis(var r)`), und *seit Java 22* steht `_` für eine Komponente, die
-dich nicht interessiert: `case Rechteck(var b, _) -> ...`. Und weil `Form` `sealed` ist, braucht dieser `switch`
-**kein `default`**: Der Compiler weiß, dass alle Fälle abgedeckt sind.
+dich nicht interessiert: `case Rechteck(var b, _) -> ...`. Und weil `Form`
+`sealed` ist, braucht dieser `switch` **kein `default`**: Der Compiler weiß, dass alle Fälle abgedeckt sind.
 
 Der Gewinn wird beim Erweitern sichtbar: Kommt `Dreieck` dazu, meldet der
 Compiler **jeden** `switch`, dem der Fall fehlt. Bei einer `instanceof`-Kette
@@ -262,8 +262,8 @@ LocalDate termin  = LocalDate.of(2026, 12, 24);
 LocalDate parsed  = LocalDate.parse("2026-09-05");     // ISO-Format jjjj-mm-tt
 
 termin.isBefore(heute)                  // true/false
-termin.plusDays(7)                      // NEUES Objekt, termin bleibt unveraendert!
-LocalDate.of(2026, 1, 31).plusMonths(1) // 2026-02-28, rechnet kalenderrichtig
+termin.plusDays(7)                      // NEUES Objekt: termin bleibt unveraendert!
+LocalDate.of(2026, 1, 31).plusMonths(1) // 2026-02-28 (rechnet kalenderrichtig)
 ChronoUnit.DAYS.between(heute, termin)  // Tage dazwischen (long)
 termin.getDayOfWeek()                   // DayOfWeek.THURSDAY
 
@@ -290,7 +290,7 @@ Merke dir drei Dinge:
 
 - Wie bei `String`: `plusDays` & Co. ändern nichts, sie liefern ein **neues**
   Objekt. `termin.plusDays(7);` ohne Zuweisung tut nichts.
-- **Nie** `java.util.Date` oder `Calendar`, veränderlich, Monate ab 0
+- **Nie** `java.util.Date` oder `Calendar`: veränderlich, Monate ab 0
   gezählt, voller Fallen. Nur noch in altem Code.
 - Für testbaren Code `LocalDate.now()` nicht tief im Inneren aufrufen, sondern
   "heute" als Parameter hereinreichen: `istUeberfaellig(LocalDate heute)`.

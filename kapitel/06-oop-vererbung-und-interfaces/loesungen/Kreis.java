@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Musterloesung: Kreis.
+ * Kapitel 06: Musterloesung. Kreis.
  *
  * extends Figur          -> "ist eine" Figur (Herkunft)
  * implements Skalierbar  -> "kann" skaliert werden (Faehigkeit)
@@ -34,7 +34,7 @@ public class Kreis extends Figur implements Skalierbar {
 
     @Override
     public Figur skaliert(double faktor) {
-        // Neues Objekt statt Aenderung, dieselbe Idee wie bei Punkt in Kapitel 5.
+        // Neues Objekt statt Aenderung: dieselbe Idee wie bei Punkt in Kapitel 5.
         return new Kreis(radius * faktor);
     }
 }

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 14, Algorithmen und Datenstrukturen: Sortieren.
+ * Kapitel 14: Sortieren (Aufgaben 1 bis 3).
  * Pruefen:  ./lerne.sh 14
  *
  * Wichtig: Arrays.sort ist hier TABU. Die Tests wuerden es nicht merken,

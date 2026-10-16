@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Kapitel 12, Musterloesung: ein Singleton fuer viele Threads.
+ * Kapitel 12: Musterloesung. Ein Singleton fuer viele Threads.
  */
 public enum IdGenerator {
 

@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 09: Diese Klasse ist bereits fertig, du brauchst sie nur zu benutzen.
+ * Kapitel 09: Diese Klasse ist bereits fertig. Du brauchst sie nur zu benutzen.
  * (In Kapitel 10 siehst du, wie aus so etwas ein einzeiliges record wird.)
  */
 public final class Person {

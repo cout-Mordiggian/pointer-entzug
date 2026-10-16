@@ -1,19 +1,21 @@
 /**
- * Kapitel 13, Teil A: Tests schreiben, die Fehler finden.
+ * Kapitel 13: Tests schreiben, die Fehler finden (Teil A).
  * Pruefen:  ./lerne.sh 13
  *
  * Deine Aufgabe: Schreibe in alleBestanden eigene Pruefungen gegen den
  * uebergebenen Rabattrechner r. Die Regeln stehen in Rabattrechner.java.
  *
- * tests/Tests.java ruft deine Methode dann elfmal auf, in zufaelliger
- * Reihenfolge: zweimal mit der korrekten Implementierung (dort muss true
- * herauskommen) und einmal mit jedem der neun Mutanten (dort muss false
- * herauskommen: deine Tests muessen den Fehler bemerken).
+ * tests/Tests.java ruft deine Methode dann elfmal auf: einmal mit jedem
+ * der neun Mutanten (dort muss false herauskommen, deine Tests muessen den
+ * Fehler bemerken) und zweimal mit der korrekten Implementierung (dort muss
+ * true herauskommen). Die Reihenfolge ist zufaellig, nur der letzte Aufruf
+ * ist immer die korrekte Implementierung.
  *
  * Spielregeln:
  *  - Pruefe nur ueber r.endpreisCent(...). Kein instanceof, kein Blick auf
  *    den Klassennamen, keine anderen Kandidaten aufrufen. Das waere
- *    Schummeln und in echt nutzlos.
+ *    Schummeln und in echt nutzlos. Mit Reflection liesse es sich
+ *    austricksen, damit betruegst du aber nur dich selbst.
  *  - Jeder Aufruf steht fuer sich: Ausser dem Zaehler fehler, der am Anfang
  *    zurueckgesetzt wird, merkt sich alleBestanden nichts von frueheren Aufrufen.
  *  - Schau NICHT in Kandidaten.java, bevor alles gruen ist.

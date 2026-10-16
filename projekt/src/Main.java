@@ -6,8 +6,8 @@ import java.nio.file.Path;
  * Starten:  ./starte.sh   (Windows: .\starte)
  *
  * Aktuell ein Geruest, das bewusst schon kompiliert und startet: Es benutzt
- * noch keine der Klassen aus M2-M5 (Aufgabenliste, CsvSpeicher, Konsole),
- * die stehen unten nur im Kommentar. Arbeite dich an den Meilensteinen aus
+ * noch keine der Klassen aus M2-M5 (Aufgabenliste, CsvSpeicher, Konsole).
+ * Die stehen unten nur im Kommentar. Arbeite dich an den Meilensteinen aus
  * README.md entlang und ersetze diesen Rumpf Schritt fuer Schritt.
  */
 public class Main {

@@ -1,5 +1,5 @@
 /**
- * Kapitel 12, Musterloesung: thread-sicherer Zaehler.
+ * Kapitel 12: Musterloesung. Ein thread-sicherer Zaehler.
  */
 public class Zaehler {
 

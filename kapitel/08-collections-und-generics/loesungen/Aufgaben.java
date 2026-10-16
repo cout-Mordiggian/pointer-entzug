@@ -106,6 +106,8 @@ public class Aufgaben {
             gruppen.computeIfAbsent(wort.charAt(0), k -> new ArrayList<>()).add(wort);
         }
         return gruppen;
-        // Mit Streams: woerter.stream().collect(groupingBy(w -> w.charAt(0)))
+        // Mit Streams (Kapitel 9):
+        //   woerter.stream().filter(w -> !w.isEmpty())
+        //          .collect(groupingBy(w -> w.charAt(0), LinkedHashMap::new, toList()))
     }
 }

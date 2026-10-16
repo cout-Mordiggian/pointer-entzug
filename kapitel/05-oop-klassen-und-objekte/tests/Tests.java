@@ -8,11 +8,12 @@ public class Tests {
 
         Pruef.abschnitt("Konto: Konstruktor und Invarianten");
         int vorher = Konto.getAnzahlKonten();
+        Pruef.gleich(0, vorher, "vor dem ersten Konto steht der Zaehler auf 0");
         Konto anna = new Konto("Anna", 5000);
         Pruef.gleich("Anna", anna.getInhaber(), "Inhaber gemerkt");
         Pruef.gleich(5000L, anna.getGuthaben(), "Startguthaben gemerkt");
         Pruef.gleich(1, anna.getNummer(), "erstes Konto hat die Nummer 1");
-        Pruef.gleich(vorher + 1, Konto.getAnzahlKonten(), "Zaehler hochgezaehlt");
+        Pruef.gleich(1, Konto.getAnzahlKonten(), "Zaehler hochgezaehlt: ein Konto erzeugt");
 
         Konto bert = new Konto("Bert", 0);
         Pruef.wahr(bert.getNummer() == anna.getNummer() + 1, "Nummern sind fortlaufend");
@@ -85,6 +86,10 @@ public class Tests {
 
         Pruef.abschnitt("Punkt: toString, equals, hashCode");
         Pruef.gleich("Punkt(3.0, 4.0)", p.toString(), "toString-Format");
+        // Krumme Werte: String.format("%.1f") wuerde hier runden (und auf einem
+        // deutschen System Kommas setzen). Verkettung mit + zeigt den Wert genau.
+        Pruef.gleich("Punkt(1.5, -2.25)", new Punkt(1.5, -2.25).toString(),
+                "toString zeigt den double-Wert unveraendert");
         Pruef.wahr(p.equals(new Punkt(3, 4)), "gleiche Koordinaten sind equals");
         Pruef.wahr(p.equals(p), "reflexiv");
         Pruef.falsch(p.equals(new Punkt(3, 5)), "nur y verschieden -> nicht equals");
@@ -107,7 +112,7 @@ public class Tests {
         Pruef.gleich(1, menge.size(), "HashSet erkennt das Duplikat (der hashCode-Vertrag)");
 
         // "return 0" erfuellt den Vertrag formal, steckt aber alle Punkte in
-        // denselben Eimer. Verschiedene Punkte sollen verschiedene Hashwerte haben.
+        // denselben Eimer. Verschiedene Punkte sollen nicht alle denselben Hashwert haben.
         Set<Integer> hashwerte = new HashSet<>();
         for (Punkt h : new Punkt[]{new Punkt(1, 2), new Punkt(2, 1), new Punkt(3, 4), new Punkt(0, 5)}) {
             hashwerte.add(h.hashCode());
@@ -158,7 +163,7 @@ public class Tests {
         for (Constructor<?> konstruktor : Konfiguration.class.getDeclaredConstructors()) {
             if (!Modifier.isPrivate(konstruktor.getModifiers())) allePrivat = false;
         }
-        Pruef.wahr(allePrivat, "alle Konstruktoren sind private, niemand sonst kann 'new' sagen");
+        Pruef.wahr(allePrivat, "alle Konstruktoren sind private: niemand sonst kann 'new' sagen");
 
         Pruef.bericht();
     }

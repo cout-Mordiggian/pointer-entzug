@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Kapitel 09, Aufgabe 13: der Beobachter (Observer), siehe README 9.9.
+ * Kapitel 09: Aufgabe 13, der Beobachter (Observer), siehe README 9.9.
  * Pruefen:  ./lerne.sh 09
  *
  * Das Lager verwaltet Bestaende. Wer wissen will, wann etwas knapp wird,

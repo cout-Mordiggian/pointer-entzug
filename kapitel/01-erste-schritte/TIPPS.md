@@ -9,7 +9,7 @@
 
 Abschnitt 1.3, "Strings verketten": Ein `String` ist ein Wert wie jeder
 andere, und `+` hängt Strings aneinander. Frag dich: Aus welchen drei Teilen besteht der Satz
-`Hallo, Anna!`: was ist fest, was kommt aus dem Parameter?
+`Hallo, Anna!`? Was ist fest, was kommt aus dem Parameter?
 
 </details>
 
@@ -69,18 +69,18 @@ public static double celsiusZuFahrenheit(double celsius) {
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 1.3 (`double`) und die Konstante `Math.PI`. Frag dich: Wie schreibt
-man "r hoch 2" in Java, gibt es dafür überhaupt einen Operator?
+man "r hoch 2" in Java? Gibt es dafür überhaupt einen Operator?
 
 </details>
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Denkfalle: `radius ^ 2` ist in Java **kein** Potenzieren, sondern bitweises XOR,
-mit einem `double` kompiliert das nicht einmal (`bad operand types for binary
+Denkfalle: `radius ^ 2` ist in Java **kein** Potenzieren, sondern bitweises XOR.
+Mit einem `double` kompiliert das nicht einmal (`bad operand types for binary
 operator '^'`). Quadrieren heißt: die Zahl mit sich selbst multiplizieren.
 `Math.pow(radius, 2)` ginge auch, ist aber für einen festen Exponenten 2
 umständlicher zu lesen. Danach nur noch mit `Math.PI` multiplizieren. Radius
-`0.0` muss `0.0` ergeben, das klappt ohne Sonderfall.
+`0.0` muss `0.0` ergeben; das klappt ohne Sonderfall.
 
 </details>
 
@@ -99,7 +99,7 @@ public static double kreisFlaeche(double radius) {
 <details><summary>Tipp 1: Richtung</summary>
 
 Du brauchst den **Rest** einer Division. Der Rest-Operator `%` (Modulo) wird
-kurz in Abschnitt 1.4 und ausführlich in Kapitel 2, Abschnitt 2.1 erklärt, du darfst ihn hier schon
+kurz in Abschnitt 1.4 und ausführlich in Kapitel 2, Abschnitt 2.1 erklärt. Du darfst ihn hier schon
 benutzen. Frag dich: Durch welche Zahl musst du teilen, damit der Rest genau
 die letzte Stelle ist?
 
@@ -109,8 +109,8 @@ die letzte Stelle ist?
 
 Im Dezimalsystem steht jede Stelle für eine Zehnerpotenz. Teilst du `1234`
 durch die richtige Zahl, bleibt genau `4` übrig; bei `1000` bleibt `0`, bei
-`7` bleibt `7`. Ein einziger Operator mit einer Konstanten genügt, keine
-Schleife, kein `String`. Die Aufgabe garantiert nicht-negative Eingaben, das
+`7` bleibt `7`. Ein einziger Operator mit einer Konstanten genügt: keine
+Schleife, kein `String`. Die Aufgabe garantiert nicht-negative Eingaben. Das
 ist wichtig, denn in Java hat der Rest das Vorzeichen des linken Operanden
 (`-7 % 10` ist `-7`).
 
@@ -141,8 +141,8 @@ eine Stunde, wie viele eine Minute, und was bleibt jeweils übrig?
 
 Zerlege schrittweise: `/` liefert, wie oft eine Einheit ganz hineinpasst, `%`
 liefert, was danach übrig bleibt. Erst die Stunden aus der Gesamtzahl, dann
-aus dem Rest die Minuten, der Rest davon sind die Sekunden. Typische Falle:
-Minuten als `sekundenGesamt / 60` berechnen, dann bekommst du bei `3661` den
+aus dem Rest die Minuten; der Rest davon sind die Sekunden. Typische Falle:
+Minuten als `sekundenGesamt / 60` berechnen. Dann bekommst du bei `3661` den
 Wert `61` statt `1`, weil die Stunden noch mitgezählt werden. Zum Schluss
 `String.format` mit `%02d`, damit aus `0` ein `"00"` wird (Test mit `0` und `59`).
 
@@ -177,11 +177,11 @@ und wird dieser Typ durch den Rückgabetyp `long` beeinflusst?
 Der Rückgabetyp ändert nichts an der Rechnung: Fünf `int`-Literale ergeben
 eine reine `int`-Multiplikation, die still auf `1471228928` überläuft und erst
 **danach** zu `long` erweitert wird. Auch ein Cast um den ganzen Ausdruck,
-`(long) (365 * 24 * ...)`, kommt zu spät, der Schaden ist dann schon passiert.
+`(long) (365 * 24 * ...)`, kommt zu spät: Der Schaden ist dann schon passiert.
 Du musst dafür sorgen, dass in `long` gerechnet wird, bevor das
 Zwischenergebnis zu groß für `int` wird. Java rechnet von links nach rechts,
 und sobald ein Operand `long` ist, bleibt der Rest der Kette `long`. Am
-sichersten machst du deshalb gleich den **ersten** Faktor zum `long`, dann
+sichersten machst du deshalb gleich den **ersten** Faktor zum `long`; dann
 musst du gar nicht erst nachrechnen. Das Suffix aus der Literal-Spalte der
 Tabelle ist dein Werkzeug. Erwartet wird `31536000000`.
 
@@ -217,7 +217,8 @@ Operand eine Kommazahl ist, wird in `double` gerechnet: `1.0 / 2` oder
 `javac` ist der **Compiler**: Er prüft den Quelltext `Hallo.java` und
 übersetzt ihn in Bytecode, die Datei `Hallo.class`. `java` startet die
 **JVM**, die die Klasse `Hallo` lädt und ihre `main`-Methode ausführt;
-dabei übersetzt der JIT-Compiler den Bytecode zur Laufzeit in Maschinencode.
+dabei interpretiert sie den Bytecode zunächst und übersetzt häufig benutzte
+Teile per JIT-Compiler in Maschinencode.
 Deshalb schreibst du bei `java` den Klassennamen ohne `.class`. (Seit Java 11
 kann `java Hallo.java` eine einzelne Quelldatei auch direkt starten, dabei wird
 im Hintergrund trotzdem kompiliert.)
@@ -231,7 +232,7 @@ Typ steht danach endgültig fest. `var name = "Greg";` ist exakt dasselbe wie
 `String name = "Greg";`. Ein späteres `name = 5;` ist ein Compilerfehler
 (`incompatible types: int cannot be converted to String`). Bei echter
 dynamischer Typisierung (z. B. in Python) könnte dieselbe Variable nacheinander
-Werte verschiedener Typen halten, das geht in Java nie.
+Werte verschiedener Typen halten; das geht in Java nie.
 
 </details>
 
@@ -249,8 +250,8 @@ rechnen oder `BigDecimal` verwenden, das Dezimalzahlen exakt darstellt.
 
 Das Ergebnis ist `-3`. Der Cast nach `int` schneidet die Nachkommastellen ab,
 er rundet **Richtung Null**, nicht mathematisch und nicht nach unten
-(abgerundet wäre es `-4`). Willst du runden, nimm `Math.round(-3.7)`, das
-liefert `-4`, und zwar als `long`, du brauchst also noch `(int) Math.round(...)`,
-wenn du einen `int` willst.
+(abgerundet wäre es `-4`). Willst du runden, nimm `Math.round(-3.7)`. Das
+liefert `-4`, und zwar als `long`; für einen `int` brauchst du also noch
+`(int) Math.round(...)`.
 
 </details>

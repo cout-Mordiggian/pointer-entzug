@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Kapitel 11, Musterloesung mit Erklaerungen.
+ * Kapitel 11: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
     public static long zeilenZaehlen(Path pfad) throws IOException {
         // Files.lines haelt die Datei offen, solange der Stream lebt.
-        // Ohne try-with-resources bleibt ein Dateideskriptor haengen,
-        // in einer Schleife ueber tausende Dateien fuehrt das zu
+        // Ohne try-with-resources bleibt ein Dateideskriptor haengen.
+        // In einer Schleife ueber tausende Dateien fuehrt das zu
         // "too many open files". Das ist DER Unterschied zu Streams
         // ueber Collections, die man einfach stehen lassen darf.
         try (Stream<String> zeilen = Files.lines(pfad, StandardCharsets.UTF_8)) {
@@ -29,7 +29,7 @@ public class Aufgaben {
 
     public static void schreibeZeilen(Path pfad, List<String> zeilen) throws IOException {
         // Files.write(pfad, iterable) haengt an jede Zeile den
-        // Plattform-Zeilentrenner an, unter Windows waere das \r\n.
+        // Plattform-Zeilentrenner an: unter Windows \r\n.
         // Der Test erwartet \n, also bauen wir den String selbst.
         // Genau solche Details machen Textformate plattformabhaengig.
         StringBuilder sb = new StringBuilder();
@@ -37,8 +37,8 @@ public class Aufgaben {
             sb.append(z).append('\n');
         }
         Files.writeString(pfad, sb.toString(), StandardCharsets.UTF_8);
-        // writeString legt die Datei an oder ueberschreibt sie,
-        // das ist das Standardverhalten (CREATE + TRUNCATE_EXISTING).
+        // writeString legt die Datei an oder ueberschreibt sie.
+        // Das ist das Standardverhalten (CREATE + TRUNCATE_EXISTING).
         // Zum Anhaengen braeuchte es StandardOpenOption.APPEND.
     }
 
@@ -80,7 +80,7 @@ public class Aufgaben {
 
             String[] felder = zeile.split(";", -1);
             // Das -1 behaelt leere Felder am Ende. Ohne es waere
-            // "temp;21.5;" nur zwei Felder statt drei, die kaputte Zeile
+            // "temp;21.5;" nur zwei Felder statt drei. Die kaputte Zeile
             // (ueberzaehliges Trennzeichen) wuerde still akzeptiert.
             if (felder.length != 2) {
                 throw new IllegalArgumentException("Ungueltige Zeile " + (i + 1) + ": " + zeile);
@@ -101,7 +101,7 @@ public class Aufgaben {
                 .collect(Collectors.groupingBy(
                         Messwert::sensor,                            // Klassifizierer
                         Collectors.averagingDouble(Messwert::wert))); // Downstream
-        // averagingDouble liefert Double (nicht OptionalDouble), fuer eine
+        // averagingDouble liefert Double (nicht OptionalDouble). Fuer eine
         // leere Eingabe waere das Ergebnis laut Javadoc 0.0. Hier stoert das
         // nicht: groupingBy legt eine Gruppe erst mit dem ersten Element an.
     }

@@ -17,7 +17,7 @@ man sie nie mit `new` erzeugen kann?
 
 Ein Feld `private final String name`, im `protected`-Konstruktor gesetzt,
 `getName()` gibt es zurück. Den Konstruktor ruft niemand direkt auf, sondern
-jede Unterklasse über `super(...)`, deshalb landet dort der Name "Kreis",
+jede Unterklasse über `super(...)`. Deshalb landet dort der Name "Kreis",
 "Rechteck" oder "Quadrat". `private` statt `protected` beim Feld reicht, weil
 Unterklassen über `getName()` an den Namen kommen.
 
@@ -36,7 +36,7 @@ weiß, wie man sie berechnet?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Du rufst `flaeche()` und `umfang()` **als Methoden** auf, zur Laufzeit wird
+Du rufst `flaeche()` und `umfang()` **als Methoden** auf. Zur Laufzeit wird
 dann automatisch die Version des echten Objekts genommen (dynamische Bindung,
 Abschnitt 6.3). Das Format kommt aus `String.format` mit drei Platzhaltern:
 `%s` für den Namen, zweimal `%.2f` für zwei Nachkommastellen (gerundet).
@@ -72,8 +72,8 @@ selbst gar nicht implementiert?
 
 Die Methode `skaliert` ist abstrakt, aber zur Laufzeit gibt es immer ein
 konkretes Objekt (`Kreis`, `Rechteck`, ...), das sie implementiert. Deine
-`default`-Methode ruft also einfach `skaliert` mit dem richtigen Faktor auf,
-der Platzhalter in `src/` benutzt noch den falschen. Kein `Kreis` und kein
+`default`-Methode ruft also einfach `skaliert` mit dem richtigen Faktor auf.
+Der Platzhalter in `src/` benutzt noch den falschen. Kein `Kreis` und kein
 `Rechteck` muss dafür eine Zeile schreiben; genau das ist der Sinn.
 
 </details>
@@ -93,7 +93,7 @@ auf einen negativen Radius stehen, und warum in Java 21 nicht davor?
 - Feld `private final double radius`; im Konstruktor **nach** `super(...)`
   prüfen (`< 0` -> `IllegalArgumentException`), dann zuweisen.
 - Fläche ist `pi * r * r`, Umfang `2 * pi * r`, mit `Math.PI`.
-- `skaliert` erzeugt einen **neuen** Kreis mit skaliertem Radius, das Original
+- `skaliert` erzeugt einen **neuen** Kreis mit skaliertem Radius. Das Original
   bleibt unverändert (Test "Original unverändert").
 
 **Die Falle der Tests:** Bei Radius 2 sind Fläche und Umfang zufällig beide
@@ -190,10 +190,10 @@ Seitenlänge schon, ohne dass `Quadrat` ein eigenes Feld braucht? Und warum darf
 (und Höhe) an `Rechteck` weitergegeben, also liest du sie über den geerbten
 Getter. Die Felder von `Rechteck` sind `private`, direkt siehst du sie nicht.
 
-`flaeche()` und `umfang()` musst du **nicht** überschreiben, die
+`flaeche()` und `umfang()` musst du **nicht** überschreiben, denn die
 Rechteck-Formeln stimmen schon.
 
-**Die Falle:** `super.skaliert(faktor)` hilft hier nicht, das liefert ein
+**Die Falle:** `super.skaliert(faktor)` hilft hier nicht: Es liefert ein
 `Rechteck` namens "Rechteck", und der Rückgabetyp wäre `Figur`, kein `Quadrat`.
 Der Test verlangt aber `q2.getName()` gleich `"Quadrat"`. Du brauchst also ein
 **neues Quadrat**.
@@ -228,8 +228,8 @@ Die Regel der Aufgabe: kein `instanceof`, kein Cast.
 <details><summary>Tipp 2: Ansatz</summary>
 
 `gesamtFlaeche`: eine for-each-Schleife, die `flaeche()` jeder Figur aufsummiert.
-Bei einem leeren Array läuft die Schleife nie, und die Summe bleibt `0.0`,
-das ist automatisch richtig.
+Bei einem leeren Array läuft die Schleife nie, und die Summe bleibt `0.0`.
+Das ist automatisch richtig.
 
 `groesste`: ein klassisches Maximum-Suchen. Bei leerem Array sofort `null`.
 Sonst merkst du dir die erste Figur als bisher beste und ersetzt sie, sobald
@@ -274,7 +274,7 @@ mache ich mit der Zeile, bevor ich sie weiterreiche, oder reiche ich sie
 - Konstruktor: `this.innen = Objects.requireNonNull(innen, "innen");` (5.7). So
   scheitert `null` sofort und nicht erst beim ersten `schreibe`, wie der Test
   verlangt. Bei `NurMit` genauso für `teil`. `import java.util.Objects;` nicht
-  vergessen.
+  vergessen, bei `Grossgeschrieben` außerdem `import java.util.Locale;`.
 - `MitZeilennummer`: ein `int`-Feld `nummer`, in `schreibe` erst erhöhen, dann
   `innen.schreibe(nummer + ": " + zeile)`. Das Feld gehört zum Objekt (nicht
   `static`!), deshalb zählt jeder Dekorierer für sich.
@@ -389,10 +389,11 @@ public class Gummiente extends Ente {
 Ein `Kreis` besteht aus einem `Figur`-Anteil und einem `Kreis`-Anteil, und der
 `Kreis`-Teil baut auf dem `Figur`-Teil auf. Bevor der Oberklassen-Konstruktor
 gelaufen ist, sind deren Felder nicht gesetzt und ihre Invarianten nicht
-hergestellt, `getName()` würde z. B. `null` liefern. Deshalb wird von oben nach
+hergestellt: `getName()` würde z. B. `null` liefern. Deshalb wird von oben nach
 unten initialisiert. In Java 21 muss `super(...)` darum die erste Anweisung
 sein; seit Java 25 dürfen davor Anweisungen stehen, die das Objekt noch nicht
-lesen (etwa eine Parameterprüfung oder das Zuweisen eigener Felder).
+lesen (etwa eine Parameterprüfung oder das Zuweisen eigener Felder ohne
+Initialisierer).
 
 </details>
 
@@ -411,7 +412,7 @@ Typ, welche Implementierung läuft (dynamic dispatch).
 
 Nur Methoden werden überschrieben und zur Laufzeit nach dem dynamischen Typ
 ausgewählt. Ein gleichnamiges Feld in einer Unterklasse **verdeckt** das Feld
-der Oberklasse nur, es überschreibt es nicht, der Zugriff wird schon zur
+der Oberklasse nur, statt es zu überschreiben. Der Zugriff wird schon zur
 Compile-Zeit nach dem statischen Typ aufgelöst.
 
 ```java
@@ -488,7 +489,7 @@ stapeln und in jeder Reihenfolge kombinieren, und er hängt nur am Interface,
 nicht an den Interna einer Oberklasse (6.6).
 
 **Vom Adapter:** Beide packen ein Objekt ein. Der Dekorierer **behält** die
-Schnittstelle, er ist ein `Protokoll`, das ein `Protokoll` einpackt, und fügt
+Schnittstelle (er ist ein `Protokoll`, das ein `Protokoll` einpackt) und fügt
 Verhalten hinzu. Der Adapter **übersetzt** eine Schnittstelle in eine andere,
 etwa ein `AltesThermometer` in eine `Temperaturquelle`, ohne neues Verhalten.
 

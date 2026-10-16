@@ -82,7 +82,9 @@ Falls es hakt:
 - **Seltsame Zeichen wie `←[32m` statt Farben:** Die alte Windows-Konsole
   kann keine Farben. Nimm das Terminal in IntelliJ oder VS Code oder das
   *Windows Terminal* (bei Windows 11 dabei). Wer ganz ohne Farben arbeiten
-  will, setzt die Umgebungsvariable `NO_COLOR=1`.
+  will, setzt die Umgebungsvariable `NO_COLOR` vor dem Start: in PowerShell
+  `$env:NO_COLOR = "1"`, in cmd `set NO_COLOR=1`, in Bash
+  `export NO_COLOR=1`. Das gilt bis zum Schließen des Terminals.
 - **Windows: `Batchvorgang abbrechen (J/N)?`** nach Strg+C (etwa um
   `Zahlenraten` abzubrechen): Das fragt cmd, weil `lerne.cmd` eine
   Batch-Datei ist. Mit `J` bestätigen, es geht nichts verloren.

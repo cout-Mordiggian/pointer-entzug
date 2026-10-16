@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Kapitel 10: der Builder (README 10.9).
+ * Kapitel 10: Der Builder (README 10.9).
  * Pruefen:  ./lerne.sh 10
  *
  *   Pizza p = Pizza.builder(Pizza.Groesse.MITTEL)

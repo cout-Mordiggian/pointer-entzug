@@ -1,5 +1,5 @@
 /**
- * Kapitel 10, Musterloesung: sealed interface.
+ * Kapitel 10: Musterloesung. Ein sealed interface.
  *
  * "sealed" ohne permits ist erlaubt, weil alle Untertypen in derselben
  * Datei stehen. Damit weiss der Compiler abschliessend, welche Formen

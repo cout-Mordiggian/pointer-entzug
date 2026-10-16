@@ -3,8 +3,8 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- * Kapitel 14: fertige Mess-Demo. Hier ist nichts zu tun: starten und die
- * Spalte "Faktor" beobachten.
+ * Kapitel 14: fertige Mess-Demo. Hier ist nichts zu tun, einfach starten
+ * und die Spalte "Faktor" beobachten.
  *
  *   ./lerne.sh 14 -r Messung        (Windows: .\lerne 14 -r Messung)
  *
@@ -23,7 +23,7 @@ public class Messung {
     /**
      * Alle Ergebnisse landen hier und werden am Ende ausgegeben. Wuerden wir
      * sie wegwerfen, duerfte der JIT-Compiler die ganze Rechnung als "tot"
-     * erkennen und weglassen, dann messen wir nichts.
+     * erkennen und weglassen. Dann messen wir nichts.
      */
     private static long senke = 0;
 
@@ -84,7 +84,7 @@ public class Messung {
         for (int runde = 0; runde < 30; runde++) {
             zeitLinear(sortiert, anfragen);
             zeitBinaer(sortiert, anfragen);
-            int[] daten = zufallsArray(20_000, zufall);
+            int[] daten = zufallsArray(200_000, zufall);
             zeitArraysSort(daten);
             zeitSelectionSort(Arrays.copyOf(daten, 1_000));
         }
@@ -151,23 +151,31 @@ public class Messung {
         System.out.println();
         System.out.println("  3) Sortieren eines Zufalls-Arrays (n verdoppelt sich):");
         System.out.println();
-        System.out.println("             n    Selection Sort (ms)   Faktor    Arrays.sort (ms)   Faktor");
+        System.out.println("             n    Selection Sort (ms)   Faktor");
         Random zufall = new Random(3);
-        double vorherSelection = 0;
-        double vorherArrays = 0;
+        double vorher = 0;
         for (int n = 1_000; n <= 32_000; n *= 2) {
-            int[] daten = zufallsArray(n, zufall);
-            double selection = zeitSelectionSort(daten) / 1e6;
-            double arrays = zeitArraysSort(daten) / 1e6;
-            System.out.printf(Locale.GERMANY, "  %,12d  %19.2f   %6s  %17.3f   %6s%n",
-                    n, selection, faktor(selection, vorherSelection), arrays, faktor(arrays, vorherArrays));
-            vorherSelection = selection;
-            vorherArrays = arrays;
+            double selection = zeitSelectionSort(zufallsArray(n, zufall)) / 1e6;
+            System.out.printf(Locale.GERMANY, "  %,12d  %19.2f   %6s%n", n, selection, faktor(selection, vorher));
+            vorher = selection;
         }
         System.out.println();
         System.out.println("     Selection Sort: n mal 2 -> Zeit ungefaehr mal 4 (O(n^2)).");
-        System.out.println("     Arrays.sort:    n mal 2 -> Zeit gut mal 2 (O(n log n)). Bei kleinen n");
-        System.out.println("     schwanken die Werte stark, die Messungen sind dort sehr kurz.");
+
+        // Bei n = 32.000 braucht Arrays.sort nur Bruchteile einer Millisekunde.
+        // So kurze Messungen messen vor allem die Uhr (README 14.2, Falle 4),
+        // deshalb bekommt Arrays.sort viel groessere n.
+        System.out.println();
+        System.out.println("             n      Arrays.sort (ms)   Faktor");
+        vorher = 0;
+        for (int n = 125_000; n <= 4_000_000; n *= 2) {
+            double arrays = zeitArraysSort(zufallsArray(n, zufall)) / 1e6;
+            System.out.printf(Locale.GERMANY, "  %,12d  %19.2f   %6s%n", n, arrays, faktor(arrays, vorher));
+            vorher = arrays;
+        }
+        System.out.println();
+        System.out.println("     Arrays.sort:    n mal 2 -> Zeit gut mal 2 (O(n log n)). Es ist so viel");
+        System.out.println("     schneller, dass es erst bei sehr grossen n ueberhaupt messbar wird.");
     }
 
     private static long zeitSelectionSort(int[] daten) {
@@ -184,8 +192,7 @@ public class Messung {
 
     private static long zeitArraysSort(int[] daten) {
         long beste = Long.MAX_VALUE;
-        // Arrays.sort ist so schnell, dass wir oefter messen koennen.
-        for (int w = 0; w < 5 * WIEDERHOLUNGEN; w++) {
+        for (int w = 0; w < 7; w++) {             // kurz genug fuer einige Laeufe mehr
             int[] kopie = daten.clone();
             long start = System.nanoTime();
             Arrays.sort(kopie);
@@ -208,7 +215,7 @@ public class Messung {
     /**
      * Selection Sort: das kleinste Element des unsortierten Rests suchen und
      * nach vorn tauschen. Immer ca. n*n/2 Vergleiche -> O(n^2).
-     * (Nicht zu verwechseln mit Insertion Sort, das ist deine Aufgabe.)
+     * (Nicht zu verwechseln mit Insertion Sort: Das ist deine Aufgabe.)
      */
     private static void selectionSort(int[] a) {
         for (int i = 0; i < a.length - 1; i++) {

@@ -52,7 +52,7 @@ bekommt?
 
 Ein `switch`-Ausdruck liefert einen Wert, den du direkt mit `return`
 zurückgeben kannst. Pro Note ein `case` mit `->`, kein `break`. Für alle
-übrigen Werte gibt es den `default`-Zweig, ohne ihn meldet der Compiler
+übrigen Werte gibt es den `default`-Zweig. Ohne ihn meldet der Compiler
 `the switch expression does not cover all possible input values`, denn ein
 Ausdruck muss immer einen Wert haben. Vergiss nicht das Semikolon nach der
 schließenden Klammer: Das Ganze ist ein Ausdruck in einer `return`-Anweisung.
@@ -91,11 +91,11 @@ bis zu welchem Kandidaten musst du höchstens suchen?
 Erst die Sonderfälle: Alles unter 2 (auch `0`, `1` und negative Zahlen) ist
 nicht prim. Dann probierst du Teiler ab 2 durch; findest du einen mit Rest 0,
 ist die Zahl nicht prim. Ist `n = a * b` mit `a <= b`, dann ist `a` höchstens
-die Wurzel von `n`, größere Kandidaten musst du nicht prüfen.
+die Wurzel von `n`; größere Kandidaten musst du nicht prüfen.
 
 Die Falle sitzt in der Schleifenbedingung: Mit `i * i < n` (echt kleiner)
 würdest du bei `9` und `25` den Teiler `3` bzw. `5` nie testen und sie als
-prim melden. Genau diese Quadratzahlen prüft der Test, es muss `<=` sein.
+prim melden. Genau diese Quadratzahlen prüft der Test. Es muss `<=` sein.
 Für sehr große `n` kann `i * i` als `int` überlaufen; mit `(long) i * i` bist
 du auf der sicheren Seite.
 
@@ -131,8 +131,8 @@ Variable starten, in der du ein **Produkt** aufsammelst?
 <details><summary>Tipp 2: Ansatz</summary>
 
 Du brauchst einen Akkumulator, den du in jedem Durchlauf mit dem Zähler
-multiplizierst (`*=`). Zwei typische Fehler: Startwert `0`, dann ist alles `0`.
-Und ein `int` als Akkumulator, der läuft schon bei `13!` still über; der Test
+multiplizierst (`*=`). Zwei typische Fehler: Startwert `0`, denn dann ist alles `0`.
+Und ein `int` als Akkumulator: Der läuft schon bei `13!` still über; der Test
 mit `20!` (`2432902008176640000`) braucht `long`. Wähle die Schleifengrenzen so,
 dass `0!` und `1!` ohne Sonderfall `1` ergeben: Läuft die Schleife bei `n = 0`
 gar nicht, bleibt einfach der Startwert stehen.
@@ -157,7 +157,7 @@ public static long fakultaet(int n) {
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 2.4, "`while`", das Beispiel dort ist fast genau diese Aufgabe.
+Abschnitt 2.4, "`while`": Das Beispiel dort ist fast genau diese Aufgabe.
 Frag dich: Woher weißt du, wann keine Ziffer mehr übrig ist?
 
 </details>
@@ -166,7 +166,7 @@ Frag dich: Woher weißt du, wann keine Ziffer mehr übrig ist?
 
 `% 10` holt die letzte Ziffer, `/ 10` schneidet sie ab (Ganzzahldivision).
 Wiederhole das, solange die Zahl größer als `0` ist. Du weißt vorher nicht,
-wie viele Ziffern es sind, deshalb `while`, nicht `for`. Bei `0` läuft die
+wie viele Ziffern es sind; deshalb `while`, nicht `for`. Bei `0` läuft die
 Schleife gar nicht und die Summe bleibt `0`, genau wie erwartet. Guter Stil:
 Arbeite mit einer Kopie (`int rest = n;`) statt den Parameter zu verändern.
 
@@ -206,7 +206,7 @@ bei `summeVielfache(10)` die `10`). Uninteressante Zahlen überspringst du mit
 `continue`, alle anderen addierst du. Denkfalle beim Verneinen: "nicht (durch 3
 teilbar **oder** durch 5 teilbar)" ist "nicht durch 3 teilbar **und** nicht
 durch 5 teilbar". Nimmst du dort `||`, überspringst du fast alles. Zahlen wie
-`15` zählen nur **einmal**, das passiert automatisch, weil jede Zahl nur einen
+`15` zählen nur **einmal**. Das passiert automatisch, weil jede Zahl nur einen
 Schleifendurchlauf hat. Kontrolle: bis `999` muss `233168` herauskommen.
 
 </details>
@@ -240,8 +240,10 @@ schon?
 
 Die äußere Schleife zählt die Zeilen, die innere hängt die Sterne einer
 Zeile an. Die Grenze der inneren Schleife ist die **Zeilennummer** der äußeren,
-nicht `hoehe`, sonst bekommst du ein Rechteck. Nach der inneren Schleife kommt
+nicht `hoehe`; sonst bekommst du ein Rechteck. Nach der inneren Schleife kommt
 `'\n'`, und zwar nach **jeder** Zeile, auch der letzten (`"*\n"` bei Höhe 1).
+Nimm genau `'\n'`, nicht `%n` oder `System.lineSeparator()`, sonst ist der
+Test unter Windows rot.
 Sammle alles in einem `StringBuilder` mit `append(...)` und gib am Ende
 `toString()` zurück (kurz erklärt im Aufgabentext); ein String mit `+=` geht
 auch. Bei Höhe `0` läuft keine Schleife und es kommt `""`
@@ -314,7 +316,7 @@ System.out.println(...);
 `&&` wertet von links nach rechts aus und ist kurzschlüssig: Ist die linke
 Seite `false`, wird die rechte gar nicht mehr ausgewertet. In der ersten
 Variante verhindert `obj != null`, dass `obj.wert()` bei `null` aufgerufen wird.
-In der zweiten wird `obj.wert()` **zuerst** aufgerufen, ist `obj` `null`, fliegt
+In der zweiten wird `obj.wert()` **zuerst** aufgerufen. Ist `obj` `null`, fliegt
 sofort eine `NullPointerException`, bevor die Prüfung überhaupt drankommt.
 
 </details>
@@ -325,7 +327,7 @@ Die Ausführung "fällt durch" (fall-through): Nach dem passenden `case` laufen
 auch alle Anweisungen der folgenden `case`-Zweige weiter, bis ein `break`, ein
 `return` oder das Ende des `switch` kommt. Die `case`-Marken sind nur
 Sprungziele, keine Grenzen. Gewollt nutzt man das, um mehrere Fälle
-zusammenzufassen (`case 1: case 2: ...`), ungewollt ist es ein klassischer Bug.
+zusammenzufassen (`case 1: case 2: ...`); ungewollt ist es ein klassischer Bug.
 Die Pfeilform `case 1 ->` hat dieses Problem nicht.
 
 </details>
@@ -336,7 +338,7 @@ Die Pfeilform `case 1 ->` hat dieses Problem nicht.
 der Quersumme, die so lange läuft, bis keine Ziffer mehr übrig ist. `for`,
 wenn die Anzahl feststeht oder du einen Zähler bzw. Index brauchst, z. B. von
 `1` bis `n`. `for-each`, wenn du einfach jedes Element eines Arrays oder einer
-Collection der Reihe nach brauchst und den Index nicht, das ist die
+Collection der Reihe nach brauchst und den Index nicht. Das ist die
 Standardwahl, weil dabei keine Off-by-one-Fehler möglich sind.
 
 </details>
@@ -345,7 +347,7 @@ Standardwahl, weil dabei keine Off-by-one-Fehler möglich sind.
 
 So lebt `i` nur innerhalb der Schleife (Abschnitt 2.5, "so spät und so eng wie
 möglich"). Nach der Schleife kann niemand versehentlich mit dem veralteten
-Endwert von `i` weiterrechnen, der Compiler meldet dann `cannot find symbol`.
+Endwert von `i` weiterrechnen; der Compiler meldet dann `cannot find symbol`.
 Außerdem kannst du in der nächsten Schleife wieder `int i` deklarieren, ohne
 dass sich die beiden in die Quere kommen. Und der Leser sieht sofort: `i` gehört
 nur zu dieser Schleife.

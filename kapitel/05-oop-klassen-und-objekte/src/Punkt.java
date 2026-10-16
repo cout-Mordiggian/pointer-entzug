@@ -1,9 +1,9 @@
 import java.util.Objects;
 
 /**
- * Kapitel 05, Aufgabe 2: Ein unveraenderlicher Punkt.
+ * Kapitel 05: Aufgabe 2. Ein unveraenderlicher Punkt.
  *
- * "final class" verhindert Unterklassen, dazu mehr in Kapitel 6.
+ * "final class" verhindert Unterklassen (mehr dazu in Kapitel 6).
  */
 public final class Punkt {
 
@@ -78,7 +78,7 @@ public final class Punkt {
 
     @Override
     public int hashCode() {
-        // TODO: Objects.hash(...), muss zu equals passen!
+        // TODO: Objects.hash(...). Muss zu equals passen!
         //       Der Platzhalter "return 0" ist zwar vertragstreu, aber nutzlos.
         return 0;
     }

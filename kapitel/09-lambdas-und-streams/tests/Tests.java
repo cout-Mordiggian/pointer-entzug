@@ -35,6 +35,16 @@ public class Tests {
         Pruef.gleich(List.of("ANNA", "BERT", "DORA"), Aufgaben.grossgeschriebenSortiert(List.of(
                         new Person("dora", 1, "x"), new Person("Bert", 1, "x"), new Person("anna", 1, "x"))),
                 "unsortierte Eingabe, gemischte Schreibweise");
+        // Tuerkisches Locale: ohne Locale.ROOT wird aus "i" ein I mit Punkt
+        Locale vorher = Locale.getDefault();
+        Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+        try {
+            Pruef.gleich(List.of("IDA", "KIM"), Aufgaben.grossgeschriebenSortiert(List.of(
+                            new Person("kim", 1, "x"), new Person("Ida", 1, "x"))),
+                    "Locale.ROOT: gleiches Ergebnis auf einem tuerkischen System");
+        } finally {
+            Locale.setDefault(vorher);
+        }
 
         Pruef.abschnitt("Aufgabe 4: alsListe");
         Pruef.gleich("[a, b, c]", Aufgaben.alsListe(List.of("a", "b", "c")), "drei Teile");
@@ -150,6 +160,18 @@ public class Tests {
                         "\"" + code + "\" -> IllegalArgumentException");
             }
             Pruef.wirft(NullPointerException.class, () -> Rabatte.ausCode(null), "null -> NullPointerException");
+        });
+        sicher("ausCode: tuerkisches Locale", () -> {
+            Locale vorherAusCode = Locale.getDefault();
+            Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+            try {
+                Pruef.gleich(700L, Rabatte.ausCode("minus300").anwenden(1000),
+                        "\"minus300\" auf einem tuerkischen System (Locale.ROOT)");
+                Pruef.wahr(Rabatte.ausCode("kein") == Rabatte.keiner(),
+                        "\"kein\" auf einem tuerkischen System (Locale.ROOT)");
+            } finally {
+                Locale.setDefault(vorherAusCode);
+            }
         });
 
         // ------------------------------------------------------------ Beobachter

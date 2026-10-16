@@ -207,7 +207,7 @@ return ...;
 
 </details>
 
-## Aufgabe 6: `MeineListe`: `add`, `get`, `size`, `toString`, Wachstum
+## Aufgabe 6, Teil 1: `MeineListe` mit `add`, `get`, `size`, `toString`, Wachstum
 
 <details><summary>Tipp 1: Richtung</summary>
 
@@ -255,7 +255,7 @@ private void pruefeIndex(int index) {
 
 </details>
 
-## Aufgabe 6: `MeineListe`: `set`, `remove`, `contains`
+## Aufgabe 6, Teil 2: `MeineListe` mit `set`, `remove`, `contains`
 
 <details><summary>Tipp 1: Richtung</summary>
 
@@ -550,8 +550,8 @@ Bei n = 1.000.000 sind n^2 = 10^12 Schritte, n log n dagegen nur rund 2 * 10^7.
 Bei grob 10^9 einfachen Schritten pro Sekunde sind das etwa 1.000 Sekunden (eine
 Viertelstunde) gegen 0,02 Sekunden. Der Unterschied wächst mit n immer weiter:
 Verdoppelst du die Daten, vervierfacht sich die Zeit bei O(n^2), bei O(n log n)
-wird sie nur etwas mehr als doppelt so groß. Kein schnellerer Rechner gleicht das aus, nur ein
-besserer Algorithmus.
+wird sie nur etwas mehr als doppelt so groß. Kein schnellerer Rechner gleicht
+das aus, nur ein besserer Algorithmus.
 
 </details>
 
@@ -559,8 +559,9 @@ besserer Algorithmus.
 
 Erstens läuft Code anfangs im Interpreter. Erst nach dem Aufwärmen hat der
 JIT-Compiler ihn in Maschinencode übersetzt, die ersten Läufe sind also zu
-langsam, und auch danach kann der JIT noch einmal neu übersetzen. Zweitens stören Garbage Collector, andere Programme und die
-Taktanpassung der CPU einzelne Messungen zufällig. Drittens kann der JIT
+langsam. Auch danach kann der JIT noch einmal neu übersetzen. Zweitens stören
+Garbage Collector, andere Programme und die Taktanpassung der CPU einzelne
+Messungen zufällig. Drittens kann der JIT
 Rechnungen streichen, deren Ergebnis nie benutzt wird. Und sehr kurze Messungen
 bestehen vor allem aus der Ungenauigkeit der Uhr. Deshalb: aufwärmen, mehrfach
 messen, Minimum oder Median nehmen, Ergebnisse verwenden, genug Arbeit pro
@@ -606,8 +607,9 @@ also wird immer das älteste Element gebraucht. In Java nimmst du für beides
 
 <details><summary>Warum ist <code>Knoten</code> eine <code>static</code> verschachtelte Klasse, <code>StapelIterator</code> aber nicht?</summary>
 
-Eine verschachtelte Klasse ohne `static`, also eine innere Klasse, trägt einen versteckten Verweis auf das
-äußere Objekt, das sie erzeugt hat, und darf dessen Felder direkt benutzen.
+Eine verschachtelte Klasse ohne `static` heißt innere Klasse. Sie trägt einen
+versteckten Verweis auf das äußere Objekt, das sie erzeugt hat, und darf
+dessen Felder direkt benutzen.
 Das lohnt sich nur, wenn sie dieses Objekt wirklich braucht. Ein Knoten braucht
 keinen Stapel: Er hält nur einen Wert und den nächsten Knoten. Ohne `static`
 trüge jeder der vielleicht Millionen Knoten einen überflüssigen Verweis mit

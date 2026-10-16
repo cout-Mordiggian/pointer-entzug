@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Kapitel 10, Musterloesung: Builder (README 10.9).
+ * Kapitel 10: Musterloesung. Der Builder (README 10.9).
  */
 public final class Pizza {
 

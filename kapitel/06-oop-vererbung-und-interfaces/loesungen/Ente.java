@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 6, Musterloesung: die Ente als Kontext im Strategie-Muster.
+ * Kapitel 06: Musterloesung. Die Ente als Kontext im Strategie-Muster.
  *
  * Zwei Werkzeuge, jedes fuer seinen Zweck:
  *   extends Ente           -> "ist eine" Ente, mit gemeinsamem Code (schwimmen)

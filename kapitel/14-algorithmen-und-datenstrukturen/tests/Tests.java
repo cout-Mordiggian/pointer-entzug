@@ -180,6 +180,7 @@ public class Tests {
             Pruef.gleich(0, st.groesse(), "neuer Stapel hat groesse 0");
             Pruef.wirft(NoSuchElementException.class, st::pop, "pop auf leerem Stapel");
             Pruef.wirft(NoSuchElementException.class, st::peek, "peek auf leerem Stapel");
+            Pruef.gleich(0, st.groesse(), "nach dem misslungenen pop ist groesse weiter 0");
         });
         sicher("Stapel: push, peek, pop", () -> {
             Stapel<Integer> st = new Stapel<>();
@@ -239,9 +240,7 @@ public class Tests {
         Pruef.abschnitt("Aufgabe 9: Stapel ist Iterable (for-each von oben nach unten)");
         sicher("Iterator: leerer Stapel", () -> {
             Stapel<String> leer = new Stapel<>();
-            int anzahl = 0;
-            for (String element : leer) anzahl++;
-            Pruef.gleich(0, anzahl, "for-each ueber leeren Stapel: kein Durchlauf");
+            Pruef.gleich("", durchlauf(leer), "for-each ueber leeren Stapel: kein Durchlauf");
             Iterator<String> it = leer.iterator();
             Pruef.falsch(it.hasNext(), "leerer Stapel: hasNext() ist false");
             Pruef.wirft(NoSuchElementException.class, it::next, "leerer Stapel: next() wirft NoSuchElementException");
@@ -251,9 +250,8 @@ public class Tests {
             st.push(1);
             st.push(2);
             st.push(3);
-            StringBuilder sb = new StringBuilder();
-            for (int x : st) sb.append(x);
-            Pruef.gleich("321", sb.toString(), "push 1, 2, 3 -> for-each liefert 3, 2, 1 (von oben nach unten)");
+            Pruef.gleich("321", durchlauf(st),
+                    "push 1, 2, 3 -> for-each liefert 3, 2, 1 (von oben nach unten)");
             Pruef.gleich(3, st.groesse(), "for-each entfernt nichts: groesse bleibt 3");
             Pruef.gleich(3, st.peek(), "for-each entfernt nichts: oben liegt weiter die 3");
         });
@@ -278,13 +276,10 @@ public class Tests {
             Iterator<Integer> b = st.iterator();
             Pruef.gleich(3, b.next(), "ein zweiter Iterator beginnt wieder oben");
             Pruef.gleich(1, a.next(), "der erste laeuft unabhaengig weiter");
-            int paare = 0;
-            for (int x : st) for (int y : st) paare++;
-            Pruef.gleich(9, paare, "zwei verschachtelte for-each ueber denselben Stapel: 3 x 3 = 9");
+            Pruef.gleich(9, paare(st),
+                    "zwei verschachtelte for-each ueber denselben Stapel: 3 x 3 = 9 (ueber 100: kein Ende)");
             st.pop();
-            StringBuilder sb = new StringBuilder();
-            for (int x : st) sb.append(x);
-            Pruef.gleich("21", sb.toString(), "nach pop(): ein neuer Durchlauf beginnt beim neuen obersten");
+            Pruef.gleich("21", durchlauf(st), "nach pop(): ein neuer Durchlauf beginnt beim neuen obersten");
         });
 
         // ------------------------------------------------------------ Befehl
@@ -395,8 +390,8 @@ public class Tests {
 
     /**
      * Fuehrt einen Pruefblock aus. Wirft dein Code unterwegs eine Exception
-     * (typisch: ein Index daneben), wird das als FEHL gemeldet, mit Datei und
-     * Zeile, und die restlichen Pruefungen laufen trotzdem weiter.
+     * (typisch: ein Index daneben), wird das mit Datei und Zeile als FEHL
+     * gemeldet, und die restlichen Pruefungen laufen trotzdem weiter.
      */
     private static void sicher(String was, Runnable block) {
         try {
@@ -418,6 +413,37 @@ public class Tests {
             }
         }
         return e.getClass().getSimpleName() + ": " + e.getMessage() + ort;
+    }
+
+    /** So viele Elemente liefert ein Iterator hier hoechstens, sonst hat er kein Ende. */
+    private static final int OBERGRENZE = 100;
+
+    /**
+     * for-each ueber den Stapel, die Elemente hintereinander als Text. Laeuft
+     * der Iterator nicht ins Ende, bricht die Schleife ab, statt zu haengen.
+     */
+    private static String durchlauf(Stapel<?> st) {
+        StringBuilder sb = new StringBuilder();
+        int anzahl = 0;
+        for (Object x : st) {
+            if (++anzahl > OBERGRENZE) {
+                return "kein Ende nach " + OBERGRENZE + " Elementen: " + sb.substring(0, 10) + "..."
+                        + " (hasNext() wird nie false. Rueckt next() weiter?)";
+            }
+            sb.append(x);
+        }
+        return sb.toString();
+    }
+
+    /** Zaehlt die Paare zweier verschachtelter for-each, mit derselben Obergrenze. */
+    private static int paare(Stapel<Integer> st) {
+        int paare = 0;
+        for (int x : st) {
+            for (int y : st) {
+                if (++paare > OBERGRENZE) return paare;   // kein Ende: abbrechen
+            }
+        }
+        return paare;
     }
 
     private static void insertion(int[] eingabe, String was) {

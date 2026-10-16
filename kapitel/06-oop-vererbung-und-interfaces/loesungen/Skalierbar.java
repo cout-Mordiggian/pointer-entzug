@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Musterloesung: Interface.
+ * Kapitel 06: Musterloesung. Interface.
  */
 public interface Skalierbar {
 
@@ -10,11 +10,11 @@ public interface Skalierbar {
     /**
      * default-Methode: hat einen Rumpf, den jede implementierende Klasse
      * geschenkt bekommt. Eingefuehrt in Java 8, um bestehende Interfaces
-     * erweitern zu koennen, ohne alle Implementierer zu brechen,
-     * so kam z.B. forEach() nachtraeglich in Iterable.
+     * erweitern zu koennen, ohne alle Implementierer zu brechen.
+     * So kam z. B. forEach() nachtraeglich in Iterable.
      *
      * Sie kann andere Methoden des Interfaces aufrufen, aber keinen eigenen
-     * Zustand haben, ein Interface hat keine Instanzfelder (nur Konstanten).
+     * Zustand haben, denn ein Interface hat keine Instanzfelder (nur Konstanten).
      */
     default Figur verdoppelt() {
         return skaliert(2.0);

@@ -1,5 +1,5 @@
 /**
- * Kapitel 10: ein enum mit Zustand und Verhalten.
+ * Kapitel 10: Ein enum mit Zustand und Verhalten.
  */
 public enum Wochentag {
 

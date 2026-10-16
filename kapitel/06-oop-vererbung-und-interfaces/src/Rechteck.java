@@ -1,5 +1,5 @@
 /**
- * Kapitel 06, Aufgabe 4.
+ * Kapitel 06: Aufgabe 4.
  */
 public class Rechteck extends Figur implements Skalierbar {
 
