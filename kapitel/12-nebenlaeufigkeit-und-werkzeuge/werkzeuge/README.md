@@ -9,6 +9,12 @@ zum Abschreiben, wenn du dein erstes richtiges Projekt aufsetzt.
 
 ## Ein Maven-Projekt in einer Minute
 
+Die Befehle sind für Bash, unter Windows also für Git Bash. Ohne Bash geht es
+genauso von Hand: die Ordner im Explorer anlegen, die Dateien hineinkopieren,
+in `Konto.java` oben `package de.beispiel;` ergänzen und dann im Ordner
+`mein-projekt` `mvn test` ausführen. Oder den Ordner in IntelliJ bzw. VS Code
+öffnen und die Tests dort starten.
+
 ```bash
 mkdir -p ~/mein-projekt/src/main/java/de/beispiel
 mkdir -p ~/mein-projekt/src/test/java/de/beispiel

@@ -1,7 +1,8 @@
 # Java von Grund auf
 
 Ein vollständiger Selbstlernkurs: **Dokumentation + Aufgaben + Musterlösungen**,
-ausführbar direkt im Terminal, ohne Maven, Gradle oder IDE.
+ausführbar im Terminal oder in der IDE (IntelliJ IDEA, VS Code), ohne Maven
+oder Gradle. Läuft unter Windows, macOS und Linux.
 
 Zielsprache: **Java 21 (LTS) oder neuer.** Der Kurs nutzt nur Sprachmittel, die
 es seit Java 21 gibt, und läuft deshalb mit jedem neueren JDK (welches du
@@ -10,31 +11,44 @@ gelockert haben, steht ein Hinweis *"Seit Java 25"*.
 
 ---
 
-## Vorher: Terminal und Java
+## Vorher: Java und Kurs holen
 
-Alle Befehle im Kurs sind für ein Terminal mit **Bash** geschrieben. Je nach
-Betriebssystem heißt das:
+1. **JDK ab Version 21** installieren. Wie du prüfst, ob eins da ist, und wie
+   du es installierst (auch unter Windows), steht in [`SETUP.md`](SETUP.md).
+2. **Den Kurs holen**, eine der Varianten:
+   - Im Terminal: `git clone https://github.com/cout-Mordiggian/pointer-entzug.git`
+   - In **IntelliJ IDEA**: Startbildschirm > *Clone Repository* (bzw. *Get from
+     VCS*), die URL oben einfügen.
+   - In **VS Code**: Ansicht *Source Control* > *Clone Repository*, die URL
+     einfügen.
+   - Ohne Git: auf GitHub *Code > Download ZIP* und entpacken. Dann bekommst
+     du allerdings keine Aktualisierungen per `git pull`.
+3. **Den Kursordner öffnen**, als Ordner bzw. Projekt in der IDE oder per `cd`
+   im Terminal. Wie du IntelliJ und VS Code einrichtest, damit sie die
+   Aufgaben verstehen und du sie per Klick starten und debuggen kannst, steht
+   in [`SETUP.md`, Abschnitt 3](SETUP.md#3-editor-und-ide).
 
-- **Windows:** Nutze **Git Bash**, nicht die Eingabeaufforderung (cmd) und
-  nicht PowerShell, dort funktionieren `./lerne.sh` und die anderen Befehle
-  nicht. Git Bash ist bei [Git für Windows](https://git-scm.com/download/win)
-  dabei. Nach der Installation findest du es im Startmenü, oder du klickst im
-  Explorer im Kursordner mit rechts auf "Open Git Bash here" (unter Windows 11
-  zuerst "Weitere Optionen anzeigen"). Wer WSL eingerichtet hat, kann auch das
-  nehmen.
-- **macOS:** Das Programm *Terminal* (Programme > Dienstprogramme) reicht.
-- **Linux:** Jedes Terminal.
+## Die Prüfungen starten
 
-Außerdem brauchst du ein **JDK ab Version 21**. Wie du prüfst, ob eins
-installiert ist, und wie du es installierst, steht in [`SETUP.md`](SETUP.md).
+Geprüft wird jedes Kapitel mit dem Kurs-Runner. Er läuft in jedem Terminal,
+auch im eingebauten Terminal von IntelliJ (*View > Tool Windows > Terminal*)
+und VS Code (*Terminal > New Terminal*). Je nach Terminal heißt der Befehl
+etwas anders:
 
-## In 60 Sekunden starten
+| Terminal | Befehl |
+|----------|--------|
+| **Windows** (PowerShell oder cmd, auch das Terminal in IntelliJ und VS Code) | `.\lerne 01` |
+| **macOS, Linux, Git Bash** | `./lerne.sh 01` |
+| überall, wo `java` läuft | `java Lerne.java 01` |
+
+Alle drei machen genau dasselbe. **Im Kurs steht immer `./lerne.sh`**; unter
+Windows schreibst du stattdessen `.\lerne`, der Rest der Zeile bleibt gleich.
+Aus `./lerne.sh 02 -l -r Zahlenraten` wird also `.\lerne 02 -l -r Zahlenraten`.
 
 ```bash
-git clone https://github.com/cout-Mordiggian/pointer-entzug.git
 cd pointer-entzug    # der Ordner, in den du den Kurs geklont hast
-./lerne.sh            # Kapiteluebersicht
-./lerne.sh 01         # Kapitel 1 pruefen (schlaegt anfangs fehl - das ist der Plan)
+./lerne.sh            # Kapiteluebersicht            (Windows: .\lerne)
+./lerne.sh 01         # Kapitel 1 pruefen, schlaegt anfangs fehl, das ist der Plan
 ```
 
 Dann:
@@ -47,9 +61,20 @@ Dann:
    **Selbstcheck** ohne Nachschlagen beantworten. Die Antworten stehen in
    `TIPPS.md` des Kapitels.
 
-Meldet die Shell `Permission denied`, fehlt das Ausführungsrecht:
-`chmod +x lerne.sh projekt/starte.sh`: oder einfach `bash lerne.sh 01` schreiben.
-(Das passiert z. B. auf Cloud-Laufwerken, die keine Dateirechte speichern.)
+Falls es hakt:
+
+- **`java` wird nicht gefunden:** Das JDK fehlt oder steht nicht im `PATH`.
+  Nach der Installation das Terminal (bzw. die IDE) **neu starten**, siehe
+  [`SETUP.md`](SETUP.md).
+- **Windows: `./lerne.sh` klappt nicht** (Fehlermeldung, oder Windows fragt,
+  mit welchem Programm es die Datei öffnen soll): Du bist in PowerShell oder
+  cmd, nimm `.\lerne`.
+- **macOS/Linux: `Permission denied`:** Es fehlt das Ausführungsrecht, etwa
+  auf Cloud-Laufwerken, die keine Dateirechte speichern. Abhilfe:
+  `chmod +x lerne.sh projekt/starte.sh`, oder einfach `bash lerne.sh 01`.
+- **Seltsame Zeichen wie `←[32m` statt Farben:** Die alte Windows-Konsole
+  kann keine Farben. Nimm das Terminal in IntelliJ oder VS Code oder das
+  *Windows Terminal* (bei Windows 11 dabei).
 
 > Der wichtigste Lerneffekt entsteht zwischen "es kompiliert nicht" und "es ist grün".
 > Widerstehe der Versuchung, zu früh in `loesungen/` zu schauen.

@@ -1,5 +1,7 @@
 build/
 *.class
+# Projekt aus der IDE gestartet, ohne Arbeitsverzeichnis projekt/
+/aufgaben.csv
 
 # IDE und Build-Werkzeuge
 .idea/

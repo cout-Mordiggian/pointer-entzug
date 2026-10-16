@@ -200,6 +200,11 @@ Prüfen mit:
 ./lerne.sh 01
 ```
 
+Unter Windows (PowerShell, cmd, Terminal in IntelliJ oder VS Code) heißt das
+`.\lerne 01`, so auch bei allen folgenden `./lerne.sh`-Befehlen. In der IDE
+kannst du stattdessen `tests/Tests.java` per Klick starten, siehe
+[`SETUP.md`](../../SETUP.md#3-editor-und-ide).
+
 ### Einmal durchgespielt: So gehst du jede Aufgabe an
 
 Am Beispiel von Aufgabe 1. **1. Prüfen, bevor du etwas schreibst:**

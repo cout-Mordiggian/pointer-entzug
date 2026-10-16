@@ -1,3 +1,5 @@
 # Skripte immer mit LF auschecken, sonst bricht Bash unter Windows ab
 * text=auto
 *.sh text eol=lf
+# Windows-Skripte mit CRLF, sonst verschluckt cmd gelegentlich Zeilen
+*.cmd text eol=crlf

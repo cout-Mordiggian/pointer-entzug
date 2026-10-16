@@ -159,7 +159,7 @@ Klasse `Konsole` mit der Menüschleife. Anforderungen:
 
 ```
 projekt/
-├── starte.sh
+├── starte.sh                   (Windows: starte.cmd)
 ├── aufgaben.csv                (entsteht beim ersten Speichern)
 └── src/
     ├── Main.java               Einstiegspunkt
@@ -178,6 +178,10 @@ Aus dem Kursordner:
 ```bash
 cd projekt && ./starte.sh
 ```
+
+Unter Windows (PowerShell oder cmd): `cd projekt`, dann `.\starte`. In der
+IDE: nur `projekt/src` als Quellordner markieren und `Main` starten, siehe
+[`SETUP.md`](../SETUP.md#das-abschlussprojekt).
 
 In `src/` liegen bereits drei Startdateien:
 

@@ -291,6 +291,11 @@ kommen aus Maven Central und landen in `~/.m2/repository`.
 ./gradlew run
 ```
 
+Unter Windows (PowerShell, cmd) heißt der Wrapper `.\gradlew` (das ist die
+Datei `gradlew.bat`). In IntelliJ und VS Code reicht es, den Projektordner mit
+`pom.xml` bzw. `build.gradle.kts` zu öffnen, die IDE erkennt den Build dann
+selbst, ganz ohne die Einrichtung aus `SETUP.md`.
+
 Gradle ist skriptbar (Kotlin oder Groovy), flexibler und bei grossen Projekten
 schneller (inkrementelle Builds, Build-Cache). Dafür schwerer zu durchschauen.
 
