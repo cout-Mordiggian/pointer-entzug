@@ -10,9 +10,28 @@ gelockert haben, steht ein Hinweis *"Seit Java 25"*.
 
 ---
 
+## Vorher: Terminal und Java
+
+Alle Befehle im Kurs sind für ein Terminal mit **Bash** geschrieben. Je nach
+Betriebssystem heißt das:
+
+- **Windows:** Nutze **Git Bash**, nicht die Eingabeaufforderung (cmd) und
+  nicht PowerShell, dort funktionieren `./lerne.sh` und die anderen Befehle
+  nicht. Git Bash ist bei [Git für Windows](https://git-scm.com/download/win)
+  dabei. Nach der Installation findest du es im Startmenü, oder du klickst im
+  Explorer im Kursordner mit rechts auf "Open Git Bash here" (unter Windows 11
+  zuerst "Weitere Optionen anzeigen"). Wer WSL eingerichtet hat, kann auch das
+  nehmen.
+- **macOS:** Das Programm *Terminal* (Programme > Dienstprogramme) reicht.
+- **Linux:** Jedes Terminal.
+
+Außerdem brauchst du ein **JDK ab Version 21**. Wie du prüfst, ob eins
+installiert ist, und wie du es installierst, steht in [`SETUP.md`](SETUP.md).
+
 ## In 60 Sekunden starten
 
 ```bash
+git clone https://github.com/cout-Mordiggian/pointer-entzug.git
 cd pointer-entzug    # der Ordner, in den du den Kurs geklont hast
 ./lerne.sh            # Kapiteluebersicht
 ./lerne.sh 01         # Kapitel 1 pruefen (schlaegt anfangs fehl - das ist der Plan)

@@ -1,0 +1,3 @@
+# Skripte immer mit LF auschecken, sonst bricht Bash unter Windows ab
+* text=auto
+*.sh text eol=lf

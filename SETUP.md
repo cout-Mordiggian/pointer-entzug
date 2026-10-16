@@ -17,6 +17,13 @@ Fehlt Java oder ist es zu alt, installiere ein aktuelles JDK, z. B.
 deines Systems (`apt`, `dnf`, `pacman`, `brew`, `winget` …) bzw. mit
 [SDKMAN!](https://sdkman.io).
 
+- **Windows:** Lade auf <https://adoptium.net> den Installer (`.msi`) herunter
+  und lass bei der Installation "Add to PATH" aktiviert. Alternativ in
+  PowerShell: `winget install EclipseAdoptium.Temurin.21.JDK`. Danach Git Bash
+  **neu öffnen**, sonst findet es `java` noch nicht.
+- **macOS:** Den `.pkg`-Installer von <https://adoptium.net> nehmen, oder mit
+  Homebrew: `brew install --cask temurin`.
+
 | Begriff | Bedeutung |
 |---------|-----------|
 | **JDK** | Compiler + Werkzeuge + JRE. Das brauchst du. |
