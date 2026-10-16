@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 03 - Strings und Arrays.
+ * Kapitel 03: Strings und Arrays.
  * Pruefen:  ./lerne.sh 03
  */
 public class Aufgaben {
@@ -24,7 +24,7 @@ public class Aufgaben {
      */
     public static boolean istPalindrom(String text) {
         // TODO: 1. Nur Buchstaben/Ziffern uebernehmen, alles klein schreiben.
-        //       2. Vergleichen - entweder mit umdrehen() oder mit zwei Indizes,
+        //       2. Vergleichen, entweder mit umdrehen() oder mit zwei Indizes,
         //          die von aussen nach innen laufen.
         return false;
     }
@@ -45,7 +45,7 @@ public class Aufgaben {
      * Aufgabe 4: Groesstes Element eines nicht-leeren Arrays.
      */
     public static int maximum(int[] werte) {
-        // TODO: Starte NICHT mit 0 - was ist bei lauter negativen Zahlen?
+        // TODO: Starte NICHT mit 0. Was ist bei lauter negativen Zahlen?
         return 0;
     }
 

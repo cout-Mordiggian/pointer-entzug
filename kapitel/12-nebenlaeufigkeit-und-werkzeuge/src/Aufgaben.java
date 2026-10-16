@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Kapitel 12 - Nebenlaeufigkeit.
+ * Kapitel 12: Nebenlaeufigkeit.
  * Pruefen:  ./lerne.sh 12
  */
 public class Aufgaben {
@@ -21,7 +21,7 @@ public class Aufgaben {
         Zaehler zaehler = new Zaehler();
         // TODO: Threads anlegen, starten, per join() auf alle warten,
         //       dann zaehler.wert() zurueckgeben.
-        //       Achtung: erst ALLE starten, dann ALLE joinen -
+        //       Achtung: erst ALLE starten, dann ALLE joinen,
         //       sonst laeuft alles nacheinander statt parallel.
         return zaehler.wert();
     }
@@ -39,7 +39,7 @@ public class Aufgaben {
      * Aufgabe 3: Summe 1..bis, aufgeteilt auf hoechstens threads Teilaufgaben,
      * ueber einen ExecutorService.
      * throws: InterruptedException (Warten unterbrochen) und
-     * ExecutionException (eine Teilaufgabe ist gescheitert) - beides von Future.get().
+     * ExecutionException (eine Teilaufgabe ist gescheitert), beides von Future.get().
      * summeParallel(100, 4) -> 5050
      */
     public static long summeParallel(long bis, int threads)

@@ -1,12 +1,12 @@
 /**
- * Kapitel 01 - Musterloesung mit Erklaerungen.
+ * Kapitel 01: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
     public static String begruessung(String name) {
         // Der +-Operator ist bei Strings ueberladen: er verkettet statt zu addieren.
         // Wie der Compiler das intern umsetzt, ist sein Detail (seit Java 9 per
-        // invokedynamic) - fuer einzelne Ausdruecke wie diesen ist + ideal.
+        // invokedynamic). Fuer einzelne Ausdruecke wie diesen ist + ideal.
         return "Hallo, " + name + "!";
     }
 
@@ -26,7 +26,7 @@ public class Aufgaben {
     }
 
     public static int letzteZiffer(int zahl) {
-        // Modulo 10 liefert den Rest der Division durch 10 - genau die letzte Ziffer.
+        // Modulo 10 liefert den Rest der Division durch 10, also genau die letzte Ziffer.
         // Hinweis: Bei negativen Zahlen liefert Java einen negativen Rest
         // (-7 % 10 == -7). Die Aufgabe schliesst negative Eingaben aus.
         return zahl % 10;
@@ -42,11 +42,13 @@ public class Aufgaben {
     }
 
     public static long millisekundenProJahr() {
-        // Entscheidend ist das L am ERSTEN Faktor. Java wertet von links nach
+        // Das L am ERSTEN Faktor ist die sichere Wahl. Java wertet von links nach
         // rechts aus; sobald ein Operand long ist, laeuft der Rest der Rechnung
-        // in long weiter. Ohne das L waere 365 * 24 * 60 * 60 * 1000 eine
-        // reine int-Rechnung, die bei 31.536.000.000 ueberlaeuft - das Ergebnis
-        // waere 1471228928, und der Compiler wuerde nicht einmal warnen.
+        // in long weiter. (Hier ginge auch 1000L am Ende, weil 365 * 24 * 60 * 60
+        // noch in int passt, aber das muesste man erst nachrechnen.)
+        // Ohne L waere 365 * 24 * 60 * 60 * 1000 eine reine int-Rechnung, die bei
+        // 31.536.000.000 ueberlaeuft: Das Ergebnis waere 1471228928, und der
+        // Compiler wuerde nicht einmal warnen.
         return 365L * 24 * 60 * 60 * 1000;
     }
 }

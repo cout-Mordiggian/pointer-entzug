@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Kapitel 11 - Dateien und IO.
+ * Kapitel 11: Dateien und IO.
  * Pruefen:  ./lerne.sh 11
  */
 public class Aufgaben {
 
     /**
      * Aufgabe 1: Zeilen zaehlen.
-     * Nutze Files.lines - und denke daran, den Stream zu schliessen.
+     * Nutze Files.lines, und denke daran, den Stream zu schliessen.
      */
     public static long zeilenZaehlen(Path pfad) throws IOException {
         // TODO: try (Stream<String> zeilen = Files.lines(pfad, StandardCharsets.UTF_8)) { ... }
@@ -31,7 +31,9 @@ public class Aufgaben {
      * Eine bestehende Datei wird ueberschrieben.
      */
     public static void schreibeZeilen(Path pfad, List<String> zeilen) throws IOException {
-        // TODO: Files.write(...) oder Files.writeString(...)
+        // TODO: Inhalt mit '\n' bauen, dann Files.writeString(pfad, inhalt, StandardCharsets.UTF_8).
+        //       Nicht Files.write(pfad, zeilen): Das nimmt den Zeilentrenner des
+        //       Systems, unter Windows \r\n, und der Test wird rot.
     }
 
     /**
@@ -62,7 +64,7 @@ public class Aufgaben {
      */
     public static List<Messwert> csvLesen(Path pfad) throws IOException {
         // TODO: Files.readAllLines, dann mit Index durchlaufen.
-        //       split(";", -1) und Double.parseDouble - beides kann schiefgehen.
+        //       split(";", -1) und Double.parseDouble: beides kann schiefgehen.
         return List.of();
     }
 

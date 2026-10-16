@@ -1,10 +1,10 @@
 /**
- * Kapitel 07 - Musterloesung: eigene checked Exception.
+ * Kapitel 07, Musterloesung: eigene checked Exception.
  */
 public class UnzureichendeDeckungException extends Exception {
 
     // Die Exception traegt DATEN, nicht nur Text. Der Aufrufer kann
-    // getFehlbetrag() auswerten - eine Nachricht muesste er parsen.
+    // getFehlbetrag() auswerten, eine Nachricht muesste er parsen.
     private final long fehlbetrag;
 
     public UnzureichendeDeckungException(long fehlbetrag) {

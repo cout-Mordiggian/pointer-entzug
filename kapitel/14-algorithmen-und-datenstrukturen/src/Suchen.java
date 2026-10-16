@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Algorithmen und Datenstrukturen: Suchen.
+ * Kapitel 14, Algorithmen und Datenstrukturen: Suchen.
  * Pruefen:  ./lerne.sh 14
  */
 public class Suchen {
@@ -15,13 +15,13 @@ public class Suchen {
      *   ersteGroesserGleich(sortiert, 0) -> 0
      *   ersteGroesserGleich(sortiert, 9) -> 5    (== length: nichts ist gross genug)
      *
-     * Muss O(log n) sein - also KEINE Schleife ueber alle Elemente.
+     * Muss O(log n) sein, also KEINE Schleife ueber alle Elemente.
      */
     public static int ersteGroesserGleich(int[] sortiert, int wert) {
         // TODO: von = 0, bis = sortiert.length  (halboffen: bis gehoert nicht dazu).
         //       Solange von < bis: mitte berechnen (ueberlaufsicher wie in Kapitel 4)
         //       und je nach sortiert[mitte] < wert entweder von oder bis verschieben.
-        //       Am Ende ist von == bis - und das ist die Antwort.
+        //       Am Ende ist von == bis, und das ist die Antwort.
         return -1;
     }
 

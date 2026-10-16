@@ -1,18 +1,21 @@
 /**
- * Kapitel 13 - Teil A: Tests schreiben, die Fehler finden.
+ * Kapitel 13, Teil A: Tests schreiben, die Fehler finden.
  * Pruefen:  ./lerne.sh 13
  *
  * Deine Aufgabe: Schreibe in alleBestanden eigene Pruefungen gegen den
  * uebergebenen Rabattrechner r. Die Regeln stehen in Rabattrechner.java.
  *
- * tests/Tests.java ruft deine Methode dann achtmal auf: einmal mit der
- * korrekten Implementierung (dort muss true herauskommen) und einmal mit
- * jedem der sieben Mutanten (dort muss false herauskommen - deine Tests
- * muessen den Fehler bemerken).
+ * tests/Tests.java ruft deine Methode dann elfmal auf, in zufaelliger
+ * Reihenfolge: zweimal mit der korrekten Implementierung (dort muss true
+ * herauskommen) und einmal mit jedem der neun Mutanten (dort muss false
+ * herauskommen: deine Tests muessen den Fehler bemerken).
  *
  * Spielregeln:
  *  - Pruefe nur ueber r.endpreisCent(...). Kein instanceof, kein Blick auf
- *    den Klassennamen - das waere Schummeln und in echt nutzlos.
+ *    den Klassennamen, keine anderen Kandidaten aufrufen. Das waere
+ *    Schummeln und in echt nutzlos.
+ *  - Jeder Aufruf steht fuer sich: Ausser dem Zaehler fehler, der am Anfang
+ *    zurueckgesetzt wird, merkt sich alleBestanden nichts von frueheren Aufrufen.
  *  - Schau NICHT in Kandidaten.java, bevor alles gruen ist.
  *  - Rechne die erwarteten Werte selbst aus (Stift und Papier), nicht mit
  *    der Implementierung, die du gerade testest.
@@ -30,11 +33,11 @@ public class MeineTests {
     static boolean alleBestanden(Rabattrechner r) {
         fehler = 0;
 
-        // Beispiel fuer einen Normalfall (Vorbereiten - Ausfuehren - Pruefen):
+        // Beispiel fuer einen Normalfall (Vorbereiten, Ausfuehren, Pruefen):
         gleich(300, r.endpreisCent(100, 3), "3 Stueck a 100 Cent, kein Rabatt");
 
         // TODO: Weitere Pruefungen. Denk an Abschnitt 13.3:
-        //       Aequivalenzklassen und Grenzwerte - genau an der Grenze
+        //       Aequivalenzklassen und Grenzwerte: genau an der Grenze
         //       und knapp daneben, 0, negative Werte, sehr grosse Werte,
         //       und eine Rechnung, bei der die Rundung eine Rolle spielt.
 
@@ -44,7 +47,7 @@ public class MeineTests {
         //       r.endpreisCent(..., ...);
         //       fehlschlag("... haette eine IllegalArgumentException werfen muessen");
         //   } catch (IllegalArgumentException e) {
-        //       // erwartet - diese Pruefung ist bestanden
+        //       // erwartet: diese Pruefung ist bestanden
         //   }
 
         return fehler == 0;

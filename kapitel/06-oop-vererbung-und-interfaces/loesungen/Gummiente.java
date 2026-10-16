@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Musterloesung: die Badewannen-Ente.
+ * Kapitel 6, Musterloesung: die Badewannen-Ente.
  */
 public class Gummiente extends Ente {
 

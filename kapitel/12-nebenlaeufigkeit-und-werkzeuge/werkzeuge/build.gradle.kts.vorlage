@@ -1,4 +1,6 @@
-// Gradle mit Kotlin-DSL - dasselbe Projekt wie in pom.xml
+// Gradle mit Kotlin-DSL, dasselbe Projekt wie in pom.xml.vorlage.
+// Vorlage: beim Kopieren in ein eigenes Projekt in build.gradle.kts umbenennen
+// (dazu settings.gradle.kts.vorlage als settings.gradle.kts).
 
 plugins {
     java
@@ -14,7 +16,8 @@ repositories {
 
 java {
     toolchain {
-        // Gradle laedt bei Bedarf selbst ein passendes JDK herunter
+        // Fehlt ein JDK 21, laedt Gradle eines herunter. Das klappt nur mit dem
+        // foojay-Plugin aus settings.gradle.kts, sonst bricht der Build ab.
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
@@ -25,6 +28,7 @@ dependencies {
 }
 
 application {
+    // Fuer "gradle run": deine Klasse mit main eintragen
     mainClass = "de.beispiel.Main"
 }
 

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Vorlage: beim Kopieren in ein eigenes Projekt in pom.xml umbenennen.
+    Hier heisst sie anders, damit IDEs den Kursordner nicht als Maven-Projekt importieren.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -19,7 +23,7 @@
 
     <dependencies>
         <!--
-            JUnit 6 (Nachfolger von JUnit 5 - die Tests sehen identisch aus).
+            JUnit 6 (Nachfolger von JUnit 5, die Tests sehen identisch aus).
             scope=test bedeutet: nur beim Testen im Klassenpfad,
             nicht im ausgelieferten Artefakt.
         -->
@@ -33,6 +37,15 @@
 
     <build>
         <plugins>
+            <!--
+                Feste Version: Aeltere Maven-Versionen bringen sonst einen
+                Compiler-Plugin mit, der maven.compiler.release nicht kennt.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version>
+            </plugin>
             <!-- Fuehrt die Tests aus. Ohne aktuelle Version findet es JUnit nicht. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

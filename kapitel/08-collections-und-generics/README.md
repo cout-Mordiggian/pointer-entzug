@@ -27,7 +27,7 @@ Map  (gehoert NICHT zu Collection!)
 └── TreeMap          nach Schluessel sortiert, O(log n)
 ```
 
-*O(1)* heisst "konstant, egal wie gross die Sammlung", *O(n)* "wächst mit der
+*O(1)* heißt "konstant, egal wie groß die Sammlung", *O(n)* "wächst mit der
 Anzahl der Elemente", *O(log n)* "wächst sehr langsam" (bei einer Million
 Elementen ca. 20 Schritte).
 
@@ -56,7 +56,7 @@ ArrayList<String> namen = new ArrayList<>(); // unnoetig festgelegt
 Links der **allgemeinste** Typ, den du brauchst; rechts die konkrete
 Implementierung. Dann kostet der Wechsel zu `LinkedList` genau ein Wort.
 
-Das `<>` heisst *Diamond Operator*: Der Compiler liest den Typ von links ab.
+Das `<>` heißt *Diamond Operator*: Der Compiler liest den Typ von links ab.
 
 ## 8.3 `List`
 
@@ -86,9 +86,9 @@ for (String n : namen) { ... }
 >
 > ```java
 > Integer a = 127, b = 127;
-> a == b          // true  - Java hält kleine Werte (-128..127) vorrätig
+> a == b          // true: Java hält kleine Werte (-128..127) vorrätig
 > Integer c = 128, d = 128;
-> c == d          // false - zwei verschiedene Objekte!
+> c == d          // false: zwei verschiedene Objekte!
 > c.equals(d)     // true
 > ```
 >
@@ -137,7 +137,7 @@ class Person {                            // equals/hashCode NICHT ueberschriebe
 Set<Person> s = new HashSet<>();
 s.add(new Person("Anna"));
 s.add(new Person("Anna"));
-s.size();                                 // 2 - der Bug
+s.size();                                 // 2: der Bug
 ```
 
 Noch heimtückischer: Änderst du ein Feld, nachdem das Objekt in der Menge
@@ -176,6 +176,14 @@ for (int v : alter.values()) { ... }
 "erst prüfen, dann einfügen"-Sequenz durch eine Zeile, und du wirst sie in
 diesem Kapitel brauchen.
 
+> **Neu: `Integer::sum` und `k -> new ArrayList<>()`.** Beide Methoden
+> bekommen keinen fertigen Wert, sondern ein Stück Code, das sie bei Bedarf
+> selbst aufrufen. `k -> new ArrayList<>()` ist ein *Lambda* ("zu `k` eine
+> neue Liste"), `Integer::sum` eine *Methodenreferenz* ("nimm die fertige
+> Methode `Integer.sum`"). Hier benutzt du sie als Rezept, genau so
+> abgeschrieben, ebenso bei `removeIf` (8.6) und `Comparator` (8.7). Wie das
+> genau funktioniert, erklärt Kapitel 9.
+
 Die Reihenfolge beim Durchlaufen einer `HashMap` ist **nicht festgelegt** und
 kann sich zwischen Java-Versionen ändern. Verlass dich nie darauf, brauchst
 du eine Ordnung, nimm `TreeMap` (sortiert) oder `LinkedHashMap` (Einfügereihenfolge).
@@ -195,12 +203,15 @@ namen.reversed();     // umgekehrte Sicht, ohne Kopie
 
 ```java
 for (String n : namen) {
-    if (n.startsWith("A")) namen.remove(n);   // knallt
+    if (n.startsWith("A")) namen.remove(n);   // knallt (meistens)
 }
 ```
 
 Während einer `for-each`-Schleife darf die Collection nicht strukturell
-verändert werden. Drei Auswege:
+verändert werden. Meistens wirft die Schleife dann eine
+`ConcurrentModificationException`. Entfernst du zufällig das vorletzte
+Element, endet sie dagegen still und überspringt das letzte, das ist noch
+tückischer. Drei Auswege:
 
 ```java
 namen.removeIf(n -> n.startsWith("A"));       // am besten
@@ -231,7 +242,7 @@ Der Rückgabewert: **negativ** wenn `this` kleiner, **0** bei Gleichheit,
 **positiv** wenn größer. Nicht `-1/0/1` selbst basteln, nimm
 `Integer.compare(a, b)`. (`a - b` kann überlaufen!)
 
-**`Comparator`**: beliebig viele alternative Ordnungen, ausserhalb der Klasse:
+**`Comparator`**: beliebig viele alternative Ordnungen, außerhalb der Klasse:
 
 ```java
 personen.sort(Comparator.comparing(Person::getName));
@@ -254,12 +265,12 @@ nämlich `compareTo` statt `equals`, bei Inkonsistenz verschwinden Elemente.
 ### Warum?
 
 ```java
-List liste = new ArrayList();          // roher Typ - vor Java 5
+List liste = new ArrayList();          // roher Typ, wie vor Java 5
 liste.add("text");
 Integer i = (Integer) liste.get(0);    // kompiliert, knallt zur Laufzeit
 
 List<String> liste = new ArrayList<>();
-Integer i = liste.get(0);              // Compilerfehler - viel besser
+Integer i = liste.get(0);              // Compilerfehler, viel besser
 ```
 
 Generics verlagern Typfehler von der Laufzeit in die Compile-Zeit.
@@ -317,6 +328,7 @@ a.getClass() == b.getClass()      // true!
 new T()                           // geht nicht
 new T[10]                         // geht nicht
 if (obj instanceof List<String>)  // geht nicht (obj vom Typ Object)
+if (obj instanceof List<?> l)     // geht: "eine Liste von irgendwas"
 ```
 
 Das ist der Preis dafür, dass Generics 2004 rückwärtskompatibel eingeführt
@@ -415,7 +427,7 @@ System.out.println(s);
 
 <details><summary>Auflösung</summary>
 
-`[C, a, b]`: `TreeSet` sortiert nach `String.compareTo`, und das vergleicht Unicode-Werte: Grossbuchstaben (`C` = 67) kommen vor Kleinbuchstaben (`a` = 97). Für eine "menschliche" Ordnung: `new TreeSet<>(String.CASE_INSENSITIVE_ORDER)`.
+`[C, a, b]`: `TreeSet` sortiert nach `String.compareTo`, und das vergleicht Unicode-Werte: Großbuchstaben (`C` = 67) kommen vor Kleinbuchstaben (`a` = 97). Für eine "menschliche" Ordnung: `new TreeSet<>(String.CASE_INSENSITIVE_ORDER)`.
 
 </details>
 

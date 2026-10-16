@@ -2,7 +2,7 @@
  * Kapitel 05, Aufgabe 3: ein Singleton.
  *
  * Im ganzen Programm soll es genau EINE Konfiguration geben. Im Moment kann
- * jeder beliebig viele erzeugen - und instanz() liefert jedes Mal eine neue,
+ * jeder beliebig viele erzeugen, und instanz() liefert jedes Mal eine neue,
  * frische. Was an einer Stelle eingestellt wird, sieht keine andere.
  *
  *   Konfiguration.instanz().setSprache("en");

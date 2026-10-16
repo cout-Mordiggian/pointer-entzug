@@ -1,7 +1,7 @@
 # Kapitel 06: OOP II: Vererbung, Polymorphie, Interfaces
 
 **Ziel:** Du baust Typhierarchien, verstehst, warum Polymorphie erst zur
-Laufzeit entscheidet, und weisst, wann ein Interface besser passt als eine
+Laufzeit entscheidet, und weißt, wann ein Interface besser passt als eine
 Oberklasse.
 
 ---
@@ -27,7 +27,7 @@ public class Hund extends Tier {
 }
 ```
 
-`extends` heisst: "`Hund` ist ein `Tier` und hat alles, was ein `Tier` hat."
+`extends` heißt: "`Hund` ist ein `Tier` und hat alles, was ein `Tier` hat."
 Java kennt nur **Einfachvererbung**, genau eine Oberklasse. (Mehrfachvererbung
 gibt es nur bei Interfaces, siehe 6.5.)
 
@@ -40,9 +40,10 @@ Reihenfolge bei `new Hund("Rex")`: erst der `Tier`-Konstruktor, dann der
 `Hund`-Konstruktor. Von oben nach unten, der `Tier`-Anteil des Objekts muss
 fertig sein, bevor der `Hund`-Teil darauf aufbaut.
 
-> *Seit Java 25* dürfen vor `super(...)` Anweisungen stehen, die `this` noch
-> nicht benutzen (z. B. Parameter prüfen oder umrechnen). Das Prinzip bleibt:
-> Kein Zugriff auf das Objekt, bevor die Oberklasse initialisiert ist.
+> *Seit Java 25* dürfen vor `super(...)` Anweisungen stehen, die das Objekt
+> noch nicht lesen: Parameter prüfen oder umrechnen, sogar eigene Felder
+> zuweisen. Das Prinzip bleibt: Keine Methodenaufrufe am Objekt und kein Lesen
+> seiner Felder, bevor die Oberklasse initialisiert ist.
 
 `super.laut()` ruft die überschriebene Version der Oberklasse auf, nützlich,
 wenn du sie erweitern statt ersetzen willst.
@@ -56,8 +57,8 @@ wenn du sie erweitern statt ersetzen willst.
 | Entschieden | zur **Laufzeit** (dynamisch) | zur **Compile-Zeit** (statisch) |
 | Annotation | `@Override` | keine |
 
-Beim Überschreiben darf die Sichtbarkeit nur **weiter** werden (`protected` ->
-`public`), nie enger. Der Rückgabetyp darf **spezifischer** werden
+Beim Überschreiben darf die Sichtbarkeit nie **enger** werden: Sie bleibt
+gleich oder wird weiter (`protected` -> `public`). Der Rückgabetyp darf **spezifischer** werden
 (*kovarianter Rückgabetyp*):
 
 ```java
@@ -94,7 +95,7 @@ Der Nutzen: Die Schleife kennt `Hund` und `Katze` gar nicht. Du kannst morgen
 ```java
 Tier t = new Hund("Rex");        // Upcast: immer sicher, ohne Syntax
 Hund h = (Hund) t;               // Downcast: du behauptest etwas
-Katze k = (Katze) t;             // kompiliert - wirft zur Laufzeit ClassCastException
+Katze k = (Katze) t;             // kompiliert, wirft aber zur Laufzeit ClassCastException
 ```
 
 Sicher prüfen, mit Pattern Matching (Java 16+):
@@ -133,8 +134,9 @@ public abstract class Figur {
   selbst `abstract` sein.
 
 `beschreibung()` ruft `flaeche()` auf, ohne zu wissen, wie sie rechnet. Diese
-Umkehrung ("die Basis ruft die Ableitung") heisst *Template Method* (Schablonenmethode, mehr in 6.9) und ist der
-häufigste sinnvolle Einsatz abstrakter Klassen.
+Umkehrung ("die Basis ruft die Ableitung") heißt *Template Method*
+(Schablonenmethode, mehr in 6.9) und ist der häufigste sinnvolle Einsatz
+abstrakter Klassen.
 
 Warum `protected` beim Konstruktor? Er ist für Unterklassen gedacht, die ihn
 für `super(...)` brauchen, `public` würde ihn unnötig allen anbieten.
@@ -166,7 +168,7 @@ zurück, ohne die Probleme der Mehrfachvererbung von *Zustand*.
 
 Regeln:
 
-- Methoden sind implizit `public abstract` (ausser `default`, `static`, `private`)
+- Methoden sind implizit `public abstract` (außer `default`, `static`, `private`)
 - Felder sind implizit `public static final`, also Konstanten, kein Zustand
 - Ein Interface hat keine Konstruktoren
 
@@ -235,16 +237,20 @@ Jede Klasse erbt letztlich von `java.lang.Object`. Daher hat wirklich jedes
 Objekt `toString()`, `equals()`, `hashCode()`, `getClass()`.
 
 Bei Vererbung wird `equals` heikel: Ist ein `Quadrat(3)` gleich einem
-`Rechteck(3,3)`? Wenn `Rechteck.equals` mit `instanceof` arbeitet, sagt das
-Rechteck "ja" und das Quadrat "nein", die Symmetrie des Vertrags ist
-gebrochen. Der übliche Ausweg: `getClass() != o.getClass()` statt `instanceof`,
+`Rechteck(3,3)`? Angenommen, `Rechteck.equals` prüft mit `instanceof Rechteck`
+und `Quadrat` überschreibt `equals` mit `instanceof Quadrat`. Dann sagt das
+Rechteck "ja" (ein Quadrat ist ja ein Rechteck), das Quadrat aber "nein": Die
+Symmetrie des Vertrags ist gebrochen. Ohne eigenes `Quadrat.equals` sagen zwar
+beide "ja", doch sobald eine Unterklasse `equals` verschärft, ist der Vertrag
+kaputt. Der übliche Ausweg: `getClass() != o.getClass()` statt `instanceof`,
 oder, besser, solche Typen gar nicht erst voneinander erben lassen.
 
-## 6.9 Entwurfsmuster mit Interfaces
+## 6.9 Entwurfsmuster mit Interfaces und Vererbung
 
-Was ein Entwurfsmuster ist, steht in 5.10. Die vier Muster hier leben alle von
+Was ein Entwurfsmuster ist, steht in 5.10. Drei der vier Muster hier leben von
 zwei Regeln dieses Kapitels: **gegen ein Interface programmieren** (6.5) und
-**Komposition statt Vererbung** (6.6).
+**Komposition statt Vererbung** (6.6). Die Schablonenmethode am Ende ist das
+Gegenstück, sie baut auf Vererbung.
 
 ### Strategie (Strategy): Verhalten austauschbar machen
 
@@ -295,7 +301,7 @@ baust du das Muster selbst, mit einem Teich voller Enten.
 
 ### Dekorierer (Decorator): Verhalten um ein Objekt herumlegen
 
-**Problem:** Ein Protokoll soll wahlweise Zeilen nummerieren, gross schreiben
+**Problem:** Ein Protokoll soll wahlweise Zeilen nummerieren, großschreiben
 oder filtern, in jeder Kombination. Mit Unterklassen bräuchte man
 `NummeriertesProtokoll`, `GrossesProtokoll`, `NummeriertesGrossesProtokoll`, ...:
 Bei drei Eigenschaften sind es schon 7 Klassen, und die Reihenfolge ist fest.
@@ -312,7 +318,7 @@ p.schreibe("start");
 
 ```
   p.schreibe("start")
-    ┌─ MitZeilennummer ─────────────────────────────────┐
+    ┌─ MitZeilennummer ──────────────────────────────────┐
     │ "1: start" ->  ┌─ Grossgeschrieben ──────────────┐ │
     │                │ "1: START" -> ┌─ TextProtokoll ┐│ │
     │                │               │ speichert      ││ │
@@ -337,7 +343,7 @@ public class MitZeilennummer implements Protokoll {     // "ist ein" Protokoll .
 ```
 
 Die **Reihenfolge zählt**. Der Aufruf kommt immer zuerst beim äußersten Objekt
-an. Steht ein Filter aussen und die Nummer innen, werden nur die durchgelassenen
+an. Steht ein Filter außen und die Nummer innen, werden nur die durchgelassenen
 Zeilen gezählt. Umgekehrt zählt die Nummer alle, und der Filter sieht schon
 `"1: ..."`. Im Unterschied zur Vererbung wird zur **Laufzeit** und **pro Objekt**
 kombiniert. Im JDK sind die Reader aus Kapitel 11 das bekannteste Beispiel (11.9).
@@ -376,8 +382,9 @@ die Schnittstelle, der Dekorierer **behält** sie und fügt Verhalten hinzu.
 ### Schablonenmethode (Template Method): der Ablauf steht, die Schritte variieren
 
 Das Prinzip kennst du aus 6.4: `beschreibung()` in `Figur` ruft `flaeche()` auf,
-die Unterklassen liefern sie. Als Muster ausgebaut legt eine `final`-Methode den
-**Ablauf** fest, die **Schritte** sind abstrakt oder haben einen Standard:
+die Unterklassen liefern sie. Als Muster ausgebaut legt eine Methode den
+**Ablauf** fest, oft `final`, damit ihn keine Unterklasse verbiegt. Die
+**Schritte** sind abstrakt oder haben einen Standard:
 
 ```java
 public abstract class Bericht {
@@ -392,7 +399,10 @@ public abstract class Bericht {
 
 Das Paradebeispiel im JDK ist `AbstractList`: Wer von ihr erbt und nur `get(int)`
 und `size()` schreibt, bekommt `contains`, `indexOf`, `equals`, `toString` und
-den Rest geschenkt (Listen kommen in Kapitel 8). Die Schablonenmethode ist
+die Iteration geschenkt, allerdings nur lesend: `add` und `set` werfen ohne
+eigene Implementierung eine `UnsupportedOperationException` (Listen kommen in
+Kapitel 8). Ihre Schablonen sind übrigens nicht `final`, eine Unterklasse darf
+sie bei Bedarf durch schnellere ersetzen. Die Schablonenmethode ist
 Vererbung, mit allen Nachteilen aus 6.6. Die Alternative ist eine Strategie:
 den variablen Schritt als Objekt hineinreichen, statt ihn zu überschreiben.
 
@@ -438,7 +448,7 @@ ablehnen. `skaliert` liefert einen **neuen** Kreis.
 - `public Rechteck(double breite, double hoehe)`: Name "Rechteck"
 - `protected Rechteck(String name, double breite, double hoehe)`,
   damit `Quadrat` seinen eigenen Namen durchreichen kann. (Achtung: `protected`
-  heisst "Unterklassen **und** dasselbe Paket". Da alle Kursdateien im selben
+  heißt "Unterklassen **und** dasselbe Paket". Da alle Kursdateien im selben
   Paket liegen, könnte hier jede Klasse den Konstruktor aufrufen.)
 
 ### 5. `Quadrat.java`: `extends Rechteck`
@@ -466,7 +476,9 @@ einpacken (6.9). Ganz innen steckt das fertige `TextProtokoll`, das alle Zeilen
 sammelt; `inhalt()` liefert sie, jede mit `\n` dahinter.
 
 - `MitZeilennummer(innen)`: setzt `"1: "`, `"2: "`, ... davor. Jedes Objekt zählt für sich.
-- `Grossgeschrieben(innen)`: schreibt die Zeile gross (`Locale.ROOT`).
+- `Grossgeschrieben(innen)`: schreibt die Zeile groß (`Locale.ROOT`). Der Test
+  stellt dafür ein türkisches Locale ein, dort macht `"i".toUpperCase()` ohne
+  `Locale.ROOT` ein `"İ"` (I mit Punkt) daraus.
 - `NurMit(teil, innen)`: lässt nur Zeilen durch, die `teil` enthalten.
 - `null` für `innen` oder `teil`: `NullPointerException` schon im Konstruktor (5.7).
 
@@ -500,7 +512,8 @@ ein** `QuakVerhalten` (6.6) und reicht die Aufrufe nur weiter:
   │ quaken()   ───┼──┐ reicht weiter         │
   └───────────────┼──┼───────────────────────┘
           hat ein │  │ hat ein
-                  ▼  ▼
+        ┌─────────┘  └─────────────┐
+        ▼                          ▼
   FlugVerhalten              QuakVerhalten
     FliegtMitFluegeln          Quaken
     FliegtNicht                Quietschen
@@ -616,7 +629,7 @@ System.out.print(basis.inhalt());
 3: Raum 2
 ```
 
-Der Aufruf kommt zuerst beim **äußeren** Dekorierer an. `MitZeilennummer` nummeriert alle drei Zeilen, und erst danach prüft `NurMit`, ob eine `"2"` darin steckt. In `"2: Zeile B"` steckt sie, in der Nummer. Wer nur `Raum 2` erwartet hat, las die Schachtelung von innen nach aussen. Andersherum geschachtelt, `new NurMit("2", new MitZeilennummer(basis))`, käme `1: Raum 2` heraus.
+Der Aufruf kommt zuerst beim **äußeren** Dekorierer an. `MitZeilennummer` nummeriert alle drei Zeilen, und erst danach prüft `NurMit`, ob eine `"2"` darin steckt. In `"2: Zeile B"` steckt sie, in der Nummer. Wer nur `Raum 2` erwartet hat, las die Schachtelung von innen nach außen. Andersherum geschachtelt, `new NurMit("2", new MitZeilennummer(basis))`, käme `1: Raum 2` heraus.
 
 </details>
 
@@ -629,7 +642,7 @@ Erst selbst antworten, dann vergleichen: Die Antworten stehen am Ende von
 - Was ist der Unterschied zwischen statischem und dynamischem Typ?
 - Warum sind Felder nicht polymorph?
 - Wann Interface, wann abstrakte Klasse?
-- Warum bricht `equals` zwischen `Rechteck` und `Quadrat` die Symmetrie?
+- Wann bricht `equals` zwischen `Rechteck` und `Quadrat` die Symmetrie?
 - Warum muss die `Kasse` nicht geändert werden, wenn eine neue Rabattart dazukommt?
 - Warum stecken Fliegen und Quaken in eigenen Objekten statt in Unterklassen von `Ente`?
 - Was unterscheidet einen Dekorierer von einer Unterklasse, und was von einem Adapter?

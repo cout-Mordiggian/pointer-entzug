@@ -18,7 +18,7 @@ import java.util.List;
  *   - build(): mehr als MAX_BELAEGE Belaege -> IllegalStateException
  *   - Preis: Grundpreis der Groesse + PREIS_BELAG je Belag
  *            + PREIS_EXTRA_KAESE, falls extraKaese()
- *   - Eine fertige Pizza ist unveraenderlich - auch dann, wenn jemand den
+ *   - Eine fertige Pizza ist unveraenderlich, auch dann, wenn jemand den
  *     Builder danach weiter benutzt.
  */
 public final class Pizza {
@@ -77,7 +77,7 @@ public final class Pizza {
     }
 
     /**
-     * Der Builder: eine statische innere Klasse (wie Knoten in Kapitel 14.6).
+     * Der Builder: eine statische verschachtelte Klasse (README 10.9).
      * Er sammelt die Angaben, build() macht daraus die fertige Pizza.
      */
     public static final class Builder {
@@ -91,7 +91,7 @@ public final class Pizza {
         }
 
         public Builder belag(String belag) {
-            // TODO: pruefen, anhaengen - und was gibst du zurueck, damit man
+            // TODO: pruefen, anhaengen. Und was gibst du zurueck, damit man
             //       .belag(..).belag(..) verketten kann?
             return null;
         }

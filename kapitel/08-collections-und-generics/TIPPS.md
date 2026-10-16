@@ -1,7 +1,7 @@
 # Kapitel 08: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Paar.java: Felder, Getter, `getauscht` und `toString`
 
@@ -51,7 +51,9 @@ Und was passiert, wenn `erstes` `null` ist?
   Der Test "null-Inhalte sind erlaubt" baut `Paar.von(null, null)`, und
   `null.equals(...)` würde eine `NullPointerException` werfen.
 - `hashCode`: `Objects.hash(...)` über genau die beiden Felder, das ist
-  ebenfalls null-sicher.
+  ebenfalls null-sicher. Der Platzhalter `super.hashCode()` muss weg, er
+  liefert für jedes Objekt einen eigenen Wert, und der Test "hashCode passt
+  zu equals" bleibt rot.
 
 </details>
 
@@ -107,7 +109,8 @@ Anders als `compareTo` beachtet `equals` **beide** Felder, der Test "equals
 beachtet auch das Alter" prüft das. Also: gleiche Referenz, `instanceof Person p`,
 dann `alter` mit `==` (bei `int` völlig in Ordnung) und `name` mit `equals`
 (**nicht** `==`, Kapitel 3.2). `hashCode` mit `Objects.hash` über genau diese
-beiden Felder, sonst erkennt das `HashSet` im Test das Duplikat nicht.
+beiden Felder. Der Platzhalter `super.hashCode()` liefert für jedes Objekt einen
+eigenen Wert, damit erkennt das `HashSet` im Test das Duplikat nicht.
 
 Gut zu wissen: `compareTo` und `equals` sind damit absichtlich **inkonsistent**
 (Abschnitt 8.7). In einem `TreeSet` gälten Anna(34) und Anna(99) als ein und
@@ -238,12 +241,13 @@ vorgegeben. Frag dich: Was darfst du mit einem `T` nur deshalb tun, weil dort
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Die Operatoren `<` und `>` funktionieren nur für primitive Zahlen, nicht für
-`T`: du vergleichst mit `a.compareTo(b)`, und "größer" heisst "Ergebnis `> 0`".
+Die Operatoren `<` und `>` funktionieren nur für Zahlen (auch `Integer`, das
+wird ausgepackt), nicht für ein beliebiges `T`: Du vergleichst mit
+`a.compareTo(b)`, und "größer" heißt "Ergebnis `> 0`".
 Das Vorgehen ist dieselbe Maximumsuche wie bei `Figuren.groesste` in Kapitel 6:
 leere Liste -> `null`, sonst mit dem ersten Element starten und bei jedem
-größeren Element ersetzen. Die Tests prüfen das Maximum vorne und in der
-Mitte.
+größeren Element ersetzen. Die Tests prüfen das Maximum vorne, in der Mitte
+und hinten.
 
 `Collections.max(liste)` würde auch funktionieren, wirft aber bei leerer Liste
 eine `NoSuchElementException`, und der Übungszweck ist gerade das eigene
@@ -277,7 +281,7 @@ kannst du die Elemente einer `List<? extends Number>` sicher lesen?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Jedes Element ist garantiert eine `Number`, mehr weiss der Compiler nicht.
+Jedes Element ist garantiert eine `Number`, mehr weiß der Compiler nicht.
 Deine Schleifenvariable ist also vom Typ `Number` (nicht `Integer`, denn es
 könnte ja eine `List<Double>` sein). Mit einer `Number` kannst du nicht direkt
 rechnen: `summe += z` kompiliert nicht, weil `Number` kein Wrapper eines
@@ -420,7 +424,7 @@ Wäre es eines, könntest du über die `Number`-Sicht etwas Falsches hineinlegen
 
 ```java
 List<Integer> ganz = new ArrayList<>();
-List<Number> zahlen = ganz;   // Compilerfehler - und das ist gut so
+List<Number> zahlen = ganz;   // Compilerfehler, und das ist gut so
 zahlen.add(3.14);             // sonst laege ein Double in der Integer-Liste
 ```
 

@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * Musterloesung zur Bonus-Aufgabe Zahlenraten (Kapitel 02).
  *
- * Starten:  bash lerne.sh 02 -l -r Zahlenraten
+ * Starten:  ./lerne.sh 02 -l -r Zahlenraten
  */
 public class Zahlenraten {
 
@@ -14,7 +14,7 @@ public class Zahlenraten {
 
         System.out.println("Ich denke mir eine Zahl zwischen 1 und 100.");
 
-        // do/while, weil mindestens einmal gefragt werden muss - bevor der
+        // do/while, weil mindestens einmal gefragt werden muss: Bevor der
         // erste Tipp da ist, gibt es nichts, was man pruefen koennte.
         int versuche = 0;
         int tipp;
@@ -30,7 +30,8 @@ public class Zahlenraten {
             }
         } while (tipp != geheim);
 
-        System.out.println("Richtig! Du hast " + versuche + " Versuche gebraucht.");
+        String wort = versuche == 1 ? "Versuch" : "Versuche";
+        System.out.println("Richtig! Du hast " + versuche + " " + wort + " gebraucht.");
 
         // Tippt jemand Buchstaben, stuerzt nextInt() mit einer
         // InputMismatchException ab. Wie man das abfaengt, lernst du in Kapitel 7.

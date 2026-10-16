@@ -2,7 +2,7 @@
  * Kapitel 10: ein sealed interface mit verschachtelten Records.
  *
  * Weil alle erlaubten Untertypen hier drin stehen, darf die
- * permits-Klausel entfallen - der Compiler sieht sie ja.
+ * permits-Klausel entfallen, der Compiler sieht sie ja.
  *
  * Records sind automatisch final, erfuellen die sealed-Bedingung also von selbst.
  */

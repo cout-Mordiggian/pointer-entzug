@@ -1,5 +1,5 @@
 /**
- * Kapitel 10 - Musterloesung: enum mit Zustand und Verhalten.
+ * Kapitel 10, Musterloesung: enum mit Zustand und Verhalten.
  */
 public enum Wochentag {
 
@@ -17,7 +17,7 @@ public enum Wochentag {
     private final boolean werktag;
 
     // Implizit private. "private" hinzuschreiben ist erlaubt, aber unueblich;
-    // "public" waere ein Compilerfehler - Enum-Konstanten sind abschliessend.
+    // "public" waere ein Compilerfehler: Enum-Konstanten sind abschliessend.
     Wochentag(boolean werktag) {
         this.werktag = werktag;
     }

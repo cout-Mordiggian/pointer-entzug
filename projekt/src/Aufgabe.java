@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * Zugriffsmethoden, equals, hashCode und toString.
  *
  * Was er NICHT erzeugt, ist die Frage, was ueberhaupt eine gueltige
- * Aufgabe ist. Das entscheidest du - im kompakten Konstruktor.
+ * Aufgabe ist. Das entscheidest du, im kompakten Konstruktor.
  */
 public record Aufgabe(int id,
                       String titel,
@@ -17,7 +17,7 @@ public record Aufgabe(int id,
                       LocalDate faellig) {
 
     /**
-     * Kompakter Konstruktor - keine Parameterliste, kein this.x = x.
+     * Kompakter Konstruktor: keine Parameterliste, kein this.x = x.
      * Er laeuft VOR der Zuweisung an die Felder, du darfst die Parameter
      * also noch pruefen und normalisieren.
      */
@@ -37,7 +37,7 @@ public record Aufgabe(int id,
      * Ohne Termin (faellig == null) ist eine Aufgabe nie ueberfaellig.
      */
     public boolean istUeberfaellig() {
-        // TODO: LocalDate.now() und isBefore(...) - siehe README, M1
+        // TODO: LocalDate.now() und isBefore(...), siehe README, M1
         throw new UnsupportedOperationException("TODO M1: istUeberfaellig()");
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Kapitel 02 - Musterloesung mit Erklaerungen.
+ * Kapitel 02: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -17,7 +17,7 @@ public class Aufgaben {
     public static String notenText(int note) {
         // switch-Ausdruck: liefert einen Wert, kein break noetig, kein
         // versehentliches Durchfallen moeglich. Das Semikolon nach der
-        // schliessenden Klammer ist Pflicht - es ist ein Ausdruck, keine Anweisung.
+        // schliessenden Klammer ist Pflicht, denn es ist ein Ausdruck, keine Anweisung.
         return switch (note) {
             case 1 -> "sehr gut";
             case 2 -> "gut";
@@ -36,7 +36,7 @@ public class Aufgaben {
 
         // Warum reicht die Wurzel? Wenn n = a * b mit a <= b, dann ist
         // zwingend a <= sqrt(n). Einen Teiler oberhalb der Wurzel gibt es
-        // also nie ohne Partner unterhalb - den haetten wir schon gefunden.
+        // also nie ohne Partner unterhalb, und den haetten wir schon gefunden.
         // i * i <= n ist dasselbe wie i <= Math.sqrt(n), kommt aber ohne
         // Kommazahlen aus. Das (long) ist wichtig: Fuer n nahe Integer.MAX_VALUE
         // wuerde i * i als int ueberlaufen, negativ werden und die Schleife
@@ -50,7 +50,7 @@ public class Aufgaben {
 
     public static long fakultaet(int n) {
         // Der Akkumulator MUSS long sein. Waere er int, wuerde schon 13!
-        // still ueberlaufen. Mit long ist bei 20! Schluss - 21! passt nicht mehr.
+        // still ueberlaufen. Mit long ist bei 20! Schluss, 21! passt nicht mehr.
         long ergebnis = 1L;
         for (int i = 2; i <= n; i++) {
             ergebnis *= i;
@@ -60,7 +60,7 @@ public class Aufgaben {
 
     public static int quersumme(int n) {
         int summe = 0;
-        int rest = n;                 // Parameter nicht veraendern - saubere Gewohnheit
+        int rest = n;                 // Parameter nicht veraendern: saubere Gewohnheit
         while (rest > 0) {
             summe += rest % 10;       // letzte Ziffer abholen
             rest /= 10;               // und abschneiden
@@ -92,6 +92,6 @@ public class Aufgaben {
         return sb.toString();
         // Alternative ohne innere Schleife (seit Java 11):
         //     sb.append("*".repeat(zeile)).append('\n');
-        // Kuerzer - aber hier geht es gerade ums Verschachteln.
+        // Kuerzer, aber hier geht es gerade ums Verschachteln.
     }
 }

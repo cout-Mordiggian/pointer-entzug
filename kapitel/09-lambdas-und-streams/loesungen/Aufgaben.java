@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Kapitel 09 - Musterloesung mit Erklaerungen.
+ * Kapitel 09: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -15,8 +15,9 @@ public class Aufgaben {
                 .filter(z -> z % 2 == 0)      // Predicate<Integer>
                 .map(z -> z * z)              // Function<Integer, Integer>
                 .toList();                    // seit Java 16: unveraenderliche Liste
-        // Vor Java 16: .collect(Collectors.toList()) - liefert eine
-        // veraenderbare ArrayList. toList() ist heute die bessere Wahl.
+        // Vor Java 16: .collect(Collectors.toList()). Das liefert in der Praxis
+        // eine ArrayList, garantiert ist das aber nicht. Wer eine aenderbare
+        // Liste braucht: .collect(Collectors.toCollection(ArrayList::new)).
     }
 
     public static Optional<String> laengstesWort(List<String> woerter) {
@@ -24,7 +25,7 @@ public class Aufgaben {
                 .max(Comparator.comparingInt(String::length));
         // max() ist intern reduce(BinaryOperator.maxBy(cmp)), und maxBy ist
         //     (a, b) -> cmp.compare(a, b) >= 0 ? a : b
-        // Bei Gleichstand (compare == 0) gewinnt also a - das zuerst gesehene.
+        // Bei Gleichstand (compare == 0) gewinnt also a, das zuerst gesehene.
         // Genau das wollten wir. Verlassen sollte man sich darauf trotzdem nur,
         // wenn man es geprueft hat: die Javadoc garantiert es nicht ausdruecklich.
         // Explizit und unabhaengig von diesem Detail waere:
@@ -40,7 +41,7 @@ public class Aufgaben {
     }
 
     public static String alsListe(List<String> teile) {
-        // joining(trenner, praefix, suffix) - bei leerem Stream bleiben
+        // joining(trenner, praefix, suffix): bei leerem Stream bleiben
         // Praefix und Suffix trotzdem stehen, das Ergebnis ist also "[]".
         return teile.stream().collect(Collectors.joining(", ", "[", "]"));
     }
@@ -48,7 +49,7 @@ public class Aufgaben {
     public static double durchschnittsalter(List<Person> personen) {
         return personen.stream()
                 .mapToInt(Person::getAlter)   // Stream<Person> -> IntStream (kein Boxing)
-                .average()                    // OptionalDouble - leer bei leerem Stream
+                .average()                    // OptionalDouble, leer bei leerem Stream
                 .orElse(0.0);
         // average() gibt OptionalDouble zurueck, weil der Durchschnitt von
         // null Werten nicht definiert ist. orElse macht daraus unsere 0.0.
@@ -61,7 +62,7 @@ public class Aufgaben {
                         Collectors.mapping(Person::getName,          // Downstream: erst
                                 Collectors.toList())));              // umwandeln, dann sammeln
         // Ohne mapping bekaemest du Map<String, List<Person>>.
-        // Der Downstream-Collector bestimmt, was PRO GRUPPE passiert -
+        // Der Downstream-Collector bestimmt, was PRO GRUPPE passiert,
         // das ist der Hebel, mit dem groupingBy so maechtig wird:
         //   counting()             -> Map<String, Long>
         //   summingInt(getAlter)   -> Map<String, Integer>
@@ -74,7 +75,7 @@ public class Aufgaben {
         // Unterschied zu groupingBy(p -> p.getAlter() >= 18):
         // partitioningBy garantiert BEIDE Schluessel (true und false),
         // auch wenn eine Haelfte leer bleibt. groupingBy laesst leere
-        // Gruppen einfach weg - das ist ein haeufiger NullPointer-Fallstrick.
+        // Gruppen einfach weg, das ist ein haeufiger NullPointer-Fallstrick.
     }
 
     public static Map<String, Integer> namenLaengen(List<Person> personen) {
@@ -92,7 +93,7 @@ public class Aufgaben {
         //   - s -> s ist das neutrale Element: "nichts tun". Bei leerer
         //     Liste kommt genau das heraus, also die Eingabe unveraendert.
         //   - dann() ist assoziativ: (a.dann(b)).dann(c) wirkt wie
-        //     a.dann(b.dann(c)). Genau das verlangt reduce - deshalb waere
+        //     a.dann(b.dann(c)). Genau das verlangt reduce, deshalb waere
         //     das Ergebnis sogar mit parallelStream() korrekt.
         return schritte.stream()
                 .reduce(s -> s, Transformation::dann)
@@ -100,7 +101,7 @@ public class Aufgaben {
         // Verlockend, aber vertragswidrig waere
         //     reduce(eingabe, (text, t) -> t.anwenden(text), (a, b) -> b)
         // Sequentiell funktioniert das zufaellig, aber der Combiner (a, b) -> b
-        // ist kein korrektes Zusammenfuegen - parallel kaeme Unsinn heraus.
+        // ist kein korrektes Zusammenfuegen, parallel kaeme Unsinn heraus.
         //
         // Ehrlicherweise ist die schlichte Schleife genauso gut:
         //     String ergebnis = eingabe;

@@ -1,14 +1,14 @@
 # Kapitel 01: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `begruessung`
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 1.1 und 1.3: Ein `String` ist ein Wert wie jeder andere, und `+`
-verkettet Strings. Frag dich: Aus welchen drei Teilen besteht der Satz
+Abschnitt 1.3, "Strings verketten": Ein `String` ist ein Wert wie jeder
+andere, und `+` hängt Strings aneinander. Frag dich: Aus welchen drei Teilen besteht der Satz
 `Hallo, Anna!`: was ist fest, was kommt aus dem Parameter?
 
 </details>
@@ -20,6 +20,16 @@ aneinanderhängen und direkt mit `return` zurückgeben. Die typische Falle
 sind Leerzeichen und Satzzeichen: Der Test vergleicht **zeichengenau**.
 Komma und Leerzeichen nach `Hallo`, Ausrufezeichen direkt hinter dem Namen,
 kein Leerzeichen davor.
+
+</details>
+
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static String begruessung(String name) {
+    return "..." + ... + "...";
+}
+```
 
 </details>
 
@@ -44,6 +54,16 @@ nicht verlassen. Der Test mit `-40.0` zeigt dir, ob auch negative Werte stimmen.
 
 </details>
 
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static double celsiusZuFahrenheit(double celsius) {
+    return celsius * ... / ... + ...;   // Konstanten als Kommazahlen: 9.0 statt 9
+}
+```
+
+</details>
+
 ## Aufgabe 3: `kreisFlaeche`
 
 <details><summary>Tipp 1: Richtung</summary>
@@ -57,10 +77,20 @@ man "r hoch 2" in Java, gibt es dafür überhaupt einen Operator?
 
 Denkfalle: `radius ^ 2` ist in Java **kein** Potenzieren, sondern bitweises XOR,
 mit einem `double` kompiliert das nicht einmal (`bad operand types for binary
-operator '^'`). Quadrieren heisst: die Zahl mit sich selbst multiplizieren.
+operator '^'`). Quadrieren heißt: die Zahl mit sich selbst multiplizieren.
 `Math.pow(radius, 2)` ginge auch, ist aber für einen festen Exponenten 2
 umständlicher zu lesen. Danach nur noch mit `Math.PI` multiplizieren. Radius
 `0.0` muss `0.0` ergeben, das klappt ohne Sonderfall.
+
+</details>
+
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static double kreisFlaeche(double radius) {
+    return Math.PI * ... * ...;
+}
+```
 
 </details>
 
@@ -83,6 +113,16 @@ durch die richtige Zahl, bleibt genau `4` übrig; bei `1000` bleibt `0`, bei
 Schleife, kein `String`. Die Aufgabe garantiert nicht-negative Eingaben, das
 ist wichtig, denn in Java hat der Rest das Vorzeichen des linken Operanden
 (`-7 % 10` ist `-7`).
+
+</details>
+
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static int letzteZiffer(int zahl) {
+    return zahl % ...;
+}
+```
 
 </details>
 
@@ -138,10 +178,22 @@ Der Rückgabetyp ändert nichts an der Rechnung: Fünf `int`-Literale ergeben
 eine reine `int`-Multiplikation, die still auf `1471228928` überläuft und erst
 **danach** zu `long` erweitert wird. Auch ein Cast um den ganzen Ausdruck,
 `(long) (365 * 24 * ...)`, kommt zu spät, der Schaden ist dann schon passiert.
-Du musst dafür sorgen, dass schon die **erste** Multiplikation in `long`
-stattfindet: Java rechnet von links nach rechts, und sobald ein Operand `long`
-ist, bleibt der Rest der Kette `long`. Das Suffix aus der Literal-Spalte der
+Du musst dafür sorgen, dass in `long` gerechnet wird, bevor das
+Zwischenergebnis zu groß für `int` wird. Java rechnet von links nach rechts,
+und sobald ein Operand `long` ist, bleibt der Rest der Kette `long`. Am
+sichersten machst du deshalb gleich den **ersten** Faktor zum `long`, dann
+musst du gar nicht erst nachrechnen. Das Suffix aus der Literal-Spalte der
 Tabelle ist dein Werkzeug. Erwartet wird `31536000000`.
+
+</details>
+
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static long millisekundenProJahr() {
+    return 365... * 24 * 60 * 60 * 1000;   // was gehoert hinter die 365?
+}
+```
 
 </details>
 

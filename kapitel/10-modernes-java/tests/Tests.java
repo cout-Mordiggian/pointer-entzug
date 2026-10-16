@@ -163,7 +163,7 @@ public class Tests {
 
     /**
      * Fuehrt einen Pruefblock aus. Wirft dein Code unterwegs eine Exception,
-     * wird das als FEHL gemeldet - mit Datei und Zeile - und die restlichen
+     * wird das als FEHL gemeldet (mit Datei und Zeile), und die restlichen
      * Pruefungen laufen trotzdem weiter.
      */
     private static void sicher(String was, Runnable block) {

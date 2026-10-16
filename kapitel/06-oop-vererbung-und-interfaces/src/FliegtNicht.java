@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8b: ein FlugVerhalten (Strategie).
+ * Kapitel 6, Aufgabe 8b: ein FlugVerhalten (Strategie).
  *
  *   new FliegtNicht().fliegen()   // "Ich kann nicht fliegen."
  */

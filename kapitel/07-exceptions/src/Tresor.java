@@ -31,6 +31,6 @@ public class Tresor implements AutoCloseable {
         //       Sonst offen = false, "geschlossen" anhaengen.
         // Beachte: close() darf hier ohne throws deklariert werden.
         // AutoCloseable.close() erlaubt Exception, aber eine Ueberschreibung
-        // darf weniger werfen - und das macht Aufrufern das Leben leichter.
+        // darf weniger werfen, und das macht Aufrufern das Leben leichter.
     }
 }

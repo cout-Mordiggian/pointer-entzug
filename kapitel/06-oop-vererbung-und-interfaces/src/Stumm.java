@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8b: ein QuakVerhalten (Strategie).
+ * Kapitel 6, Aufgabe 8b: ein QuakVerhalten (Strategie).
  *
  *   new Stumm().quaken()   // "<< Stille >>"
  */

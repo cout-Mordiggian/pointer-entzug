@@ -1,7 +1,7 @@
 # Kapitel 06: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## 1. Figur.java: Name, Konstruktor und `getName`
 
@@ -30,7 +30,7 @@ Unterklassen über `getName()` an den Namen kommen.
 Das ist die *Template Method* aus Abschnitt 6.4: Eine fertige Methode in der
 Basisklasse ruft abstrakte Methoden auf, die erst die Unterklasse liefert. Frag
 dich: Woher bekommt `Figur` Fläche und Umfang, obwohl sie selbst gar nicht
-weiss, wie man sie berechnet?
+weiß, wie man sie berechnet?
 
 </details>
 
@@ -234,8 +234,9 @@ das ist automatisch richtig.
 `groesste`: ein klassisches Maximum-Suchen. Bei leerem Array sofort `null`.
 Sonst merkst du dir die erste Figur als bisher beste und ersetzt sie, sobald
 eine Figur eine **größere** Fläche hat. Vergleiche Flächen, nicht Namen und
-nicht Figuren. Die Tests prüfen, dass das auch dann klappt, wenn die größte
-Figur vorne **oder** hinten steht.
+nicht Figuren, und vergleiche immer mit der bisher besten, nicht mit der
+ersten. Die Tests prüfen, dass das auch dann klappt, wenn die größte Figur
+vorne, in der Mitte **oder** hinten steht.
 
 </details>
 
@@ -277,13 +278,15 @@ mache ich mit der Zeile, bevor ich sie weiterreiche, oder reiche ich sie
 - `MitZeilennummer`: ein `int`-Feld `nummer`, in `schreibe` erst erhöhen, dann
   `innen.schreibe(nummer + ": " + zeile)`. Das Feld gehört zum Objekt (nicht
   `static`!), deshalb zählt jeder Dekorierer für sich.
-- `Grossgeschrieben`: `innen.schreibe(zeile.toUpperCase(Locale.ROOT))`.
+- `Grossgeschrieben`: `innen.schreibe(zeile.toUpperCase(Locale.ROOT))`. Ohne
+  `Locale.ROOT` wird auf einem türkischen System aus `i` ein `İ`, und genau so
+  ein Locale stellt der Test ein.
 - `NurMit`: nur wenn `zeile.contains(teil)`, weiterreichen, sonst nichts tun.
 
 Warum ergeben die Kombinationen im Test unterschiedliche Ergebnisse? Der Aufruf
-kommt immer zuerst beim **äußersten** Objekt an. Steht der Filter aussen,
+kommt immer zuerst beim **äußersten** Objekt an. Steht der Filter außen,
 erreichen nur die durchgelassenen Zeilen den Zähler. Steht `Grossgeschrieben`
-aussen, sieht der Filter schon Grossbuchstaben.
+außen, sieht der Filter schon Großbuchstaben.
 
 </details>
 
@@ -316,8 +319,8 @@ public class NurMit implements Protokoll {
 
 Abschnitt 6.9, "Strategie". Die `Ente` spielt dieselbe Rolle wie dort die
 `Kasse`, nur mit zwei Strategien statt einer. Fang mit den fünf Verhalten an
-(8b), die sind je eine Zeile. Frag dich dann für `Ente`: Woher weiss
-`fliegen()`, was es zurückgeben soll, wenn die Ente selbst gar nicht weiss, wie
+(8b), die sind je eine Zeile. Frag dich dann für `Ente`: Woher weiß
+`fliegen()`, was es zurückgeben soll, wenn die Ente selbst gar nicht weiß, wie
 sie fliegt?
 
 </details>
@@ -388,8 +391,8 @@ Ein `Kreis` besteht aus einem `Figur`-Anteil und einem `Kreis`-Anteil, und der
 gelaufen ist, sind deren Felder nicht gesetzt und ihre Invarianten nicht
 hergestellt, `getName()` würde z. B. `null` liefern. Deshalb wird von oben nach
 unten initialisiert. In Java 21 muss `super(...)` darum die erste Anweisung
-sein; seit Java 25 dürfen davor Anweisungen stehen, die `this` noch nicht
-benutzen (etwa eine Parameterprüfung).
+sein; seit Java 25 dürfen davor Anweisungen stehen, die das Objekt noch nicht
+lesen (etwa eine Parameterprüfung oder das Zuweisen eigener Felder).
 
 </details>
 
@@ -415,7 +418,7 @@ Compile-Zeit nach dem statischen Typ aufgelöst.
 class A { String s = "A"; }
 class B extends A { String s = "B"; }
 A a = new B();
-a.s;   // "A" - obwohl das Objekt ein B ist
+System.out.println(a.s);   // "A", obwohl das Objekt ein B ist
 ```
 
 Deshalb Felder `private` halten und nur über Methoden zugreifen.
@@ -434,13 +437,16 @@ zusätzlich einziehen.
 
 </details>
 
-<details><summary>Warum bricht <code>equals</code> zwischen <code>Rechteck</code> und <code>Quadrat</code> die Symmetrie?</summary>
+<details><summary>Wann bricht <code>equals</code> zwischen <code>Rechteck</code> und <code>Quadrat</code> die Symmetrie?</summary>
 
 Der `equals`-Vertrag verlangt: `a.equals(b)` genau dann, wenn `b.equals(a)`.
 Prüft `Rechteck.equals` mit `instanceof Rechteck`, besteht auch ein `Quadrat`
 diese Prüfung, also sagt `new Rechteck(3, 3).equals(new Quadrat(3))` "ja".
-Prüft `Quadrat.equals` aber mit `instanceof Quadrat`, fällt das Rechteck durch,
-und `new Quadrat(3).equals(new Rechteck(3, 3))` sagt "nein". Auswege sind
+Überschreibt `Quadrat` nun `equals` mit `instanceof Quadrat`, fällt das
+Rechteck durch, und `new Quadrat(3).equals(new Rechteck(3, 3))` sagt "nein".
+Erbt `Quadrat` das `equals` dagegen unverändert, sagen beide "ja", und die
+Symmetrie hält. Gebrochen wird sie also erst, wenn die Unterklasse `equals`
+verschärft. Auswege sind
 `getClass() != o.getClass()` statt `instanceof` oder, besser, solche Werttypen
 gar nicht voneinander erben zu lassen.
 

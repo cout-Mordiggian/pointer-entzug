@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 7a: ein Dekorierer, der jede Zeile nummeriert (6.9).
+ * Kapitel 6, Aufgabe 7a: ein Dekorierer, der jede Zeile nummeriert (6.9).
  * Pruefen:  ./lerne.sh 06
  *
  *   TextProtokoll basis = new TextProtokoll();

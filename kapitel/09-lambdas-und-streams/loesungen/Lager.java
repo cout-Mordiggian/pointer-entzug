@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Kapitel 09 - Musterloesung zu Aufgabe 13: Beobachter (Observer).
+ * Kapitel 09, Musterloesung zu Aufgabe 13: Beobachter (Observer).
  */
 public class Lager {
 
@@ -24,7 +24,7 @@ public class Lager {
 
     public void anmelden(LagerBeobachter b) {
         Objects.requireNonNull(b, "beobachter");
-        // Doppelt angemeldet hiesse doppelt benachrichtigt - fast nie gewollt.
+        // Doppelt angemeldet hiesse doppelt benachrichtigt, fast nie gewollt.
         // contains vergleicht mit equals; Lambdas haben kein eigenes equals,
         // also zaehlt hier dasselbe Objekt (==).
         if (!beobachter.contains(b)) {
@@ -53,7 +53,7 @@ public class Lager {
         bestaende.put(artikel, nachher);
 
         // Nur beim UEBERSCHREITEN der Schwelle melden, nicht bei jeder Entnahme
-        // darunter - sonst ertrinkt der Einkauf in Meldungen.
+        // darunter, sonst ertrinkt der Einkauf in Meldungen.
         if (vorher >= meldebestand && nachher < meldebestand) {
             benachrichtige(artikel, nachher);
         }

@@ -29,7 +29,7 @@ erlaubt und beendet die Methode sofort.
 ### Guard Clauses statt Verschachtelung
 
 ```java
-// Verschachtelt - der eigentliche Code rutscht nach rechts:
+// Verschachtelt: Der eigentliche Code rutscht nach rechts
 static String pruefe(String s) {
     if (s != null) {
         if (!s.isBlank()) {
@@ -42,7 +42,7 @@ static String pruefe(String s) {
     }
 }
 
-// Mit Guard Clauses - Sonderfaelle vorne raus, Hauptfall bleibt links:
+// Mit Guard Clauses: Sonderfaelle vorne raus, Hauptfall bleibt links
 static String pruefe(String s) {
     if (s == null) return "fehlt";
     if (s.isBlank()) return "leer";
@@ -63,7 +63,7 @@ static void aendern(int zahl) {
 
 int x = 5;
 aendern(x);
-System.out.println(x);   // 5 - unveraendert
+System.out.println(x);   // 5, unveraendert
 ```
 
 Klar: Der **Wert** 5 wurde kopiert.
@@ -75,7 +75,7 @@ static void aendern(int[] arr) {
 
 int[] a = {1, 2, 3};
 aendern(a);
-System.out.println(a[0]);   // 99 - veraendert!
+System.out.println(a[0]);   // 99, veraendert!
 ```
 
 Sieht nach call-by-reference aus, ist es aber nicht:
@@ -87,7 +87,7 @@ static void ersetzen(int[] arr) {
 
 int[] a = {1, 2, 3};
 ersetzen(a);
-System.out.println(a[0]);   // 1 - unveraendert!
+System.out.println(a[0]);   // 1, unveraendert!
 ```
 
 Als Bild, beim Aufruf `ersetzen(a)` wird der **Pfeil** kopiert:
@@ -105,7 +105,7 @@ nur den Pfeil der Methode um; `a` zeigt weiter auf das alte Array.
 
 **Die Auflösung:** Bei Objekten ist der Wert der Variablen die *Referenz*
 (die Adresse). Diese Referenz wird kopiert. Beide Kopien zeigen auf dasselbe
-Objekt, deshalb wirken Änderungen **am Objekt** nach aussen. Aber die
+Objekt, deshalb wirken Änderungen **am Objekt** nach außen. Aber die
 Zuweisung `arr = ...` ändert nur die lokale Kopie der Referenz, nicht die
 Variable des Aufrufers.
 
@@ -158,7 +158,7 @@ Exception in thread "main" java.lang.StackOverflowError
 ```
 
 Jeder Aufruf belegt einen **Stack-Frame** (Parameter, lokale Variablen,
-Rücksprungadresse). Der Stack ist klein, typischerweise 512 KB bis 1 MB pro
+Rücksprungadresse). Der Stack ist klein, typischerweise etwa 1 MB pro
 Thread (einstellbar mit `java -Xss4m ...`). Rekursionstiefen von einigen
 Tausend bis Zehntausend sind die Grenze, Java hat keine
 Endrekursionsoptimierung (*tail call optimization*).
@@ -194,7 +194,7 @@ static int summe(int... zahlen) {
 
 summe();              // 0
 summe(1, 2, 3);       // 6
-summe(new int[]{1,2}); // 3 - ein Array geht auch direkt
+summe(new int[]{1,2}); // 3, ein Array geht auch direkt
 ```
 
 Regeln: Nur **ein** Varargs-Parameter, und er muss **der letzte** sein.
@@ -206,12 +206,12 @@ Math.max(3, 5);        // static: an der Klasse aufgerufen
 "hallo".length();      // Instanzmethode: an einem Objekt aufgerufen
 ```
 
-Eine `static`-Methode kennt kein `this` und kann nicht auf Objektfelder
-zugreifen. In diesem Kapitel ist noch alles `static`, ab Kapitel 5 wird sich
-das umkehren.
+Eine `static`-Methode kennt kein `this` und kann deshalb nicht direkt auf
+Objektfelder zugreifen, nur über ein konkretes Objekt. In diesem Kapitel ist
+noch alles `static`, ab Kapitel 5 wird sich das umkehren.
 
 Faustregel für später: `static` nur für echte Hilfsfunktionen, die
-ausschliesslich von ihren Parametern abhängen.
+ausschließlich von ihren Parametern abhängen.
 
 ## 4.7 Methoden gut schneiden
 
@@ -242,7 +242,7 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 04`.
 5. **`binaereSuche(int[], int)`**: Index des gesuchten Werts im **sortierten**
    Array, `-1` wenn nicht enthalten. Schreibe eine private rekursive
    Hilfsmethode mit `von`/`bis` und rufe sie aus der öffentlichen Methode auf.
-   *Denkfalle:* `(von + bis) / 2` kann bei sehr grossen Indizes überlaufen.
+   *Denkfalle:* `(von + bis) / 2` kann bei sehr großen Indizes überlaufen.
    Ehrlicher Hinweis: Die Tests prüfen nur die Ergebnisse. Eine simple Schleife
    über alle Elemente würde sie auch bestehen, ob du wirklich binär und
    rekursiv suchst, musst du selbst kontrollieren (Musterlösung vergleichen).
@@ -305,7 +305,7 @@ p(3);
 
 <details><summary>Auflösung</summary>
 
-`123`: Die Ausgabe steht **nach** dem rekursiven Aufruf. `p(3)` wartet auf `p(2)`, das auf `p(1)`, das auf `p(0)`. Erst auf dem Rückweg wird gedruckt, vom innersten Aufruf nach aussen. Steht das `print` vor `p(n - 1)`, kommt `321` heraus.
+`123`: Die Ausgabe steht **nach** dem rekursiven Aufruf. `p(3)` wartet auf `p(2)`, das auf `p(1)`, das auf `p(0)`. Erst auf dem Rückweg wird gedruckt, vom innersten Aufruf nach außen. Steht das `print` vor `p(n - 1)`, kommt `321` heraus.
 
 </details>
 
@@ -314,7 +314,7 @@ p(3);
 Erst selbst antworten, dann vergleichen: Die Antworten stehen am Ende von
 [`TIPPS.md`](TIPPS.md).
 
-- Warum wirkt `arr[0] = 99` in einer Methode nach aussen, `arr = neuesArray` aber nicht?
+- Warum wirkt `arr[0] = 99` in einer Methode nach außen, `arr = neuesArray` aber nicht?
 - Warum darf man nicht nur über den Rückgabetyp überladen?
 - Welche zwei Bestandteile braucht jede terminierende Rekursion?
 - Wann ist Rekursion die bessere Wahl als eine Schleife?

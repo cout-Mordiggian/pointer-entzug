@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 04 - Methoden.
+ * Kapitel 04: Methoden.
  * Pruefen:  ./lerne.sh 04
  */
 public class Aufgaben {

@@ -1,5 +1,5 @@
 /**
- * Kapitel 13 - Teil A: die Spezifikation, gegen die du testest.
+ * Kapitel 13, Teil A: die Spezifikation, gegen die du testest.
  *
  * Diese Datei musst du nicht aendern. Sie liegt identisch in src/ und
  * loesungen/, damit beide Varianten kompilieren.

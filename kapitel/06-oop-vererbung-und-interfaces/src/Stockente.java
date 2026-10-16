@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8c: die ganz normale Ente.
+ * Kapitel 6, Aufgabe 8c: die ganz normale Ente.
  *
  *   Ente e = new Stockente();
  *   e.anzeigen()   // "Ich bin eine Stockente"

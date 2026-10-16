@@ -1,8 +1,8 @@
 /**
- * Kapitel 13 - Musterloesung Teil A mit Erklaerungen.
+ * Kapitel 13, Musterloesung Teil A mit Erklaerungen.
  *
  * Aufbau: Jede Pruefung ist eine Zeile nach dem Muster
- *   Vorbereiten (die Eingabe waehlen) - Ausfuehren (r.endpreisCent) - Pruefen (gleich).
+ *   Vorbereiten (die Eingabe waehlen), Ausfuehren (r.endpreisCent), Pruefen (gleich).
  * Die erwarteten Werte sind von Hand ausgerechnet, der Rechenweg steht
  * jeweils im Kommentar. So kann jemand anderes (oder du in drei Monaten)
  * jede Zahl nachvollziehen.
@@ -35,14 +35,18 @@ public class MeineTests {
         // --- Null: leere Bestellung und Gratisartikel sind erlaubt ---------
         // Wirft die Implementierung hier unerwartet, ist das ebenfalls ein
         // Fehlschlag. Ohne dieses try/catch wuerde die Exception aus unserer
-        // Methode herausfliegen - das "entlarvt" den Fehler zwar auch, aber
-        // ohne verstaendliche Meldung.
+        // Methode herausfliegen. Das "entlarvt" den Fehler zwar auch, aber
+        // ohne verstaendliche Meldung, und alle folgenden Pruefungen fielen aus.
         try {
             gleich(0, r.endpreisCent(500, 0), "0 Stueck kosten 0");
         } catch (IllegalArgumentException e) {
             fehlschlag("0 Stueck: unerwartete IllegalArgumentException (" + e.getMessage() + ")");
         }
-        gleich(0, r.endpreisCent(0, 20), "Preis 0 bleibt 0, auch mit Rabatt");
+        try {
+            gleich(0, r.endpreisCent(0, 20), "Preis 0 bleibt 0, auch mit Rabatt");
+        } catch (IllegalArgumentException e) {
+            fehlschlag("Preis 0: unerwartete IllegalArgumentException (" + e.getMessage() + ")");
+        }
 
         // --- Rundung: Faelle, in denen der Rabatt KEIN ganzer Cent ist -----
         // 1990, 5 % = 99,5 -> 99 abgerundet -> 1891 (das Beispiel aus der Spezifikation)

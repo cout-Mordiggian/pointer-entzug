@@ -18,7 +18,7 @@ public enum IdGenerator {
 
     // TODO: ein Zaehler-Feld
 
-    /** Liefert 1, 2, 3, ... - jede Zahl genau einmal, auch bei mehreren Threads. */
+    /** Liefert 1, 2, 3, ..., jede Zahl genau einmal, auch bei mehreren Threads. */
     public long naechsteId() {
         // TODO
         return 0;

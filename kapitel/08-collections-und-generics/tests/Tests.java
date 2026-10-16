@@ -55,7 +55,8 @@ public class Tests {
 
         Pruef.abschnitt("Aufgabe 3: haeufigsteWoerter");
         Map<String, Integer> z = new LinkedHashMap<>();
-        z.put("b", 3); z.put("a", 5); z.put("d", 3); z.put("c", 1);
+        // "d" vor "b" eingefuegt: Ohne Gleichstandsregel kaeme "d" zuerst.
+        z.put("d", 3); z.put("a", 5); z.put("b", 3); z.put("c", 1);
         Pruef.gleich(List.of("a", "b", "d"), Aufgaben.haeufigsteWoerter(z, 3),
                 "nach Anzahl, bei Gleichstand alphabetisch");
         Pruef.gleich(List.of("a"), Aufgaben.haeufigsteWoerter(z, 1), "nur das haeufigste");

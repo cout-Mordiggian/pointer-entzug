@@ -11,12 +11,15 @@ public class Tests {
         Konto anna = new Konto("Anna", 5000);
         Pruef.gleich("Anna", anna.getInhaber(), "Inhaber gemerkt");
         Pruef.gleich(5000L, anna.getGuthaben(), "Startguthaben gemerkt");
-        Pruef.wahr(anna.getNummer() > 0, "Nummer wurde vergeben");
+        Pruef.gleich(1, anna.getNummer(), "erstes Konto hat die Nummer 1");
         Pruef.gleich(vorher + 1, Konto.getAnzahlKonten(), "Zaehler hochgezaehlt");
 
         Konto bert = new Konto("Bert", 0);
         Pruef.wahr(bert.getNummer() == anna.getNummer() + 1, "Nummern sind fortlaufend");
 
+        // Pruef.wirft(Typ.class, () -> code, ...) erwartet eine Exception dieses Typs.
+        // "() -> code" ist ein Lambda (Kapitel 9): ein Stueck Code, das Pruef.wirft
+        // selbst ausfuehrt, damit es die Exception auffangen kann.
         Pruef.wirft(IllegalArgumentException.class,
                 () -> new Konto(null, 100), "null-Inhaber abgelehnt");
         Pruef.wirft(IllegalArgumentException.class,
@@ -54,6 +57,10 @@ public class Tests {
         Pruef.falsch(bert.ueberweiseAn(anna, 50_000), "Ueberweisung ohne Deckung -> false");
         Pruef.gleich(1000L, bert.getGuthaben(), "Sender bei Misserfolg unveraendert");
         Pruef.gleich(6000L, anna.getGuthaben(), "Empfaenger bei Misserfolg unveraendert");
+        Pruef.wirft(NullPointerException.class,
+                () -> anna.ueberweiseAn(null, 100), "Ueberweisung an null -> NullPointerException");
+        Pruef.gleich(6000L, anna.getGuthaben(),
+                "nach Ueberweisung an null: Sender unveraendert (null vor dem Abheben pruefen)");
 
         Pruef.abschnitt("Konto: toString");
         Konto dora = new Konto("Dora", 250);
@@ -99,6 +106,14 @@ public class Tests {
         menge.add(new Punkt(1, 1));
         Pruef.gleich(1, menge.size(), "HashSet erkennt das Duplikat (der hashCode-Vertrag)");
 
+        // "return 0" erfuellt den Vertrag formal, steckt aber alle Punkte in
+        // denselben Eimer. Verschiedene Punkte sollen verschiedene Hashwerte haben.
+        Set<Integer> hashwerte = new HashSet<>();
+        for (Punkt h : new Punkt[]{new Punkt(1, 2), new Punkt(2, 1), new Punkt(3, 4), new Punkt(0, 5)}) {
+            hashwerte.add(h.hashCode());
+        }
+        Pruef.wahr(hashwerte.size() > 1, "verschiedene Punkte haben nicht alle denselben hashCode");
+
         Pruef.abschnitt("Punkt: statische Fabrikmethoden");
         Punkt o = Punkt.ursprung();
         Pruef.fastGleich(0.0, o.getX(), "ursprung(): x = 0");
@@ -136,14 +151,14 @@ public class Tests {
         Pruef.wirft(IllegalArgumentException.class, () -> k1.setSprache(null), "setSprache(null) abgelehnt");
         Pruef.wirft(IllegalArgumentException.class, () -> k1.setSprache("  "), "leere Sprache abgelehnt");
         Pruef.gleich("en", k2.getSprache(), "nach den Fehlversuchen: Sprache unveraendert");
-        // Ein Blick in die Klasse zur Laufzeit ("Reflection" - kein Kursthema,
+        // Ein Blick in die Klasse zur Laufzeit ("Reflection", kein Kursthema,
         // hier nur, um zu pruefen, was der Compiler in einem Test nicht pruefen
         // kann): Gibt es irgendeinen Konstruktor, den andere Klassen aufrufen koennen?
         boolean allePrivat = true;
         for (Constructor<?> konstruktor : Konfiguration.class.getDeclaredConstructors()) {
             if (!Modifier.isPrivate(konstruktor.getModifiers())) allePrivat = false;
         }
-        Pruef.wahr(allePrivat, "alle Konstruktoren sind private - niemand sonst kann 'new' sagen");
+        Pruef.wahr(allePrivat, "alle Konstruktoren sind private, niemand sonst kann 'new' sagen");
 
         Pruef.bericht();
     }

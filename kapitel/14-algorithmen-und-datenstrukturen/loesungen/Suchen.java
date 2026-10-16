@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Musterloesung: Suchen.
+ * Kapitel 14, Musterloesung: Suchen.
  */
 public class Suchen {
 
@@ -14,7 +14,7 @@ public class Suchen {
         // Invariante:  alles LINKS von "von" ist < wert,
         //              alles AB "bis"       ist >= wert.
         // Der Bereich dazwischen ist noch unbekannt. Er schrumpft in jedem
-        // Schritt, bis von == bis - dann ist "von" genau die gesuchte Grenze.
+        // Schritt, bis von == bis, dann ist "von" genau die gesuchte Grenze.
         while (von < bis) {
             int mitte = von + (bis - von) / 2;   // ueberlaufsicher, siehe Kapitel 4
             if (sortiert[mitte] < wert) {
@@ -28,7 +28,7 @@ public class Suchen {
         // Aufwand: der Bereich halbiert sich pro Schritt -> O(log n).
         // Leeres Array: die Schleife laeuft nicht, Ergebnis 0 == length. Passt.
         // Anders als die binaereSuche aus Kapitel 4 bricht diese Variante bei
-        // einem Treffer NICHT ab - sonst faende sie bei Duplikaten irgendeinen
+        // einem Treffer NICHT ab, sonst faende sie bei Duplikaten irgendeinen
         // statt den ersten.
     }
 
@@ -42,7 +42,7 @@ public class Suchen {
         int anfang = ersteGroesserGleich(sortiert, wert);
 
         // Falle: wert + 1 laeuft bei Integer.MAX_VALUE ueber und wird zur
-        // kleinsten int-Zahl. Groesser als MAX_VALUE kann aber nichts sein -
+        // kleinsten int-Zahl. Groesser als MAX_VALUE kann aber nichts sein,
         // das Ende ist dann einfach das Array-Ende.
         int ende = (wert == Integer.MAX_VALUE)
                 ? sortiert.length

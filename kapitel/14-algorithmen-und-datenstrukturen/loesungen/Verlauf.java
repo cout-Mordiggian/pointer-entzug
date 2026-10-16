@@ -2,12 +2,12 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * Kapitel 14 - Musterloesung: Rueckgaengig und Wiederholen mit zwei Stapeln.
+ * Kapitel 14, Musterloesung: Rueckgaengig und Wiederholen mit zwei Stapeln.
  */
 public class Verlauf {
 
     // Zwei Stapel (README 14.6). Oben liegt jeweils der juengste Befehl:
-    // Rueckgaengig nimmt immer den zuletzt ausgefuehrten - LIFO.
+    // Rueckgaengig nimmt immer den zuletzt ausgefuehrten: LIFO.
     private final Deque<Befehl> rueckgaengigStapel = new ArrayDeque<>();
     private final Deque<Befehl> wiederholenStapel = new ArrayDeque<>();
 
@@ -15,7 +15,7 @@ public class Verlauf {
         befehl.ausfuehren();
         rueckgaengigStapel.push(befehl);
         // Ein neuer Befehl beginnt eine neue "Zeitlinie". Die rueckgaengig
-        // gemachten Befehle passen nicht mehr zum Text und verfallen - so
+        // gemachten Befehle passen nicht mehr zum Text und verfallen. So
         // verhaelt sich jeder Editor.
         wiederholenStapel.clear();
     }

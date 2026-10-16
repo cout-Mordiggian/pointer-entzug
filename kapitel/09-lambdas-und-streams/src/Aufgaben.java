@@ -8,10 +8,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Kapitel 09 - Lambdas und Streams.
+ * Kapitel 09: Lambdas und Streams.
  * Pruefen:  ./lerne.sh 09
  *
- * Loese die Aufgaben 1-8 moeglichst mit Streams - darum geht es hier.
+ * Loese die Aufgaben 1-8 moeglichst mit Streams, darum geht es hier.
  */
 public class Aufgaben {
 
@@ -30,7 +30,7 @@ public class Aufgaben {
      */
     public static Optional<String> laengstesWort(List<String> woerter) {
         // TODO: Welches Element liefert max() bei Gleichstand?
-        //       Rate nicht - probier es mit zwei gleich langen Woertern aus.
+        //       Rate nicht, probier es mit zwei gleich langen Woertern aus.
         return Optional.empty();
     }
 
@@ -38,7 +38,7 @@ public class Aufgaben {
      * Aufgabe 3: Namen in Grossbuchstaben, alphabetisch sortiert.
      */
     public static List<String> grossgeschriebenSortiert(List<Person> personen) {
-        // TODO: toUpperCase(Locale.ROOT) - ohne Locale haengt das Ergebnis
+        // TODO: toUpperCase(Locale.ROOT), ohne Locale haengt das Ergebnis
         //       von der Systemsprache ab (Stichwort: tuerkisches i).
         return List.of();
     }
@@ -70,7 +70,7 @@ public class Aufgaben {
 
     /**
      * Aufgabe 7: aufteilen in volljaehrig (>= 18) und nicht.
-     * partitioningBy liefert IMMER beide Schluessel - auch wenn eine Seite leer ist.
+     * partitioningBy liefert IMMER beide Schluessel, auch wenn eine Seite leer ist.
      */
     public static Map<Boolean, List<Person>> volljaehrigkeit(List<Person> personen) {
         // TODO
@@ -79,7 +79,7 @@ public class Aufgaben {
 
     /**
      * Aufgabe 8: Name -> Laenge des Namens.
-     * Die Namen sind eindeutig - doppelte Schluessel musst du nicht behandeln.
+     * Die Namen sind eindeutig, doppelte Schluessel musst du nicht behandeln.
      */
     public static Map<String, Integer> namenLaengen(List<Person> personen) {
         // TODO: Collectors.toMap(schluesselFunktion, wertFunktion)

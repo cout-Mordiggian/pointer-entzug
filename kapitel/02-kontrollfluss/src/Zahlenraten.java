@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 /**
  * Bonus-Aufgabe zu Kapitel 02: dein erstes interaktives Programm.
- * Es gibt keine automatischen Tests - du pruefst, indem du spielst.
+ * Es gibt keine automatischen Tests, du pruefst, indem du spielst.
  *
- * Starten:  bash lerne.sh 02 -r Zahlenraten
+ * Starten:  ./lerne.sh 02 -r Zahlenraten
  *
  * So soll es sich anfuehlen:
  *
@@ -34,7 +34,7 @@ public class Zahlenraten {
         // Ausbau, wenn es laeuft:
         //  - Nach 7 Fehlversuchen verloren (und die Zahl verraten).
         //  - Tipps ausserhalb von 1..100 ablehnen, ohne sie als Versuch zu zaehlen.
-        //  - Am Ende fragen: "Nochmal? (j/n)" - Achtung, dafuer brauchst du
+        //  - Am Ende fragen: "Nochmal? (j/n)". Achtung, dafuer brauchst du
         //    eingabe.next() und equals (Kapitel 3), nicht ==.
     }
 }

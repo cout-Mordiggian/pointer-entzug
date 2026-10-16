@@ -1,7 +1,7 @@
 # Kapitel 11: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `zeilenZaehlen`
 
@@ -10,7 +10,7 @@
 Abschnitt 11.4 (`Files.lines`), Kapitel 7.7 (try-with-resources) und 9.5
 (Terminaloperationen). Du hast
 einen Stream von Zeilen, welche Terminaloperation zählt? Und frag dich: Wer
-schliesst die Datei, wenn du fertig bist?
+schließt die Datei, wenn du fertig bist?
 
 </details>
 
@@ -152,7 +152,7 @@ try {
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 11.6 (CSV von Hand), 11.2 (`readAllLines`) und Kapitel 7.6
-(Ursachen verketten). Frag dich zuerst: Woher weisst du in der Schleife die
+(Ursachen verketten). Frag dich zuerst: Woher weißt du in der Schleife die
 **Zeilennummer**? Und welche zwei Dinge können bei einer Zeile schiefgehen?
 
 </details>
@@ -299,8 +299,8 @@ lebt, damit er weitere Zeilen nachladen kann. Ein normaler Stream über eine
 `List` hält keine Ressource, `Files.lines` dagegen einen Dateideskriptor des
 Betriebssystems. Streams sind `AutoCloseable`, und try-with-resources ruft
 `close()` sicher auf, auch bei einer Exception. Ohne das sammeln sich offene
-Dateien an, bis "too many open files" kommt (und unter Windows lässt sich die
-Datei so lange nicht löschen).
+Dateien an, bis "too many open files" kommt (und unter Windows kann das
+Löschen der Datei oder ihres Ordners scheitern, solange sie offen ist).
 
 </details>
 
@@ -311,7 +311,9 @@ Die `Files`-Methoden nehmen ohne Angabe **immer UTF-8**. Ältere APIs wie
 Java 17 den **Plattform-Standard**, unter Windows oft `windows-1252` statt
 UTF-8. Dieselbe Datei las sich dann je nach Rechner richtig oder mit kaputten
 Umlauten. Seit Java 18 ist UTF-8 auch dort der Standard, deshalb ist das Risiko
-kleiner. Den Zeichensatz hinzuschreiben bleibt trotzdem gut: Es dokumentiert
+kleiner. Ausnahme ist die Konsole: `System.out` und die Tastatureingabe in
+cmd oder PowerShell benutzen weiter die Codepage des Terminals (11.7). Den
+Zeichensatz hinzuschreiben bleibt trotzdem gut: Es dokumentiert
 die Absicht und schützt auf älteren JVMs.
 
 </details>
@@ -351,6 +353,6 @@ dagegen einen `InputStream` ein, der Bytes liefert, und ist selbst ein `Reader`,
 der Zeichen liefert. Er übersetzt eine Schnittstelle in eine andere, das ist die
 Aufgabe eines Adapters. Dass er dabei dekodiert und damit auch Verhalten
 hinzufügt, ist der Grund für den Streit, ob er nicht doch beides ist.
-Faustregel: gleicher Typ aussen wie innen, Dekorierer, anderer Typ, Adapter.
+Faustregel: gleicher Typ außen wie innen, Dekorierer, anderer Typ, Adapter.
 
 </details>

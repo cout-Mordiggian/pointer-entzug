@@ -31,7 +31,7 @@ public class Tests {
         Pruef.gleich("neu\n", lies(raus), "ueberschreibt");
         Aufgaben.schreibeZeilen(raus, List.of());
         Pruef.gleich("", lies(raus), "leere Liste");
-        // \u00fc = ue, \u00df = ss, \u00f6 = oe - als Escape, damit diese Datei ASCII bleibt.
+        // \u00fc = ue, \u00df = ss, \u00f6 = oe, als Escape, damit diese Datei ASCII bleibt.
         String umlaute = "Gr\u00fc\u00dfe aus K\u00f6ln";
         Aufgaben.schreibeZeilen(raus, List.of(umlaute));
         Pruef.gleich(umlaute + "\n", lies(raus), "UTF-8 hin und zurueck (Umlaute)");
@@ -127,7 +127,7 @@ public class Tests {
         }
     }
 
-    /** Holt ein Element oder null - damit eine unfertige Loesung die Pruefung nicht abbricht. */
+    /** Holt ein Element oder null, damit eine unfertige Loesung die Pruefung nicht abbricht. */
     private static <T> T bei(List<T> liste, int i) {
         return i < liste.size() ? liste.get(i) : null;
     }

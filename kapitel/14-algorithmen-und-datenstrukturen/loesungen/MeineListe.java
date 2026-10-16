@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Kapitel 14 - Musterloesung: eine eigene ArrayList.
+ * Kapitel 14, Musterloesung: eine eigene ArrayList.
  */
 public class MeineListe<E> {
 
@@ -24,7 +24,7 @@ public class MeineListe<E> {
         }
         elemente[groesse] = element;
         groesse++;
-        // Aufwand: meistens O(1). Beim Wachsen O(n) fuer das Umkopieren - aber
+        // Aufwand: meistens O(1). Beim Wachsen O(n) fuer das Umkopieren, aber
         // danach ist wieder genauso viel Platz frei, wie gerade belegt ist.
         // Verteilt auf alle add-Aufrufe: amortisiert O(1).
     }
@@ -38,7 +38,7 @@ public class MeineListe<E> {
         elemente = Arrays.copyOf(elemente, elemente.length * 2);
     }
 
-    // Der Cast (E) kann zur Laufzeit nicht geprueft werden - E ist ja geloescht.
+    // Der Cast (E) kann zur Laufzeit nicht geprueft werden, E ist ja geloescht.
     // Der Compiler warnt deshalb ("unchecked cast"). Wir wissen es besser: In
     // das Array gelangen nur Werte ueber add und set, und die nehmen nur E an.
     // @SuppressWarnings sagt dem Compiler genau das. So eng wie moeglich
@@ -73,20 +73,20 @@ public class MeineListe<E> {
         }
         groesse--;
         // Den letzten Platz leeren. Sonst haelt das Array noch eine Referenz
-        // auf ein Objekt, das logisch gar nicht mehr in der Liste ist - der
+        // auf ein Objekt, das logisch gar nicht mehr in der Liste ist. Der
         // Garbage Collector koennte es nie wegraeumen.
         elemente[groesse] = null;
         return entfernt;
         // Aufwand: O(n - index). remove(0) ist also der teuerste Fall: O(n).
-        // Das Array schrumpft nicht - ArrayList macht das auch nicht.
+        // Das Array schrumpft nicht, ArrayList macht das auch nicht.
     }
 
     public boolean contains(Object o) {
-        // Nur bis groesse suchen, nicht bis elemente.length - dahinter liegen
+        // Nur bis groesse suchen, nicht bis elemente.length, dahinter liegen
         // keine gueltigen Elemente.
         for (int i = 0; i < groesse; i++) {
             // equals, nicht == : "gleicher Inhalt", nicht "dasselbe Objekt".
-            // Objects.equals ist null-sicher - null darf in der Liste stehen und
+            // Objects.equals ist null-sicher: null darf in der Liste stehen und
             // auch gesucht werden.
             if (Objects.equals(o, elemente[i])) return true;
         }
@@ -112,7 +112,7 @@ public class MeineListe<E> {
 
     private void pruefeIndex(int index) {
         // Nicht auf das Array verlassen! Bei groesse 1 und Kapazitaet 4 gibt es
-        // elemente[1] durchaus - es ist nur kein gueltiges Element. Ohne diese
+        // elemente[1] durchaus, es ist nur kein gueltiges Element. Ohne diese
         // Pruefung lieferte get(1) stillschweigend null.
         if (index < 0 || index >= groesse) {
             throw new IndexOutOfBoundsException(

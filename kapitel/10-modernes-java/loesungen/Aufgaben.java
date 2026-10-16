@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Kapitel 10 - Musterloesung mit Erklaerungen.
+ * Kapitel 10, Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -12,7 +12,7 @@ public class Aufgaben {
         //
         // Kein default noetig: Form ist sealed, der Compiler kennt alle
         // drei Faelle. Kommt spaeter ein Fuenfeck dazu, meldet er GENAU
-        // diese Stelle als unvollstaendig - das ist der eigentliche Gewinn.
+        // diese Stelle als unvollstaendig. Das ist der eigentliche Gewinn.
         return switch (form) {
             case Form.Kreis(double r) -> Math.PI * r * r;
             case Form.Rechteck(double b, double h) -> b * h;
@@ -20,8 +20,8 @@ public class Aufgaben {
                 double s = (a + b + c) / 2;                       // halber Umfang
                 yield Math.sqrt(s * (s - a) * (s - b) * (s - c)); // Heron
             }
-            // yield statt -> , weil dieser Zweig ein Block mit mehreren
-            // Anweisungen ist. Bei einem einzelnen Ausdruck reicht der Pfeil.
+            // yield statt return, weil dieser Zweig ein Block mit mehreren
+            // Anweisungen ist. Bei einem einzelnen Ausdruck reicht der Pfeil allein.
         };
     }
 
@@ -41,13 +41,13 @@ public class Aufgaben {
     public static String beschreibe(Object o) {
         return switch (o) {
             // "case null" ist seit Java 21 erlaubt. Ohne diesen Zweig
-            // wirft ein switch ueber null eine NullPointerException - genau
+            // wirft ein switch ueber null eine NullPointerException, genau
             // wie der alte switch, der null gar nicht behandeln konnte.
             case null -> "nichts";
 
             // Guarded Patterns: Typ + Bedingung. Die REIHENFOLGE zaehlt,
             // das erste passende Muster gewinnt. Deshalb muessen die
-            // eingeschraenkten Faelle vor dem allgemeinen "case Integer i" stehen -
+            // eingeschraenkten Faelle vor dem allgemeinen "case Integer i" stehen,
             // andernfalls meldet der Compiler den spaeteren als unerreichbar.
             case Integer i when i < 0 -> "negative Zahl";
             case Integer i when i == 0 -> "null";

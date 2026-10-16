@@ -10,11 +10,12 @@ public class Tests {
         Pruef.wahr(Aufgaben.istPalindrom(""), "leerer String");
         Pruef.wahr(Aufgaben.istPalindrom("a"), "ein Zeichen");
         Pruef.wahr(Aufgaben.istPalindrom("otto"), "otto");
-        Pruef.wahr(Aufgaben.istPalindrom("Ein Esel lese nie"), "Satz mit Leerzeichen");
+        Pruef.wahr(Aufgaben.istPalindrom("Ein Esel lese nie"), "Gross-/Kleinschreibung egal");
         Pruef.wahr(Aufgaben.istPalindrom("A man, a plan, a canal: Panama"), "mit Satzzeichen");
         Pruef.falsch(Aufgaben.istPalindrom("Hallo"), "Hallo ist keins");
         Pruef.falsch(Aufgaben.istPalindrom("abca"), "abca: aussen gleich, innen nicht");
         Pruef.wahr(Aufgaben.istPalindrom("12321"), "Zahlenpalindrom");
+        Pruef.falsch(Aufgaben.istPalindrom("123"), "123: Ziffern zaehlen mit");
 
         Pruef.abschnitt("Aufgabe 3: wortAnzahl");
         Pruef.gleich(0, Aufgaben.wortAnzahl(""), "leer");

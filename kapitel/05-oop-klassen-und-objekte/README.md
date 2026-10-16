@@ -55,22 +55,23 @@ public class Hund {
     }
 
     public Hund(String name) {
-        this(name, 0);         // ruft den anderen Konstruktor auf - MUSS erste Zeile sein
+        this(name, 0);         // ruft den anderen Konstruktor auf, MUSS die erste Anweisung sein
     }
 }
 ```
 
 > *Seit Java 25* dürfen vor `this(...)` bzw. `super(...)` einfache Anweisungen
-> stehen, die das Objekt noch nicht benutzen, etwa eine Prüfung der
-> Parameter. In Java 21 ist `this(...)` zwingend die erste Anweisung.
+> stehen, die das Objekt noch nicht lesen, etwa eine Prüfung der Parameter.
+> In Java 21 ist `this(...)` zwingend die erste Anweisung.
 
-Merkmale: heisst wie die Klasse, hat **keinen** Rückgabetyp (auch nicht `void`).
+Merkmale: heißt wie die Klasse, hat **keinen** Rückgabetyp (auch nicht `void`).
 
 `this` ist die Referenz auf das aktuelle Objekt. Man braucht es, wenn Parameter
-und Feld gleich heissen (was guter Stil ist, der Name ist ja derselbe Begriff).
+und Feld gleich heißen (was guter Stil ist, der Name ist ja derselbe Begriff).
 
 **Der Standardkonstruktor:** Schreibst du gar keinen Konstruktor, erzeugt der
-Compiler einen parameterlosen. Sobald du **einen** eigenen schreibst,
+Compiler einen parameterlosen, mit derselben Sichtbarkeit wie die Klasse (bei
+`public class` also `public`). Sobald du **einen** eigenen schreibst,
 verschwindet er. `new Hund()` ist dann ein Compilerfehler.
 
 ### Konstruktoren sollen gültige Objekte garantieren
@@ -119,7 +120,7 @@ Beachte: `einzahlen` ist ein besserer Name als `setGuthaben`. Modelliere die
 **Fachlichkeit**, nicht die Felder. Ein blinder Setter für jedes Feld ist
 Kapselung nur dem Namen nach.
 
-### Sichtbarkeiten (Vollständig in Kapitel 6)
+### Sichtbarkeiten (vollständig in Kapitel 6)
 
 | Modifier | Sichtbar in |
 |----------|-------------|
@@ -150,9 +151,13 @@ public class Konto {
 Konto.getAnzahlKonten();   // an der Klasse, nicht am Objekt
 ```
 
-Eine `static`-Methode hat **kein** `this` und kann deshalb nicht auf
-Instanzfelder zugreifen, ein häufiger Compilerfehler:
+Eine `static`-Methode hat **kein** `this` und kann deshalb nicht direkt auf
+Instanzfelder zugreifen, nur über ein konkretes Objekt (`anderesKonto.nummer`).
+Ein direkter Zugriff ist ein häufiger Compilerfehler:
 `non-static variable x cannot be referenced from a static context`.
+Auf einem deutsch eingestellten System, etwa in der IDE, erscheinen die
+Meldungen übersetzt, hier: `Variable x ist nicht statisch und kann nicht aus
+einem statischen Kontext referenziert werden`.
 
 **Konstanten:**
 
@@ -166,7 +171,7 @@ public static final double MWST = 0.19;   // static final, GROSS_MIT_UNTERSTRICH
 private final String name;   // muss im Konstruktor gesetzt werden, danach nie wieder
 ```
 
-`final` heisst: Die **Referenz** ist unveränderlich, nicht das Objekt dahinter.
+`final` heißt: Die **Referenz** ist unveränderlich, nicht das Objekt dahinter.
 
 ```java
 private final List<String> namen = new ArrayList<>();
@@ -241,14 +246,14 @@ oder taucht doppelt in einem `HashSet` auf. Deshalb: **immer beide zusammen.**
 
 ## 5.7 `null` und die NullPointerException
 
-`null` heisst "diese Referenz zeigt auf nichts". Jeder Methodenaufruf darauf:
+`null` heißt "diese Referenz zeigt auf nichts". Jeder Methodenaufruf darauf:
 
 ```
 Exception in thread "main" java.lang.NullPointerException:
     Cannot invoke "String.length()" because "name" is null
 ```
 
-Seit Java 14 sagen die Meldungen sehr genau, *welche* Referenz `null` war,
+Seit Java 15 sagen die Meldungen standardmäßig sehr genau, *welche* Referenz `null` war,
 lies sie, sie ersparen dir das Raten. (Steht dort `"<local1>"` statt eines
 Namens, wurde ohne Debug-Infos kompiliert; `javac -g` behebt das. `lerne.sh`
 macht das bereits für dich.)
@@ -297,9 +302,15 @@ drei Gruppen:
 
 | Gruppe | Frage | im Kurs |
 |--------|-------|---------|
-| **Erzeugungsmuster** | Wie entstehen Objekte? | Fabrikmethode und Singleton (hier), Builder (10.9) |
+| **Erzeugungsmuster** | Wie entstehen Objekte? | Singleton (hier), Builder (10.9) |
 | **Strukturmuster** | Wie setzen sich Objekte zusammen? | Dekorierer, Adapter (6.9, 11.9) |
-| **Verhaltensmuster** | Wie arbeiten Objekte zusammen? | Strategie (6.9, 9.8), Beobachter (9.9), Befehl (14.10), Iterator (14.9) |
+| **Verhaltensmuster** | Wie arbeiten Objekte zusammen? | Strategie (6.9, 9.8), Schablonenmethode (6.9), Beobachter (9.9), Befehl (14.10), Iterator (14.9) |
+
+Die *statische Fabrikmethode* aus diesem Abschnitt gehört nicht zu den 23,
+auch wenn der Name ähnlich klingt: Das GoF-Muster *Fabrikmethode* (*Factory
+Method*) meint eine überschreibbare Methode, mit der eine Unterklasse
+entscheidet, welches Objekt entsteht. Die statische Fabrikmethode ist ein
+eigenes, sehr verbreitetes Idiom, bekannt aus *Effective Java* von Joshua Bloch.
 
 Der größte Nutzen ist das **Vokabular**: "Das ist ein Singleton" sagt in drei
 Worten, wofür man sonst einen Absatz braucht. Und du erkennst die Muster im JDK
@@ -362,11 +373,13 @@ public final class Konfiguration {
 }
 ```
 
-Die JVM legt `INSTANZ` genau einmal an, wenn die Klasse geladen wird. Der
-private Konstruktor wird dabei innerhalb der eigenen Klasse aufgerufen, das ist
-erlaubt. Jeder andere bekommt den Compilerfehler `Konfiguration() has private
-access`. Wichtig: Schreibst du **gar keinen** Konstruktor, erzeugt der Compiler
-einen öffentlichen (5.2), und das Singleton ist keins.
+Die JVM legt `INSTANZ` genau einmal an, wenn die Klasse initialisiert wird,
+also beim ersten Zugriff auf sie. Der private Konstruktor wird dabei innerhalb
+der eigenen Klasse aufgerufen, das ist erlaubt. Jeder andere bekommt den
+Compilerfehler `Konfiguration() has private access` (deutsch: `hat
+private-Zugriff`). Wichtig: Schreibst du **gar keinen** Konstruktor, erzeugt
+der Compiler bei einer `public class` einen öffentlichen (5.2), und das
+Singleton ist keins.
 
 Mehr zum Singleton kommt später: warum die Variante "erst beim ersten Aufruf
 erzeugen" bei mehreren Threads falsch ist (12.3), die kürzeste Form als `enum`
@@ -424,7 +437,7 @@ Diese Unterscheidung vertiefst du in Kapitel 7.
     **dasselbe** Objekt. Tipp: eine Konstante.
   - `static Punkt polar(double radius, double winkelGrad)`: ein Punkt aus Abstand
     und Winkel: `x = radius * cos(w)`, `y = radius * sin(w)`, wobei `w` der Winkel
-    im Bogenmass ist. Umrechnen mit `Math.toRadians(winkelGrad)`, dann
+    im Bogenmaß ist. Umrechnen mit `Math.toRadians(winkelGrad)`, dann
     `Math.cos` und `Math.sin`. Beispiel: `polar(2, 90)` ist (0, 2).
     Als Konstruktor ginge das nicht: `Punkt(double, double)` gibt es schon.
 
@@ -438,7 +451,7 @@ Die Einstellungen des Programms: `getSprache()`/`setSprache(String)` (Standard
 
 - `Konfiguration.instanz() == Konfiguration.instanz()`
 - Was über eine Referenz gesetzt wird, sieht man über jede andere.
-- `new Konfiguration()` kompiliert ausserhalb der Klasse nicht mehr. Die Tests
+- `new Konfiguration()` kompiliert außerhalb der Klasse nicht mehr. Die Tests
   prüfen, dass **alle** Konstruktoren `private` sind.
 
 Achte beim Lesen der Tests darauf: Die Prüfung der Standardwerte muss **zuerst**
@@ -513,7 +526,7 @@ System.out.println((a == b) + " " + (c == d) + " " + c.equals(d));
 
 <details><summary>Auflösung</summary>
 
-`true false true`: `Integer.valueOf` ist eine statische Fabrikmethode mit Zwischenspeicher (5.10). Für -128 bis 127 liefert sie immer **dasselbe** Objekt, `==` ist deshalb `true`. 128 liegt ausserhalb, jeder Aufruf erzeugt ein neues Objekt, und `==` vergleicht Referenzen. Ein Konstruktor könnte das nicht, `new` liefert immer ein neues Objekt. Die Lehre aus Kapitel 3 gilt weiter: Objekte mit `equals` vergleichen, dann ist der Zwischenspeicher egal. Auch Autoboxing (`Integer x = 127;`) benutzt intern `valueOf`.
+`true false true`: `Integer.valueOf` ist eine statische Fabrikmethode mit Zwischenspeicher (5.10). Für -128 bis 127 liefert sie immer **dasselbe** Objekt, `==` ist deshalb `true`. 128 liegt außerhalb, jeder Aufruf erzeugt ein neues Objekt, und `==` vergleicht Referenzen. Ein Konstruktor könnte das nicht, `new` liefert immer ein neues Objekt. Die Lehre aus Kapitel 3 gilt weiter: Objekte mit `equals` vergleichen, dann ist der Zwischenspeicher egal. Auch Autoboxing (`Integer x = 127;`) benutzt intern `valueOf`.
 
 </details>
 
@@ -524,7 +537,7 @@ Erst selbst antworten, dann vergleichen: Die Antworten stehen am Ende von
 
 - Was passiert mit dem Standardkonstruktor, sobald du selbst einen schreibst?
 - Warum ist `einzahlen(long)` besser als `setGuthaben(long)`?
-- Warum darf eine `static`-Methode nicht auf Instanzfelder zugreifen?
+- Warum darf eine `static`-Methode nicht direkt auf Instanzfelder zugreifen?
 - Was geht kaputt, wenn du `equals` ohne `hashCode` überschreibst?
 - Warum ist `private final List<X> liste` trotzdem veränderbar?
 - Nenne zwei Dinge, die eine statische Fabrikmethode kann, ein Konstruktor aber nicht.

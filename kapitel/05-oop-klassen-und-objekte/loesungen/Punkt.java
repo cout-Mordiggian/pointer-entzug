@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 05 - Musterloesung Punkt, mit Erklaerungen.
+ * Kapitel 05, Musterloesung Punkt, mit Erklaerungen.
  *
  * Ein unveraenderlicher Werttyp. Die Zutaten:
  *   1. final class      -> niemand kann durch Vererbung Veraenderlichkeit einschleusen
@@ -39,7 +39,7 @@ public final class Punkt {
     }
 
     public static Punkt ursprung() {
-        // Eine Fabrikmethode darf ein vorhandenes Objekt liefern - ein
+        // Eine Fabrikmethode darf ein vorhandenes Objekt liefern, ein
         // Konstruktor nicht: new erzeugt immer ein neues.
         return URSPRUNG;
     }
@@ -52,7 +52,7 @@ public final class Punkt {
     }
 
     public Punkt verschoben(double dx, double dy) {
-        // Kein "this.x += dx" - das waere bei final gar nicht erlaubt und
+        // Kein "this.x += dx", das waere bei final gar nicht erlaubt und
         // wuerde die Unveraenderlichkeit brechen. Stattdessen: neues Objekt.
         return new Punkt(x + dx, y + dy);
     }
@@ -65,7 +65,7 @@ public final class Punkt {
     @Override
     public boolean equals(Object o) {
         // Der Parameter MUSS Object sein. Mit "equals(Punkt p)" haettest du
-        // ueberladen statt ueberschrieben - Collections wuerden weiter die
+        // ueberladen statt ueberschrieben, Collections wuerden weiter die
         // Referenzgleichheit von Object.equals verwenden. @Override verhindert das.
         if (this == o) return true;                 // Abkuerzung: identisches Objekt
         if (!(o instanceof Punkt p)) return false;  // deckt auch o == null ab!

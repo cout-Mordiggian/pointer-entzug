@@ -7,7 +7,7 @@ import java.util.Objects;
  * Ein winziges Pruef-Framework ("Mini-JUnit") fuer diesen Kurs.
  *
  * Bewusst simpel gehalten: statische Methoden, ein globaler Zaehler.
- * Ab Kapitel 12 lernst du das echte JUnit kennen - dann wirst du erkennen,
+ * Ab Kapitel 12 lernst du das echte JUnit kennen. Dann wirst du erkennen,
  * dass die Ideen dieselben sind (Assertion, Report, Exit-Code).
  */
 public final class Pruef {
@@ -17,12 +17,14 @@ public final class Pruef {
     private static final List<String> FEHLER = new ArrayList<>();
     private static int gesamt = 0;
 
+    // Farben abschaltbar mit der Umgebungsvariablen NO_COLOR (siehe no-color.org)
+    private static final boolean FARBE = System.getenv("NO_COLOR") == null || System.getenv("NO_COLOR").isEmpty();
     private static final String ESC   = String.valueOf((char) 27);
-    private static final String GRUEN = ESC + "[32m";
-    private static final String ROT   = ESC + "[31m";
-    private static final String GRAU  = ESC + "[90m";
-    private static final String GELB  = ESC + "[33m";
-    private static final String RESET = ESC + "[0m";
+    private static final String GRUEN = farbe("[32m");
+    private static final String ROT   = farbe("[31m");
+    private static final String GRAU  = farbe("[90m");
+    private static final String GELB  = farbe("[33m");
+    private static final String RESET = farbe("[0m");
 
     static {
         // Wirft dein Code eine Exception, bricht der ganze Testlauf ab. Statt eines
@@ -30,7 +32,7 @@ public final class Pruef {
         Thread.setDefaultUncaughtExceptionHandler((thread, fehler) -> {
             System.out.flush();
             System.out.println();
-            System.out.println(ROT + "  ABBRUCH: Dein Code hat eine Exception geworfen - die restlichen"
+            System.out.println(ROT + "  ABBRUCH: Dein Code hat eine Exception geworfen, die restlichen"
                     + " Pruefungen konnten nicht laufen." + RESET);
             System.out.println(GELB + "  Lies den Stacktrace unten von oben: Die erste Zeile mit einer deiner"
                     + " Dateien (z. B. Aufgaben.java:42) ist die Stelle in deinem Code." + RESET);
@@ -49,14 +51,30 @@ public final class Pruef {
         if (tiefGleich(erwartet, tatsaechlich)) {
             bestanden(was);
         } else {
-            fehlgeschlagen(was, "erwartet: " + zeige(erwartet) + "  |  bekommen: " + zeige(tatsaechlich));
+            String e = zeige(erwartet);
+            String t = zeige(tatsaechlich);
+            String detail;
+            if (e.contains("\n") || t.contains("\n")) {
+                // Mehrzeilig: untereinander, Zeilenenden als \n bzw. \r\n sichtbar
+                detail = "erwartet:\n  " + e.replace("\n", "\n   ") + "\nbekommen:\n  " + t.replace("\n", "\n   ");
+            } else {
+                detail = "erwartet: " + e + "  |  bekommen: " + t;
+            }
+            if (e.equals(t) && erwartet != null && tatsaechlich != null) {
+                detail += "\n" + gleicheAnzeige(erwartet, tatsaechlich);
+            }
+            fehlgeschlagen(was, detail);
         }
     }
 
     /** Fuer Kommazahlen: Vergleich mit Toleranz. */
     public static void fastGleich(double erwartet, double tatsaechlich, String was) {
         gesamt++;
-        if (Math.abs(erwartet - tatsaechlich) < 1e-6) {
+        double abstand = Math.abs(erwartet - tatsaechlich);
+        // Gleich (auch NaN/Infinity), absolut nah, oder bei grossen Zahlen relativ nah
+        // (isFinite: sonst gaelte Inf <= 1e-12 * Inf, und 4.5 gegen Infinity waere gruen)
+        if (Double.compare(erwartet, tatsaechlich) == 0 || Double.isFinite(abstand) && (abstand < 1e-6
+                || abstand <= 1e-12 * Math.max(Math.abs(erwartet), Math.abs(tatsaechlich)))) {
             bestanden(was);
         } else {
             fehlgeschlagen(was, "erwartet: " + erwartet + "  |  bekommen: " + tatsaechlich);
@@ -73,7 +91,12 @@ public final class Pruef {
     }
 
     public static void falsch(boolean bedingung, String was) {
-        wahr(!bedingung, was);
+        gesamt++;
+        if (!bedingung) {
+            bestanden(was);
+        } else {
+            fehlgeschlagen(was, "erwartet: false  |  bekommen: true");
+        }
     }
 
     /** Prueft, dass ein Codestueck eine bestimmte Exception wirft. */
@@ -116,6 +139,10 @@ public final class Pruef {
 
     // ---------------------------------------------------------------- intern
 
+    private static String farbe(String code) {
+        return FARBE ? ESC + code : "";
+    }
+
     private static void bestanden(String was) {
         System.out.println("  " + GRUEN + "OK  " + RESET + was);
     }
@@ -123,7 +150,22 @@ public final class Pruef {
     private static void fehlgeschlagen(String was, String detail) {
         FEHLER.add(was);
         System.out.println("  " + ROT + "FEHL" + RESET + " " + was);
-        System.out.println("       " + GRAU + detail + RESET);
+        for (String zeile : detail.split("\n", -1)) {
+            System.out.println("       " + GRAU + zeile + RESET);
+        }
+    }
+
+    /** Erklaerung, wenn beide Werte gleich aussehen und trotzdem verschieden sind. */
+    private static String gleicheAnzeige(Object a, Object b) {
+        if (a.getClass() != b.getClass()) {
+            String typen = "Typen verschieden: " + a.getClass().getSimpleName()
+                    + " gegen " + b.getClass().getSimpleName();
+            if (a instanceof Number && b instanceof Number) {
+                typen += " (im Test passend schreiben, z. B. 3L fuer long, 2.0 fuer double)";
+            }
+            return typen;
+        }
+        return "Sieht gleich aus, aber equals() liefert false (equals ueberschrieben?)";
     }
 
     private static boolean tiefGleich(Object a, Object b) {
@@ -142,9 +184,18 @@ public final class Pruef {
         if (o instanceof int[] x)     return Arrays.toString(x);
         if (o instanceof long[] x)    return Arrays.toString(x);
         if (o instanceof double[] x)  return Arrays.toString(x);
+        if (o instanceof float[] x)   return Arrays.toString(x);
+        if (o instanceof short[] x)   return Arrays.toString(x);
+        if (o instanceof byte[] x)    return Arrays.toString(x);
         if (o instanceof char[] x)    return Arrays.toString(x);
         if (o instanceof boolean[] x) return Arrays.toString(x);
-        if (o instanceof String s)    return "\"" + s + "\"";
+        if (o instanceof String s)    return "\"" + sichtbar(s) + "\"";
+        if (o instanceof Character c) return "'" + sichtbar(String.valueOf(c)) + "'";
         return o.toString();
+    }
+
+    /** Macht \r, \n und \t sichtbar. Nach \n folgt weiter ein Zeilenumbruch, damit Text lesbar bleibt. */
+    private static String sichtbar(String s) {
+        return s.replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n\n");
     }
 }

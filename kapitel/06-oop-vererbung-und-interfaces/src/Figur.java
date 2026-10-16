@@ -16,7 +16,7 @@ public abstract class Figur {
         return "";
     }
 
-    // Vorgegeben, damit die Tests kompilieren - verstehe, warum:
+    // Vorgegeben, damit die Tests kompilieren. Verstehe, warum:
     // Kreis und Rechteck schreiben @Override an flaeche() und umfang().
     // Gaebe es die beiden hier nicht, haetten sie nichts zum Ueberschreiben,
     // und der Compiler wuerde abbrechen.
@@ -26,7 +26,7 @@ public abstract class Figur {
 
     /**
      * Format (Kreis mit Radius 1): "Kreis: Flaeche=3.14, Umfang=6.28"
-     * Locale.ROOT ist Pflicht - sonst kaeme auf einem deutschen System 3,14 heraus.
+     * Locale.ROOT ist Pflicht, sonst kaeme auf einem deutschen System 3,14 heraus.
      */
     public String beschreibung() {
         // TODO: String.format(Locale.ROOT, "%s: Flaeche=%.2f, Umfang=%.2f", ...)

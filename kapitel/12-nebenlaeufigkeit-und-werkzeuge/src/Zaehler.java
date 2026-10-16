@@ -20,9 +20,9 @@ public class Zaehler {
      *
      * Warum auch beim LESEN? Ohne Synchronisierung darf die JVM den Wert
      * in einem Register oder CPU-Cache halten. Wer wert() aufruft, saehe
-     * dann moeglicherweise nie, was andere Threads geschrieben haben -
+     * dann moeglicherweise nie, was andere Threads geschrieben haben,
      * auch nach Minuten nicht. Das nennt man das Sichtbarkeitsproblem.
-     * (Kein Test kann das zuverlaessig pruefen - siehe README.)
+     * (Kein Test kann das zuverlaessig pruefen, siehe README.)
      */
     public int wert() {
         // TODO

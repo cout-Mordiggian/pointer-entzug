@@ -1,7 +1,7 @@
 # Kapitel 10: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## `Artikel.java`: Record mit Validierung
 
@@ -16,7 +16,7 @@ Frag dich bei `mitMenge`: Darf ein Record sein eigenes Feld ändern?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Im kompakten Konstruktor heissen die Parameter genauso wie die Komponenten:
+Im kompakten Konstruktor heißen die Parameter genauso wie die Komponenten:
 `name`, `preisCent`, `menge`. Du prüfst sie mit `if` und wirfst
 `IllegalArgumentException`. Danach darfst du `name` selbst neu zuweisen
 (`strip()`); die Felder setzt der Compiler am Ende automatisch.
@@ -25,7 +25,7 @@ Randfälle aus den Tests:
 
 - `null` als Name muss eine `IllegalArgumentException` geben, **keine**
   `NullPointerException`. Prüfe also zuerst auf `null`, erst danach darfst du
-  eine Methode auf `name` aufrufen. `||` wertet kurzschliessend aus.
+  eine Methode auf `name` aufrufen. `||` wertet kurzschließend aus.
 - `""` und `"   "` erkennt `isBlank()` beide.
 - Preis oder Menge `0` sind erlaubt, nur negative Werte nicht.
 - Prüfe den Namen vor `strip()`, sonst gibt es bei `null` wieder die NPE.
@@ -152,7 +152,7 @@ mehr als einen Ausdruck braucht?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Da die Records **in** `Form` stehen, heissen sie ausserhalb `Form.Kreis`,
+Da die Records **in** `Form` stehen, heißen sie außerhalb `Form.Kreis`,
 `Form.Rechteck`, `Form.Dreieck`. Kreis: `Math.PI * r * r`, Rechteck: `b * h`.
 
 Für Heron brauchst du erst `s`, dann die Wurzel (`Math.sqrt`). Das sind zwei
@@ -282,7 +282,7 @@ Zwei Stolperstellen, die der Test sieht:
 
 - Die Leerzeichen nach `Preis:`, `Menge:`, `Gesamt:` müssen exakt stimmen
   (alle Werte beginnen in derselben Spalte).
-- Der abschliessende Zeilenumbruch entsteht, wenn die schliessenden `"""` auf
+- Der abschließende Zeilenumbruch entsteht, wenn die schließenden `"""` auf
   einer **eigenen Zeile** stehen. Rück sie nicht weiter nach links als den
   Inhalt, sonst landen führende Leerzeichen im Ergebnis.
 
@@ -326,7 +326,7 @@ selbst `0`.
 
 <details><summary>Tipp 1: Richtung</summary>
 
-Abschnitt 10.9 zeigt den Aufbau fast vollständig. Arbeite von innen nach aussen:
+Abschnitt 10.9 zeigt den Aufbau fast vollständig. Arbeite von innen nach außen:
 erst den Builder (`belag`, `extraKaese`), dann `build`, dann den Konstruktor von
 `Pizza`, zuletzt `preisCent`. Frag dich bei jeder Builder-Methode: Was muss sie
 zurückgeben, damit `.belag("a").belag("b")` funktioniert?
@@ -412,11 +412,11 @@ mit `valueOf(...)` zurück, oder gib dem Enum ein eigenes, festes Feld als Code.
 
 <details><summary>Warum braucht ein `switch` über ein `sealed interface` kein `default`?</summary>
 
-`sealed` legt abschliessend fest, welche Typen das Interface implementieren
-dürfen. Deckt der `switch` alle diese Typen ab, weiss der Compiler, dass kein
+`sealed` legt abschließend fest, welche Typen das Interface implementieren
+dürfen. Deckt der `switch` alle diese Typen ab, weiß der Compiler, dass kein
 Fall fehlen kann, der `switch` ist **vollständig** (exhaustive). Das ist sogar
 ein Vorteil: Kommt später ein neuer Untertyp dazu, meldet der Compiler jede
-Stelle, an der der Fall fehlt. Ein `default` würde genau diese Warnung
+Stelle, an der der Fall fehlt. Ein `default` würde genau diese Fehlermeldung
 verschlucken und den neuen Typ still falsch behandeln.
 
 </details>
@@ -466,7 +466,7 @@ kompaktem Konstruktor ist kürzer und genauso klar.
 Der Besucher sollte neue Operationen über eine feste Typ-Hierarchie erlauben,
 ohne jede Klasse zu ändern. Dafür brauchte er ein Interface mit einer Methode
 je Typ und eine `accept`-Methode in jeder Klasse, viel Gerüst für wenig
-Inhalt. Mit einem `sealed interface` weiss der Compiler, welche Typen es gibt.
+Inhalt. Mit einem `sealed interface` weiß der Compiler, welche Typen es gibt.
 Eine neue Operation ist dann einfach eine Methode mit `switch` und Typ- oder
 Record-Mustern, und der Compiler meldet jeden vergessenen Fall. Das ist
 kürzer, liest sich an einem Ort und ist genauso sicher.

@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Kapitel 14 - Musterloesung: ein Stapel (LIFO) als verkettete Liste.
+ * Kapitel 14, Musterloesung: ein Stapel (LIFO) als verkettete Liste.
  */
 public class Stapel<E> implements Iterable<E> {
 
@@ -28,7 +28,7 @@ public class Stapel<E> implements Iterable<E> {
 
     public void push(E element) {
         // Der neue Knoten zeigt auf den bisherigen obersten und wird selbst
-        // der oberste. Bei leerem Stapel ist "oben" null - das passt genau,
+        // der oberste. Bei leerem Stapel ist "oben" null, das passt genau,
         // der neue Knoten hat dann niemanden unter sich.
         oben = new Knoten<>(element, oben);
         anzahl++;
@@ -36,7 +36,7 @@ public class Stapel<E> implements Iterable<E> {
     }
 
     public E pop() {
-        E wert = peek();          // wirft bei leerem Stapel - Pruefung nur einmal schreiben
+        E wert = peek();          // wirft bei leerem Stapel, Pruefung nur einmal schreiben
         oben = oben.naechster;    // den obersten Knoten "aushaengen"
         anzahl--;
         return wert;
@@ -47,7 +47,7 @@ public class Stapel<E> implements Iterable<E> {
     public E peek() {
         if (oben == null) {
             // Wie Deque.pop()/element(): leer ist ein Fehler des Aufrufers.
-            // Ein stilles null waere mehrdeutig - null koennte ja auch ein
+            // Ein stilles null waere mehrdeutig, null koennte ja auch ein
             // gespeicherter Wert sein.
             throw new NoSuchElementException("Der Stapel ist leer");
         }
@@ -73,7 +73,7 @@ public class Stapel<E> implements Iterable<E> {
         return new StapelIterator();
     }
 
-    // Nicht static: Eine innere Klasse ohne static haelt einen versteckten
+    // Nicht static: Eine verschachtelte Klasse ohne static (innere Klasse) haelt einen versteckten
     // Verweis auf das Stapel-Objekt, das sie erzeugt hat. Genau den braucht
     // der Iterator: "oben" im Feld aktuell ist eigentlich Stapel.this.oben. Knoten
     // dagegen braucht keinen Stapel und ist deshalb static.

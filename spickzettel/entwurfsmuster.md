@@ -10,14 +10,14 @@ wo ihre Voraussetzungen zum ersten Mal da sind. Hier ist alles an einem Ort.
 
 | Muster | Problem | Lösung in einem Satz | im Kurs | im JDK |
 |--------|---------|-----------------------|---------|--------|
-| **Statische Fabrikmethode** | `new` hat keinen Namen und liefert immer ein neues Objekt | eine statische Methode erzeugt das Objekt, darf cachen und Untertypen liefern | 5.10, 9.8 | `List.of`, `Integer.valueOf`, `Path.of` |
+| **Statische Fabrikmethode** (kein GoF-Muster) | `new` hat keinen Namen und liefert immer ein neues Objekt | eine statische Methode erzeugt das Objekt, darf cachen und Untertypen liefern | 5.10, 9.8 | `List.of`, `Integer.valueOf`, `Path.of` |
 | **Singleton** | genau ein Objekt für das ganze Programm | privater Konstruktor + `static final`-Instanz, am besten ein `enum` | 5.10, 10.9, 12.3 | `Runtime.getRuntime()` |
-| **Fabrik** | welche Klasse, steht erst zur Laufzeit fest | eine Methode entscheidet und liefert nur das Interface | 9.8 | `Collectors.toCollection(TreeSet::new)` |
+| **Fabrik** | welche Klasse, steht erst zur Laufzeit fest | eine Methode entscheidet und liefert nur das Interface | 9.8 | `EnumSet.noneOf` (liefert je nach Größe `RegularEnumSet` oder `JumboEnumSet`), `NumberFormat.getInstance()` |
 | **Builder** | viele, oft freiwillige Angaben | ein Hilfsobjekt sammelt, `build()` prüft und baut | 10.9 | `StringBuilder`, `HttpRequest.newBuilder()` |
 | **Strategie** | Verhalten soll austauschbar sein | Verhalten hinter ein Interface, der Kontext ruft es auf | 6.9, 9.8 | `Comparator` für `sort` |
 | **Dekorierer** | Zusatzverhalten in beliebiger Kombination | Hülle mit demselben Interface, reicht an das Innere weiter | 6.9, 11.9 | `BufferedReader`, `Collections.unmodifiableList` |
 | **Adapter** | vorhandene Klasse passt nicht zum erwarteten Interface | ein Zwischenstück übersetzt | 6.9, 11.9 | `Arrays.asList`, `InputStreamReader` |
-| **Schablonenmethode** | Ablauf fest, einzelne Schritte variieren | `final`-Methode in der Oberklasse ruft abstrakte Schritte | 6.9 | `AbstractList` |
+| **Schablonenmethode** | Ablauf fest, einzelne Schritte variieren | eine Methode der Oberklasse legt den Ablauf fest (gern `final`) und ruft abstrakte Schritte | 6.9 | `AbstractList`: `iterator`, `indexOf`, `equals` bauen auf `get` und `size` auf (`add` und `set` werfen ohne Überschreiben `UnsupportedOperationException`) |
 | **Beobachter** | andere informieren, ohne sie zu kennen | Liste angemeldeter Beobachter, alle benachrichtigen | 9.9 | Listener in GUIs, `Flow` |
 | **Iterator** | Elemente durchlaufen, ohne das Innere zu kennen | `Iterable` + `Iterator`, dann klappt for-each | 14.9 | jede `Collection` |
 | **Befehl** | Aktionen speichern, später ausführen, rückgängig machen | jede Aktion wird ein Objekt | 14.10 | `Runnable`/`Callable` im `ExecutorService` |
@@ -34,15 +34,17 @@ private static final Rabatt KEINER = betrag -> betrag;
 public static Rabatt keiner() { return KEINER; }
 
 // Builder
-Pizza p = Pizza.builder(Groesse.MITTEL).belag("Salami").extraKaese().build();
+Pizza p = Pizza.builder(Pizza.Groesse.MITTEL).belag("Salami").extraKaese().build();
 
 // Strategie
-kasse.setzeRabatt(betrag -> betrag * 90 / 100);
+kasse.setzeRabatt(Rabatte.prozent(10));   // oder als Lambda: betrag -> betrag - betrag * 10 / 100
 liste.sort(Comparator.comparing(Person::getName));
 
 // Dekorierer: dasselbe Interface, innen ein anderes Exemplar
 class MitZeilennummer implements Protokoll {
     private final Protokoll innen;
+    private int nr;
+    MitZeilennummer(Protokoll innen) { this.innen = innen; }
     public void schreibe(String z) { innen.schreibe(++nr + ": " + z); }
 }
 

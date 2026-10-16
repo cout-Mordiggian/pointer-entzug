@@ -119,11 +119,11 @@ public class Tests {
             for (int i = 5; i < 9; i++) l.add(i);
             Pruef.gleich(16, l.kapazitaet(), "das 9. Element verdoppelt auf 16");
             for (int i = 9; i < 100; i++) l.add(i);
-            Pruef.gleich(100, l.size(), "100 Elemente - weit ueber der Anfangskapazitaet");
+            Pruef.gleich(100, l.size(), "100 Elemente, weit ueber der Anfangskapazitaet");
             Pruef.gleich(128, l.kapazitaet(), "Kapazitaet nach 100 Elementen: 128");
             boolean alleDa = true;
             for (int i = 0; i < 100; i++) {
-                if (l.get(i) != i) alleDa = false;   // Integer != int packt aus - hier ok
+                if (l.get(i) != i) alleDa = false;   // Integer != int packt aus, hier ok
             }
             Pruef.wahr(alleDa, "alle 100 Werte in der richtigen Reihenfolge");
         });
@@ -149,7 +149,7 @@ public class Tests {
             Pruef.wirft(IndexOutOfBoundsException.class, () -> leer.get(0), "get(0) auf leerer Liste");
             MeineListe<String> l = liste("a");
             Pruef.wirft(IndexOutOfBoundsException.class, () -> l.get(1),
-                    "get(1) bei size 1 - obwohl das Array dort einen Platz hat!");
+                    "get(1) bei size 1, obwohl das Array dort einen Platz hat!");
             Pruef.wirft(IndexOutOfBoundsException.class, () -> l.get(-1), "get(-1)");
             Pruef.wirft(IndexOutOfBoundsException.class, () -> l.set(1, "x"), "set(1, ...) bei size 1");
             Pruef.wirft(IndexOutOfBoundsException.class, () -> l.remove(1), "remove(1) bei size 1");
@@ -219,12 +219,12 @@ public class Tests {
         klammern("{[()()]}", true, "{[()()]} geschachtelt");
         klammern("a(b[c]d)e", true, "andere Zeichen werden ignoriert");
         klammern("keine Klammern", true, "gar keine Klammern");
-        klammern("([)]", false, "([)] - gleich viele, aber ueberkreuzt");
-        klammern("(]", false, "(] - falsche Sorte");
-        klammern("((", false, "(( - nicht geschlossen");
-        klammern("))", false, ")) - nie geoeffnet");
-        klammern(")(", false, ")( - falsche Reihenfolge");
-        klammern("{[}", false, "{[} - innen nicht geschlossen");
+        klammern("([)]", false, "([)]: gleich viele, aber ueberkreuzt");
+        klammern("(]", false, "(]: falsche Sorte");
+        klammern("((", false, "((: nicht geschlossen");
+        klammern("))", false, ")): nie geoeffnet");
+        klammern(")(", false, ")(: falsche Reihenfolge");
+        klammern("{[}", false, "{[}: innen nicht geschlossen");
 
         Pruef.abschnitt("Aufgabe 8b: umkehren");
         sicher("umkehren", () -> {
@@ -325,7 +325,7 @@ public class Tests {
             Pruef.gleich("abcdef", t.text(), "loescht, was beim Ausfuehren vorn steht (XY)");
             b.rueckgaengig();
             Pruef.gleich("XYabcdef", t.text(),
-                    "rueckgaengig bringt XY zurueck - nicht das, was beim Erzeugen vorn stand");
+                    "rueckgaengig bringt XY zurueck, nicht das, was beim Erzeugen vorn stand");
         });
 
         Pruef.abschnitt("Aufgabe 10b: Verlauf (Rueckgaengig / Wiederholen)");
@@ -383,7 +383,7 @@ public class Tests {
             for (int i = 0; i < 1_000; i++) v.ausfuehren(new EinfuegenBefehl(t, t.laenge(), "x"));
             Pruef.gleich(1_000, t.laenge(), "1.000 Befehle ausgefuehrt");
             int zurueck = 0;
-            while (v.rueckgaengig()) zurueck++;
+            while (zurueck < 2_000 && v.rueckgaengig()) zurueck++;   // Obergrenze: nie endlos
             Pruef.gleich(1_000, zurueck, "1.000-mal rueckgaengig");
             Pruef.gleich("", t.text(), "danach leer");
         });
@@ -395,8 +395,8 @@ public class Tests {
 
     /**
      * Fuehrt einen Pruefblock aus. Wirft dein Code unterwegs eine Exception
-     * (typisch: ein Index daneben), wird das als FEHL gemeldet - mit Datei und
-     * Zeile - und die restlichen Pruefungen laufen trotzdem weiter.
+     * (typisch: ein Index daneben), wird das als FEHL gemeldet, mit Datei und
+     * Zeile, und die restlichen Pruefungen laufen trotzdem weiter.
      */
     private static void sicher(String was, Runnable block) {
         try {
@@ -441,7 +441,7 @@ public class Tests {
             Pruef.gleich(erwartet, ergebnis, "mergeSort: " + was);
             if (!originalHeil) {
                 Pruef.gleich(Arrays.toString(eingabe), Arrays.toString(a),
-                        "mergeSort: " + was + " - das Original wurde veraendert");
+                        "mergeSort: " + was + ": das Original wurde veraendert");
             }
         });
     }

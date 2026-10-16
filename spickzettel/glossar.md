@@ -7,7 +7,7 @@ erwartete, z. B. `Arrays.asList`. Siehe 6.9 und 11.9.
 Manche prüft der Compiler, andere werten Bibliotheken zur Laufzeit aus.
 
 **Autoboxing**: Automatische Umwandlung zwischen `int` und `Integer`.
-Bequem, aber nicht gratis: In heissen Schleifen erzeugt es viele Objekte.
+Bequem, aber nicht gratis: In heißen Schleifen erzeugt es viele Objekte.
 
 **Befehl (Command)**: Entwurfsmuster. Eine Aktion als Objekt, das man
 speichern, später ausführen und rückgängig machen kann. Siehe 14.10.
@@ -21,13 +21,13 @@ Angaben, `build()` erzeugt daraus das fertige Objekt. Siehe 10.9.
 **Bytecode**: Das Zwischenformat in `.class`-Dateien. Plattformunabhängig,
 wird von der JVM ausgeführt bzw. per JIT in Maschinencode übersetzt.
 
-**Checked Exception**: Ausnahme, die der Compiler erzwingt zu behandeln.
-Alles unter `Exception` ausser `RuntimeException`. Siehe Kapitel 7.
+**Checked Exception**: Ausnahme, deren Behandlung der Compiler erzwingt.
+Alles unter `Exception` außer `RuntimeException`. Siehe Kapitel 7.
 
 **Classpath**: Die Liste der Orte, an denen die JVM Klassen sucht (`-cp`).
 
 **Comparable / Comparator**: Natürliche Ordnung *in* der Klasse
-(`compareTo`) gegen alternative Ordnungen *ausserhalb*.
+(`compareTo`) gegen alternative Ordnungen *außerhalb*.
 
 **Deadlock**: Zwei Threads warten gegenseitig auf Sperren, die der jeweils
 andere hält. Beide stehen für immer.
@@ -35,7 +35,7 @@ andere hält. Beide stehen für immer.
 **Dekorierer (Decorator)**: Entwurfsmuster. Packt ein Objekt ein, hat
 dasselbe Interface und fügt Verhalten hinzu. `BufferedReader`. Siehe 6.9.
 
-**Dependency Injection**: Ein Objekt bekommt seine Abhängigkeiten von aussen
+**Dependency Injection**: Ein Objekt bekommt seine Abhängigkeiten von außen
 (meist per Konstruktor), statt sie sich selbst zu holen. Die Alternative zum Singleton. Siehe 13.8.
 
 **Diamond Operator**: Das `<>` in `new ArrayList<>()`. Der Compiler liest die
@@ -58,8 +58,9 @@ Vollwertige Klasse: darf Felder und Methoden haben.
 **Erasure (Typlöschung)**: Generics existieren nur zur Compile-Zeit; zur
 Laufzeit ist `List<String>` einfach `List`.
 
-**Fabrikmethode (Factory Method)**: Statische Methode, die statt `new` ein
-Objekt liefert: `List.of`, `Integer.valueOf`. Darf cachen und Untertypen liefern. Siehe 5.10.
+**Fabrikmethode**: Siehe **Statische Fabrikmethode**. Das gleichnamige
+GoF-Muster *Factory Method* ist etwas anderes: eine überschreibbare Methode,
+mit der eine Unterklasse entscheidet, welches Objekt entsteht.
 
 **Garbage Collector**: Gibt Objekte frei, die nicht mehr erreichbar sind.
 Du gibst in Java nichts von Hand frei.
@@ -77,7 +78,8 @@ Methodenaufrufe auf dem Stack. Zu tiefe Rekursion -> `StackOverflowError`.
 Wichtige Eigenschaft von `close()`.
 
 **Immutable (unveränderlich)**: Der Zustand steht nach der Erzeugung fest.
-`String`, `Integer`, `record`, `List.of(...)`. Automatisch thread-sicher.
+`String`, `Integer`, `List.of(...)`, ein `record` mit unveränderlichen
+Komponenten. Solche Objekte sind automatisch thread-sicher.
 
 **Interface**: Vertrag über Fähigkeiten, ohne Zustand. Eine Klasse kann
 beliebig viele implementieren.
@@ -99,7 +101,7 @@ sehen. Ideal zum Ausprobieren.
 Methoden, die die Invarianten prüfen.
 
 **Konstruktor**: Spezielle Methode ohne Rückgabetyp, die ein neues Objekt
-initialisiert; heisst wie die Klasse und läuft bei `new`.
+initialisiert; heißt wie die Klasse und läuft bei `new`.
 
 **Kovarianter Rückgabetyp**: Eine überschreibende Methode darf einen
 spezielleren Typ zurückgeben als die überschriebene.
@@ -155,6 +157,10 @@ Am einfachsten als `enum` mit einer Konstante. Globaler Zustand, sparsam einsetz
 
 **Stacktrace**: Der Aufrufpfad zum Zeitpunkt einer Exception. Von oben lesen.
 
+**Statische Fabrikmethode**: Statische Methode, die statt `new` ein
+Objekt liefert: `List.of`, `Integer.valueOf`. Darf cachen und Untertypen
+liefern. Siehe 5.10.
+
 **Strategie (Strategy)**: Entwurfsmuster. Austauschbares Verhalten hinter
 einem Interface, z. B. `Comparator` für `sort`. Oft einfach ein Lambda. Siehe 6.9 und 9.8.
 
@@ -181,6 +187,10 @@ verlangt keine Behandlung; sie signalisieren Programmierfehler.
 
 **volatile**: Feld-Modifier. Änderungen werden sofort für alle Threads
 sichtbar. Macht `x++` aber nicht atomar.
+
+**Wildcard**: Das `?` in `List<? extends Number>`: ein unbekannter
+Typparameter, nach oben (`extends`) oder unten (`super`) begrenzt. Siehe
+Kapitel 8 und **PECS**.
 
 **Wrapper-Klasse**: Objektfassung eines primitiven Typs: `Integer`,
 `Double`, `Boolean`, `Character`.

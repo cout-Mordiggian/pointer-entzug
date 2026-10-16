@@ -1,5 +1,5 @@
 /**
- * Kapitel 02 - Operatoren und Kontrollfluss.
+ * Kapitel 02: Operatoren und Kontrollfluss.
  * Pruefen:  ./lerne.sh 02
  */
 public class Aufgaben {
@@ -18,7 +18,7 @@ public class Aufgaben {
     }
 
     /**
-     * Aufgabe 2: Schulnote als Text - mit switch-AUSDRUCK (Pfeilform).
+     * Aufgabe 2: Schulnote als Text, mit switch-AUSDRUCK (Pfeilform).
      * 1 -> "sehr gut", 2 -> "gut", 3 -> "befriedigend",
      * 4 -> "ausreichend", 5 -> "mangelhaft", 6 -> "ungenuegend",
      * alles andere -> "ungueltig"
@@ -72,9 +72,9 @@ public class Aufgaben {
      * sternDreieck(0) -> ""
      */
     public static String sternDreieck(int hoehe) {
-        // TODO: Zwei verschachtelte Schleifen - die aeussere fuer die Zeilen,
+        // TODO: Zwei verschachtelte Schleifen: die aeussere fuer die Zeilen,
         //       die innere fuer die Sterne einer Zeile.
-        //       Tipp: Ein StringBuilder sammelt das Ergebnis.
+        //       Tipp: Ein StringBuilder sammelt das Ergebnis (siehe README, Aufgabe 7).
         return "";
     }
 }

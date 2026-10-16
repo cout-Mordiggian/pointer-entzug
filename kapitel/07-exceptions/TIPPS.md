@@ -1,7 +1,7 @@
 # Kapitel 07: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 > **Reihenfolge:** Aufgabe 6 braucht `UnzureichendeDeckungException`, Aufgabe 7
 > braucht `Tresor`. Es lohnt sich, diese beiden Dateien (unten) vor den
@@ -319,7 +319,7 @@ public void close() {
 <details><summary>Wann checked, wann unchecked?</summary>
 
 **Checked** (von `Exception`, aber nicht von `RuntimeException` abgeleitet) nimmst
-du für erwartbare Probleme der Aussenwelt, auf die der Aufrufer sinnvoll
+du für erwartbare Probleme der Außenwelt, auf die der Aufrufer sinnvoll
 reagieren kann: Datei fehlt, Netzwerk weg, zu wenig Deckung. Der Compiler zwingt
 ihn dann zum Fangen oder Weiterreichen. **Unchecked** (`RuntimeException` und
 Unterklassen) steht für Programmierfehler: ungültiges Argument

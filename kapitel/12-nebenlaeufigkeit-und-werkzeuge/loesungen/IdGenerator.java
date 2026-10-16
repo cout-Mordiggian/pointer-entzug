@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Kapitel 12 - Musterloesung: ein Singleton fuer viele Threads.
+ * Kapitel 12, Musterloesung: ein Singleton fuer viele Threads.
  */
 public enum IdGenerator {
 
@@ -11,7 +11,7 @@ public enum IdGenerator {
     // "Effective Java" den besten Weg, ein Singleton zu bauen.
     INSTANZ;
 
-    // AtomicLong statt long: "zaehler++" ist Lesen, Rechnen, Schreiben -
+    // AtomicLong statt long: "zaehler++" ist Lesen, Rechnen, Schreiben,
     // drei Schritte, zwischen denen ein anderer Thread dazwischenkommen kann
     // (12.2). incrementAndGet erledigt alles in einem unteilbaren
     // Schritt. Ein Singleton wird fast immer von vielen Stellen benutzt, also

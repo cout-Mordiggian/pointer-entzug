@@ -1,7 +1,7 @@
 # Kapitel 12: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## `Zaehler.java`
 
@@ -16,12 +16,14 @@ schreibend? Genau die brauchen denselben Schutz.
 <details><summary>Tipp 2: Ansatz</summary>
 
 `synchronized` als Modifier an der Methode sperrt auf `this`. Weil alle drei
-Methoden auf demselben Objekt sperren, schliessen sie sich gegenseitig aus. Der
+Methoden auf demselben Objekt sperren, schließen sie sich gegenseitig aus. Der
 Rumpf selbst ist jeweils eine Zeile: erhöhen, um `betrag` erhöhen, zurückgeben.
 
-Die Tests lassen 8 Threads gleichzeitig `erhoehen()` **und** `erhoeheUm(2)`
-aufrufen. Vergisst du `synchronized` bei einer der beiden, gehen Erhöhungen
-verloren. Bei `wert()` sieht der Test den Fehler nicht (die README erklärt,
+Die Tests lassen 8 Threads gleichzeitig `erhoehen()` aufrufen, dann 8 Threads
+`erhoeheUm(2)`, und zuletzt beides gemischt auf demselben Zähler. Vergisst du
+`synchronized` bei einer der beiden, gehen Erhöhungen verloren. Dasselbe
+passiert, wenn die beiden Methoden auf **verschiedene** Objekte sperren: Dann
+schließen sie sich gegenseitig nicht aus. Bei `wert()` sieht der Test den Fehler nicht (die README erklärt,
 warum), setz es trotzdem, sonst ist die Sichtbarkeit nicht garantiert.
 `erhoeheUm(-3)` ist erlaubt; du musst negative Schritte nicht abfangen.
 
@@ -208,7 +210,9 @@ Randfälle und Fallen:
 - Leerer String -> `0`, das passt von selbst.
 - Ergebnisse in **Fertigstellungs**-Reihenfolge einsammeln (z. B. jede Aufgabe
   schreibt selbst in eine gemeinsame Liste) ist falsch, und bei einer normalen
-  `ArrayList` sogar eine Race Condition. Der Test mit 2000 Texten findet das.
+  `ArrayList` sogar eine Race Condition. Der Test mit 2000 Texten findet das
+  fast immer, solange dein Pool mehr als einen Thread hat und der Rechner
+  mehrere Kerne.
 
 </details>
 
@@ -313,7 +317,7 @@ Kombination noch nicht atomar.
 
 Die zurückgegebene Liste von `Future`s hat **dieselbe Reihenfolge wie die
 übergebene Aufgabenliste**: Das `i`-te `Future` gehört zur `i`-ten Aufgabe.
-Ausserdem sind beim Zurückkehren alle Aufgaben fertig (erfolgreich oder mit
+Außerdem sind beim Zurückkehren alle Aufgaben fertig (erfolgreich oder mit
 Exception). Nicht garantiert ist, in welcher Reihenfolge die Aufgaben
 **ausgeführt** werden oder fertig werden, das ist dem Pool überlassen.
 
@@ -341,7 +345,7 @@ ab: Wollen zwei Threads gleichzeitig die Klasse benutzen, wartet der zweite, bis
 der erste fertig ist, und sieht danach das fertige Objekt. Die faule Variante
 macht dagegen *check-then-act* von Hand: Zwei Threads können beide `null`
 sehen, bevor einer von ihnen zugewiesen hat, und erzeugen dann zwei Instanzen.
-Ausserdem ist ohne Synchronisierung nicht einmal garantiert, dass ein anderer
+Außerdem ist ohne Synchronisierung nicht einmal garantiert, dass ein anderer
 Thread das zugewiesene Objekt vollständig sieht. Ein `enum` mit einer
 Konstante hat dieselbe Garantie wie das `static final`-Feld. Wichtig: Beides
 sichert nur das **Erzeugen**. Ändert der Singleton danach Zustand, braucht der

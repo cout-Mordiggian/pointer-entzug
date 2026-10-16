@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8a: die Ente als Kontext im Strategie-Muster (6.9).
+ * Kapitel 6, Aufgabe 8a: die Ente als Kontext im Strategie-Muster (6.9).
  * Pruefen:  ./lerne.sh 06
  *
  * Was alle Enten gleich machen (schwimmen), steht hier fertig. Was sich

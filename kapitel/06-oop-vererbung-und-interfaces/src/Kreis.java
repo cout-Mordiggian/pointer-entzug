@@ -6,7 +6,7 @@ public class Kreis extends Figur implements Skalierbar {
     // TODO: private final double radius
 
     public Kreis(double radius) {
-        // Vorgegeben, damit die Datei kompiliert - verstehe, warum:
+        // Vorgegeben, damit die Datei kompiliert. Verstehe, warum:
         // Figur hat keinen parameterlosen Konstruktor, also MUSS hier
         // ein super(...) mit Namen stehen.
         super("Kreis");

@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 08 - Musterloesung: Werttyp mit natuerlicher Ordnung.
+ * Kapitel 08, Musterloesung: Werttyp mit natuerlicher Ordnung.
  */
 public final class Person implements Comparable<Person> {
 
@@ -18,7 +18,7 @@ public final class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person andere) {
-        // String implementiert Comparable selbst - wir reichen einfach durch.
+        // String implementiert Comparable selbst, wir reichen einfach durch.
         // Wichtig: NICHT this.alter - andere.alter fuer numerische Vergleiche
         // verwenden (Ueberlaufgefahr), sondern Integer.compare(a, b).
         return this.name.compareTo(andere.name);
@@ -42,7 +42,7 @@ public final class Person implements Comparable<Person> {
     }
 
     // Hinweis: compareTo (nur Name) und equals (Name + Alter) sind hier
-    // INKONSISTENT. Fuer ein TreeSet waere das ein Problem - dort gaelten
+    // INKONSISTENT. Fuer ein TreeSet waere das ein Problem: dort gaelten
     // zwei Personen mit gleichem Namen als dasselbe Element. Fuer HashSet
     // und Listen ist es unkritisch. In echtem Code sollte man das entweder
     // angleichen oder die Inkonsistenz bewusst dokumentieren.

@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Musterloesung: keinen Laut von sich geben.
+ * Kapitel 6, Musterloesung: keinen Laut von sich geben.
  */
 public class Stumm implements QuakVerhalten {
 

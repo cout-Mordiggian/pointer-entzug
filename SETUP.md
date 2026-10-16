@@ -3,8 +3,8 @@
 ## 1. Welches Java ist installiert?
 
 ```bash
-java -version    # die Laufzeitumgebung (JVM) - fuehrt Bytecode aus
-javac -version   # der Compiler - macht aus .java Bytecode (.class)
+java -version    # die Laufzeitumgebung (JVM), fuehrt Bytecode aus
+javac -version   # der Compiler, macht aus .java Bytecode (.class)
 ```
 
 Beide Befehle sollten eine Versionsnummer von **21 oder höher** ausgeben.
@@ -17,10 +17,15 @@ Fehlt Java oder ist es zu alt, installiere ein aktuelles JDK, z. B.
 deines Systems (`apt`, `dnf`, `pacman`, `brew`, `winget` …) bzw. mit
 [SDKMAN!](https://sdkman.io).
 
-- **Windows:** Lade auf <https://adoptium.net> den Installer (`.msi`) herunter
-  und lass bei der Installation "Add to PATH" und "Set JAVA_HOME" aktiviert.
+- **Windows:** Lade auf <https://adoptium.net> den Installer (`.msi`) herunter.
+  Bei der Installation "Add to PATH" aktiviert lassen und zusätzlich
+  "Set JAVA_HOME variable" einschalten (auf das Symbol davor klicken >
+  "Will be installed on local hard drive"), denn das ist nicht voreingestellt.
+  Der Kurs-Runner braucht nur den `PATH`, Maven und Gradle (Kapitel 12)
+  später auch `JAVA_HOME`.
   Alternativ in PowerShell: `winget install EclipseAdoptium.Temurin.21.JDK`.
   Danach Terminal und IDE **neu starten**, sonst finden sie `java` noch nicht.
+  Ob `JAVA_HOME` gesetzt ist, zeigt dann `echo $env:JAVA_HOME`.
   Zeigt `java -version` danach immer noch eine alte Version (z. B. `1.8`),
   steht ein älteres Java weiter vorne im `PATH`: Windows-Suche
   "Umgebungsvariablen", unter *Path* den Eintrag des neuen JDK nach oben
@@ -61,12 +66,12 @@ Linux gleich):
 
 ```bash
 javac Hallo.java     # erzeugt Hallo.class (Bytecode)
-java Hallo           # fuehrt aus - ACHTUNG: ohne .class und ohne .java!
+java Hallo           # fuehrt aus. ACHTUNG: ohne .class und ohne .java!
 ```
 
 Wichtige Regeln, die Anfänger oft stolpern lassen:
 
-- Eine `public` Klasse muss **genauso heissen wie die Datei**: `Hallo` -> `Hallo.java`.
+- Eine `public` Klasse muss **genauso heißen wie die Datei**: `Hallo` -> `Hallo.java`.
 - `java Hallo` nimmt einen **Klassennamen**, keinen Dateinamen.
 - `-d ziel/` sagt dem Compiler, wohin die `.class`-Dateien sollen.
 - `-cp` (classpath) sagt der JVM, wo sie Klassen suchen soll.
@@ -80,8 +85,9 @@ java Hallo.java      # kompiliert im Speicher und startet sofort
 So startet übrigens auch der Kurs-Runner: `java Lerne.java 01`.
 
 Seit **Java 25** darf ein kleines Programm sogar ganz ohne Klasse,
-`public static` und `String[] args` auskommen (in Java 21 war das noch ein
-Preview-Feature):
+`public static` und `String[] args` auskommen (Java 21 bis 24 hatten
+Vorstufen davon als Preview-Feature, die Klasse `IO` gibt es so erst seit
+Java 25):
 
 ```java
 void main() {
@@ -99,7 +105,10 @@ Alles im Kurs funktioniert mit einem beliebigen Texteditor. Trotzdem lohnt sich
 Werkzeugunterstützung, Java ist statisch typisiert, ein guter Editor sagt dir
 Fehler *während* du tippst statt erst beim Kompilieren.
 
-- **IntelliJ IDEA Community** (kostenlos, der De-facto-Standard in der Java-Welt)
+- **IntelliJ IDEA** (der De-facto-Standard in der Java-Welt). Seit Version
+  2025.3 gibt es nur noch ein Produkt statt "Community" und "Ultimate": Die
+  Grundfunktionen sind kostenlos und reichen für den Kurs, Ultimate ist ein
+  Abo-Zusatz (nach der Installation läuft eine Testphase, die du nicht brauchst).
 - **VS Code** + *Extension Pack for Java* (leichtgewichtig, guter Einstieg)
 - **Neovim/Helix** + `jdtls` per LSP
 
@@ -183,6 +192,13 @@ PowerShell, dort heißt der Runner `.\lerne NN`.
 Zeigt VS Code danach noch alte Fehler an, hilft *View > Command Palette*
 (`Strg+Umschalt+P`) > "Java: Clean Java Language Server Workspace".
 
+Greift die Einstellung gar nicht (die Dateien bleiben "non-project file",
+*Add Folder to Java Source Path* fehlt im Menü), hat VS Code vermutlich bei
+einem früheren Öffnen die Vorlagen in `kapitel/12-.../werkzeuge/` als
+Maven- bzw. Gradle-Projekt importiert. Dann liegen dort Dateien wie
+`.project` und `.classpath` (und die Ordner `.settings`, `.gradle`). Diese
+löschen und danach "Java: Clean Java Language Server Workspace" ausführen.
+
 Findet die Erweiterung kein JDK, obwohl eins installiert ist: VS Code komplett
 schließen und neu öffnen. Hilft das nicht, in `settings.json` zusätzlich den
 JDK-Ordner eintragen, unter Windows mit normalen Schrägstrichen, z. B.
@@ -236,7 +252,8 @@ du dort in Sekunden nachprüfen. `/help` zeigt die Befehle, Tab vervollständigt
 
 ## 5. Fehlermeldungen lesen
 
-Der Compiler meldet Fehler in dieser Form:
+Der Compiler meldet Fehler in dieser Form (der Kurs-Runner schreibt vorne
+den vollständigen Pfad der Datei hin):
 
 ```
 src/Aufgaben.java:12: error: cannot find symbol
@@ -253,6 +270,21 @@ Lies sie von oben nach unten:
 2. **Fehlerart**: `cannot find symbol` = ein Name, den der Compiler nicht kennt
 3. **Das Zirkumflex `^`** zeigt exakt auf die Stelle
 4. **`symbol:`** sagt, *welcher* Name unbekannt ist
+
+Kompilierst du von Hand oder in der IDE auf einem deutschen System, meldet
+der Compiler oft auf Deutsch, der Aufbau ist derselbe:
+
+```
+src/Aufgaben.java:12: Fehler: Symbol nicht gefunden
+        return laenge * breit;
+                        ^
+  Symbol: Variable breit
+  Ort: Klasse Aufgaben
+1 Fehler
+```
+
+Der Kurs-Runner lässt den Compiler immer englisch melden, passend zum
+Spickzettel, der beide Fassungen nennt.
 
 Der **erste** Fehler ist der echte. Folgefehler verschwinden oft von allein,
 wenn du den ersten behebst. Nicht von "37 errors" einschüchtern lassen.

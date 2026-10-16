@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8c: eine Holzente fuer Jaeger, sie fliegt nicht und ist stumm.
+ * Kapitel 6, Aufgabe 8c: eine Holzente fuer Jaeger, sie fliegt nicht und ist stumm.
  *
  *   Ente e = new Lockente();
  *   e.anzeigen()   // "Ich bin eine Lockente"

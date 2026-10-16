@@ -13,7 +13,7 @@ Jede Methode, die "ändert", gibt in Wahrheit ein **neues** Objekt zurück.
 
 ```java
 String s = "hallo";
-s.toUpperCase();              // erzeugt "HALLO" - und wirft es weg!
+s.toUpperCase();              // erzeugt "HALLO" und wirft es weg!
 System.out.println(s);        // immer noch "hallo"
 
 s = s.toUpperCase();          // so ist es richtig
@@ -34,7 +34,7 @@ String a = "hallo";
 String b = "hallo";
 String c = new String("hallo");
 
-a == b        // true  (!!)  - aber aus einem Grund, der dir nicht hilft, siehe unten
+a == b        // true  (!!), aber aus einem Grund, der dir nicht hilft, siehe unten
 a == c        // false
 a.equals(c)   // true  <- DAS willst du
 ```
@@ -64,7 +64,7 @@ if ("ja".equals(antwort)) { ... }   // funktioniert auch wenn antwort null ist
 if (antwort.equals("ja")) { ... }   // knallt bei antwort == null
 ```
 
-Für Vergleiche ohne Gross-/Kleinschreibung: `equalsIgnoreCase`.
+Für Vergleiche ohne Groß-/Kleinschreibung: `equalsIgnoreCase`.
 
 ## 3.3 Wichtige String-Methoden
 
@@ -83,11 +83,11 @@ s.isBlank()                 // false           (leer oder nur Whitespace)
 "Hallo".startsWith("Ha")    // true
 "Hallo".substring(1, 3)     // "al"  (ab 1 bis VOR 3)
 "Hallo".replace('l', 'L')   // "HaLLo"
-"a,b,c".split(",")          // String[]{"a", "b", "c"}  (Achtung, Regex - siehe unten)
+"a,b,c".split(",")          // String[]{"a", "b", "c"}  (Achtung, Regex, siehe unten)
 String.join("-", "a", "b")  // "a-b"
 "ab".repeat(3)              // "ababab"
 "Hallo".toUpperCase()       // "HALLO"
-"5".compareTo("7")          // negativ (lexikografisch, nicht numerisch!)
+"10".compareTo("9")         // negativ: Zeichen fuer Zeichen ("1" < "9"), nicht numerisch!
 ```
 
 `substring(von, bis)`: `von` ist **inklusiv**, `bis` ist **exklusiv**. Diese
@@ -99,12 +99,12 @@ wie `.` `|` `+` `*` `?` `(` `$` haben dort eine Sonderbedeutung:
 
 ```java
 "1.2.3".split(".")      // leeres Array!  "." heisst "irgendein Zeichen"
-"1.2.3".split("\\.")    // {"1", "2", "3"}  - Punkt mit \\ entwerten
+"1.2.3".split("\\.")    // {"1", "2", "3"}: Punkt mit \\ entwerten
 "a|b".split("\\|")      // {"a", "b"}
-"a  b".split("\\s+")    // {"a", "b"}  - "ein oder mehr Leerraumzeichen"
+"a  b".split("\\s+")    // {"a", "b"}: "ein oder mehr Leerraumzeichen"
 ```
 
-Ausserdem wirft `split` leere Felder **am Ende** stillschweigend weg, mehr
+Außerdem wirft `split` leere Felder **am Ende** stillschweigend weg, mehr
 dazu in Kapitel 11 (`split(";", -1)`).
 
 ### Zwischen Text und Zahl umwandeln
@@ -124,10 +124,12 @@ Ein `char` ist intern eine 16-Bit-Zahl (der Unicode-Wert). Deshalb geht:
 
 ```java
 char c = 'a';
-c + 1                  // 98   (int!)  - Rechnen macht aus char einen int
+c + 1                  // 98   (int!): Rechnen macht aus char einen int
 (char) (c + 1)         // 'b'
-'7' - '0'              // 7    - Ziffernzeichen in Zahlwert umrechnen
-Character.isDigit('7')  Character.isLetter('x')  Character.toUpperCase('x')
+'7' - '0'              // 7    (Ziffernzeichen in Zahlwert umrechnen)
+Character.isDigit('7')       // true
+Character.isLetter('x')      // true
+Character.toUpperCase('x')   // 'X'
 ```
 
 Beachte die Anführungszeichen: `'a'` (einfach) ist ein `char`, `"a"` (doppelt)
@@ -147,12 +149,12 @@ StringBuilder sb = new StringBuilder();
 for (int i = 0; i < 10000; i++) {
     sb.append(i);  // aendert einen internen Puffer -> linearer Aufwand
 }
-String s = sb.toString();
+String ergebnis = sb.toString();
 ```
 
 Nützlich: `append`, `insert`, `reverse`, `setLength(0)` (leeren), `length`.
 
-Für **einzelne** Verkettungen ausserhalb von Schleifen ist `+` völlig in
+Für **einzelne** Verkettungen außerhalb von Schleifen ist `+` völlig in
 Ordnung, der Compiler optimiert sie selbst. Nur in Schleifen hilft er dir nicht.
 
 ## 3.5 Textblöcke (seit Java 15)
@@ -168,7 +170,7 @@ String json = """
 
 Kein Escapen von Anführungszeichen, keine `\n`-Kette. Die gemeinsame
 Einrückung aller Zeilen wird automatisch entfernt, die Position der
-schliessenden `"""` bestimmt, wie viel.
+schließenden `"""` bestimmt mit, wie viel.
 
 ## 3.6 Arrays
 
@@ -181,7 +183,7 @@ String[] namen = new String[3];         // 3 Elemente, alle null
 
 zahlen[0] = 42;
 int erstes = zahlen[0];
-int anzahl = zahlen.length;             // Feld, keine Methode - kein ()!
+int anzahl = zahlen.length;             // Feld, keine Methode, also kein ()!
 ```
 
 Die Länge steht bei der Erzeugung fest und ändert sich **nie**. Brauchst du
@@ -201,10 +203,10 @@ ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5
 ```java
 import java.util.Arrays;
 
-Arrays.toString(zahlen)        // "[2, 3, 5]"  <- zum Ausgeben!
+Arrays.toString(zahlen)        // "[42, 0, 0, 0, 0]"  <- zum Ausgeben!
 Arrays.sort(zahlen)            // sortiert AN ORT UND STELLE (veraendert das Array)
 Arrays.copyOf(zahlen, 10)      // Kopie mit neuer Laenge, Rest mit 0 aufgefuellt
-Arrays.copyOfRange(z, 1, 3)    // Teilkopie [1, 3)
+Arrays.copyOfRange(zahlen, 1, 3)  // Teilkopie, Index 1 bis vor 3
 Arrays.fill(zahlen, 7)         // alles auf 7
 Arrays.equals(a, b)            // inhaltlicher Vergleich
 Arrays.stream(zahlen).sum()    // Kapitel 9
@@ -218,7 +220,7 @@ Standard-`toString` von `Object` (Typkennung + Hashcode). Für Arrays immer
 
 ```java
 int[] a = {1, 2, 3};
-int[] b = a;         // KEINE Kopie - b zeigt auf dasselbe Array
+int[] b = a;         // KEINE Kopie: b zeigt auf dasselbe Array
 b[0] = 99;
 System.out.println(a[0]);   // 99
 
@@ -234,10 +236,12 @@ So sieht das im Speicher aus:
                       +------->  int[] { 99, 2, 3 }
    b  [ o-]-----------+
 
-   c  [ o-]------------------->  int[] {  1, 2, 3 }   (eigene Kopie von vorher)
+   c  [ o-]------------------->  int[] { 99, 2, 3 }   (eigene Kopie)
 ```
 
-`a` und `b` enthalten denselben **Pfeil**, nicht zwei Arrays. Wer über einen
+`a` und `b` enthalten denselben **Pfeil**, nicht zwei Arrays. `c` ist eine
+Kopie vom Stand *nach* `b[0] = 99`, aber ein eigenes Array: Ändert man
+später `a`, bleibt `c` gleich. Wer über einen
 Pfeil etwas ändert, ändert es für alle, die auf dasselbe Objekt zeigen.
 
 Das gilt für alle Objekte in Java. Eine Zuweisung kopiert nie das Objekt,
@@ -272,7 +276,7 @@ unterschiedlich lang sein (*jagged array*). Deshalb `fest[0].length` und nicht
 Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 03`.
 
 1. **`umdrehen(String)`**: `"abc"` -> `"cba"`. `StringBuilder` kennt eine Methode dafür.
-2. **`istPalindrom(String)`**: Gross-/Kleinschreibung und alles ausser
+2. **`istPalindrom(String)`**: Groß-/Kleinschreibung und alles außer
    Buchstaben und Ziffern ignorieren. `"Ein Esel lese nie"` -> `true`.
    Tipp: `Character.isLetterOrDigit(c)`.
 3. **`wortAnzahl(String)`**: Wörter zählen. Mehrfache Leerzeichen und
@@ -282,7 +286,7 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 03`.
    *Denkfalle:* Womit initialisierst du deinen Startwert?
 5. **`mittelwert(int[])`**: Arithmetisches Mittel als `double`, leeres Array -> `0.0`.
    *Denkfalle:* Ganzzahldivision (Kapitel 1) lauert hier schon wieder.
-   *Zweite Denkfalle:* Die Summe zweier grosser `int`-Werte passt nicht mehr in einen `int`.
+   *Zweite Denkfalle:* Die Summe zweier großer `int`-Werte passt nicht mehr in einen `int`.
 6. **`sortierteKopie(int[])`**: Aufsteigend sortiertes **neues** Array.
    Das Original muss unverändert bleiben, genau das prüft der Test.
 7. **`transponiere(int[][])`**: Zeilen und Spalten tauschen.
@@ -321,7 +325,9 @@ System.out.println(b.equals("hallo"));
 
 <details><summary>Auflösung</summary>
 
-`false`, dann `true`, `b` entsteht zur Laufzeit aus einer Variablen und ist ein neues Objekt, nicht das Literal aus dem Pool. (Wäre `a` als `final String a = "hal"` deklariert, rechnete der Compiler `a + "lo"` schon vorher aus, und `==` wäre `true`. Noch ein Grund, sich nie auf `==` zu verlassen.)
+`false`, dann `true`, `b` entsteht zur Laufzeit aus einer Variablen und ist ein neues Objekt, nicht das Literal aus dem Pool. (Wäre `a` als `final String a = "hal"` deklariert, rechnete der Compiler `a + "lo"` schon vorher aus, und `==` wäre `true`. Noch ein Grund, sich nie auf `==` zu verlassen. Das siehst du nur in einer
+echten Klasse: jshell ignoriert `final` bei solchen Variablen und zeigt
+weiter `false`.)
 
 </details>
 

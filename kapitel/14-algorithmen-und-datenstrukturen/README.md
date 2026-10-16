@@ -1,7 +1,7 @@
 # Kapitel 14: Algorithmen und Datenstrukturen
 
 **Ziel:** Du schätzt ab, wie der Aufwand eines Programms mit der Datenmenge
-wächst, baust Such- und Sortierverfahren selbst und weisst, was in
+wächst, baust Such- und Sortierverfahren selbst und weißt, was in
 `ArrayList`, `ArrayDeque` und `HashMap` wirklich passiert. Zum Schluss
 machst du deinen Stapel for-each-fähig und baust mit zwei Stapeln Rückgängig:
 zwei Entwurfsmuster, Iterator und Befehl.
@@ -22,7 +22,7 @@ O(n), n^2/2 ist O(n^2).
 
 | Aufwand | n = 10 | n = 1.000 | n = 1.000.000 | Beispiel |
 |---------|-------:|----------:|--------------:|----------|
-| O(1) konstant | 1 | 1 | 1 | `a[i]`, `list.get(i)` |
+| O(1) konstant | 1 | 1 | 1 | `a[i]`, `get(i)` bei einer `ArrayList` |
 | O(log n) logarithmisch | 3 | 10 | 20 | binäre Suche |
 | O(n) linear | 10 | 1.000 | 1.000.000 | lineare Suche, Summe |
 | O(n log n) | 33 | 10.000 | 20.000.000 | Merge Sort, `Arrays.sort` |
@@ -61,10 +61,15 @@ Gefühl reicht die fertige Demo [`src/Messung.java`](src/Messung.java). Sie
 läuft auch vor der ersten gelösten Aufgabe und braucht wenige Sekunden:
 
 ```bash
-bash lerne.sh 14 -r Messung
+./lerne.sh 14 -r Messung
 ```
 
-Teil 1 misst zehnmal dieselbe Arbeit und zeigt das Aufwärmen. Teil 2 und 3
+Teil 1 misst zehnmal dieselbe Arbeit und zeigt das Aufwärmen: Die ersten
+Läufe sind deutlich langsamer. Danach wird es aber nicht stetig schneller,
+oft sind spätere Läufe wieder langsamer als der dritte oder vierte. Der JIT
+übersetzt eine Methode unter Umständen mehrmals neu, dazu kommen GC und
+andere Programme. Genau deshalb misst man oft und nimmt den schnellsten oder
+mittleren Wert, nie einen einzelnen. Teil 2 und 3
 vergleichen lineare mit binärer Suche und Selection Sort mit `Arrays.sort`.
 Die absoluten Zahlen hängen vom Rechner ab, schau auf die Spalte **Faktor**:
 Doppelt so viele Daten kosten bei O(n^2) etwa viermal so viel Zeit (x 3,9), bei
@@ -83,14 +88,19 @@ von=5, bis=9, mitte=7 -> 56 > 23 -> links weiter:  bis=6
 von=5, bis=6, mitte=5 -> 23      -> gefunden
 ```
 
+Hier ist `bis` wie in Kapitel 4 der **letzte** Index, der noch zum Suchbereich
+gehört (inklusive). Für die Grenze weiter unten ist die halboffene Variante
+bequemer: Dort gehört `bis` **nicht** mehr dazu und startet bei `length`.
+
 Sortieren kostet selbst O(n log n), das lohnt sich nur, wenn du **oft** suchst.
 Bei Duplikaten findet die Suche aus Kapitel 4 *irgendeinen* Treffer. Oft
 braucht man eine **Grenze**: den Index des *ersten* Elements, das mindestens so
-gross ist wie der Suchwert (Aufgabe 4). Diesen Einfügepunkt meldet auch
+groß ist wie der Suchwert (Aufgabe 4). Diesen Einfügepunkt meldet auch
 `Arrays.binarySearch` bei fehlendem Wert, verpackt als `-(Einfuegepunkt) - 1`.
 Gegen die Grenzfälle hilft kein Probieren mit `+1` und `-1`, sondern eine
 **Invariante**, die vor jedem Durchlauf gilt: "Links von `von` ist alles zu
-klein, ab `bis` ist alles gross genug."
+klein, ab `bis` ist alles groß genug." (`bis` halboffen, also `von = 0`,
+`bis = length` am Anfang.)
 
 ## 14.4 Sortieren
 
@@ -153,7 +163,7 @@ personen.sort(Comparator.comparing(Person::getName));   // List.sort: TimSort, s
 
 TimSort ist ein Merge Sort, der kurze Stücke per Insertion Sort sortiert und
 Vorsortiertes ausnutzt. Das ist schneller als alles Selbstgeschriebene. Selbst
-bauen solltest du es trotzdem einmal: Erst dann weisst du, woher O(n log n) und
+bauen solltest du es trotzdem einmal: Erst dann weißt du, woher O(n log n) und
 der Zusatzspeicher kommen, und die Muster (Invariante, zwei Zeiger, teile und
 herrsche) begegnen dir immer wieder. **Deshalb ist `Arrays.sort` in den Aufgaben
 tabu.** Die Tests merken es nicht, aber die Aufgabe wäre sinnlos.
@@ -169,7 +179,7 @@ Ein Array plus ein Zähler, wie viele Plätze belegt sind. Daraus folgt alles:
 
 - **`get(i)` ist O(1)**, die Adresse von Platz i wird direkt berechnet.
 - **`add` am Ende** belegt Platz `groesse`. Ist das Array voll, wird ein doppelt
-  so grosses angelegt und alles umkopiert: O(n).
+  so großes angelegt und alles umkopiert: O(n).
 - **Amortisiert O(1):** Nach dem Verdoppeln ist wieder so viel frei, wie belegt
   ist. Alle Kopien zusammen (1 + 2 + 4 + ... + n) sind weniger als 2n, im Schnitt
   O(1) pro `add`. Wächst das Array jedes Mal nur um einen Platz, sind es
@@ -196,9 +206,9 @@ public E get(int index) {
 ```
 
 Die JVM kann `(E)` nicht prüfen, deshalb warnt der Compiler ("unchecked").
-`@SuppressWarnings` heisst: "Ich habe nachgedacht, hinein kommt nur E über `add`
+`@SuppressWarnings` heißt: "Ich habe nachgedacht, hinein kommt nur E über `add`
 und `set`." Setz es so eng wie möglich, an die Methode statt an die Klasse.
-`(E[]) new Object[4]` geht auch, solange das Array nie nach aussen gelangt.
+`(E[]) new Object[4]` geht auch, solange das Array nie nach außen gelangt.
 
 ## 14.6 Verkettete Strukturen: Stapel und Warteschlange
 
@@ -225,14 +235,17 @@ poll() liefert 1:              kopf --> [2|o]--> [3|null] <-- ende
 Stapel: Undo, Klammerprüfung (Aufgabe 8), der Aufrufstapel der JVM (4.4).
 Warteschlange: Druckaufträge, alles, was der Reihe nach drankommt.
 
-**Neu: die statische innere Klasse.** In `Stapel.java` steht die Knotenklasse
+**Die statische verschachtelte Klasse.** Kapitel 10.9 stellt sie kurz vor.
+In der empfohlenen Reihenfolge kommt Kapitel 10 aber erst nach diesem,
+deshalb hier das Wichtigste. In `Stapel.java` steht die Knotenklasse
 *innerhalb* von `Stapel`, als `private static class Knoten<E> { ... }`:
 
-- **Innen und `private`**: ein Bauteil des Stapels, draussen unsichtbar. Beide
+- **Innen und `private`**: ein Bauteil des Stapels, draußen unsichtbar. Beide
   Klassen dürfen gegenseitig auf ihre privaten Member zugreifen.
-- **`static`**: Ein Knoten braucht kein Stapel-Objekt. Ohne `static` trüge jeder
-  Knoten einen versteckten Verweis auf "seinen" Stapel mit sich. Faustregel:
-  innere Klassen `static` machen, ausser man braucht das äußere Objekt.
+- **`static`**: Ein Knoten braucht kein Stapel-Objekt. Ohne `static` wäre er
+  eine **innere Klasse** und trüge einen versteckten Verweis auf "seinen"
+  Stapel mit sich. Faustregel: verschachtelte Klassen `static` machen, außer
+  man braucht das äußere Objekt.
 - Deshalb sieht `Knoten` das `E` von `Stapel` nicht und deklariert ein eigenes.
 
 **In der Praxis:** `ArrayDeque`, ein Ringpuffer auf Array-Basis ohne Knoten,
@@ -266,8 +279,10 @@ Bei guter Verteilung sind `get` und `put` im Mittel O(1). Die echte `HashMap`
 startet mit 16 Eimern und verdoppelt bei drei Vierteln Füllung (*load factor*
 0,75), amortisiert O(1) wie `ArrayList`. Statt `%` nimmt sie eine Bitmaske, so
 gibt es auch bei negativem `hashCode` keinen negativen Index (vgl. `-7 % 3` in
-Kapitel 2). Landet alles in einem Eimer, wird die Suche O(n), seit Java 8 werden
-volle Eimer deshalb zum Baum (O(log n)). Die "zufällige" Reihenfolge beim
+Kapitel 2). Landet alles in einem Eimer, wird die Suche O(n). Seit Java 8 baut
+die `HashMap` deshalb lange Ketten (ab 8 Einträgen, in einer Tabelle mit
+mindestens 64 Eimern) zu einem Baum um. Sind die Schlüssel `Comparable`, kostet
+die Suche darin nur noch O(log n). Die "zufällige" Reihenfolge beim
 Durchlaufen (8.5) ist einfach die Reihenfolge der Eimer.
 
 ## 14.8 Welche Struktur wofür
@@ -331,13 +346,14 @@ public class Stapel<E> implements Iterable<E> {
 }
 ```
 
-**Diesmal ohne `static`.** In 14.6 hiess die Faustregel: innere Klassen
-`static` machen, ausser man braucht das äußere Objekt. Hier braucht man es:
+**Diesmal ohne `static`.** In 14.6 hieß die Faustregel: verschachtelte Klassen
+`static` machen, außer man braucht das äußere Objekt. Hier braucht man es:
 Ein Iterator gehört zu genau einem Stapel und startet bei dessen oberstem
-Knoten. Eine innere Klasse ohne `static` trägt einen versteckten Verweis auf
-das Objekt, das sie erzeugt hat, deshalb darf sie `oben` einfach lesen
+Knoten. Eine verschachtelte Klasse ohne `static` heißt **innere Klasse** und
+trägt einen versteckten Verweis auf das Objekt, das sie erzeugt hat, deshalb
+darf sie `oben` einfach lesen
 (ausgeschrieben `Stapel.this.oben`). Sie sieht auch das `E` von `Stapel` und
-braucht kein eigenes. Ein Knoten dagegen weiss nichts von "seinem" Stapel und
+braucht kein eigenes. Ein Knoten dagegen weiß nichts von "seinem" Stapel und
 bleibt `static`.
 
 Weil jeder Aufruf von `iterator()` einen neuen Iterator liefert, können zwei
@@ -378,13 +394,13 @@ ausfuehren(D)                [D B A]                 []      <- C verfaellt
 
 Ein neuer Befehl leert den Wiederholen-Stapel, denn C passt nicht mehr zum
 veränderten Text. So verhält sich jeder Editor. Die Aufteilung der Arbeit:
-Der `Textpuffer` (der **Empfänger**) kann einfügen und löschen, weiss aber
-nichts von Rückgängig. Jeder Befehl weiss, wie er sich selbst umkehrt. Der
-Verlauf weiss nur, in welcher Reihenfolge, und ruft die Befehle blind auf.
+Der `Textpuffer` (der **Empfänger**) kann einfügen und löschen, weiß aber
+nichts von Rückgängig. Jeder Befehl weiß, wie er sich selbst umkehrt. Der
+Verlauf weiß nur, in welcher Reihenfolge, und ruft die Befehle blind auf.
 
 Manche Befehle müssen sich dafür etwas **merken**: "Füge `" Welt"` bei 5 ein"
 kehrt man um, indem man 5 Zeichen ab 5 löscht. Aber "lösche 5 Zeichen ab
-Position 3" lässt sich nur zurücknehmen, wenn man weiss, **welche** 5 Zeichen
+Position 3" lässt sich nur zurücknehmen, wenn man weiß, **welche** 5 Zeichen
 es waren, und zwar die beim **Ausführen**, nicht die beim Erzeugen des Befehls.
 
 Befehle ohne Rückgängig begegnen dir in 12.4 wieder: Ein `Runnable`, das du
@@ -399,17 +415,19 @@ Thread später ausführt.
 > [`TIPPS.md`](TIPPS.md). Erst Tipp 1 lesen, dann wieder selbst probieren.
 
 Die Dateien in [`src/`](src/), prüfen mit `./lerne.sh 14` (`Messung.java`,
-`Befehl.java` und `Textpuffer.java` sind fertig). Wirft dein Code eine Exception, melden die Tests sie als FEHL mit Datei
-und Zeile und laufen weiter. Die Sortier-Tests nutzen Randfälle (leer, ein
+`Befehl.java` und `Textpuffer.java` sind fertig). Wirft dein Code eine
+Exception, melden die Tests sie als FEHL mit Datei und Zeile und laufen
+weiter. Die Sortier-Tests nutzen Randfälle (leer, ein
 Element, sortiert, umgekehrt, Duplikate, negativ) und Zufallsdaten gegen `Arrays.sort`.
 
 1. **`Sortieren.insertionSort`** sortiert **an Ort und Stelle** (wie `verdoppleAlle`, Kapitel 4).
 2. **`Sortieren.mergeSort`**: rekursiv, **neues** Array, Original unverändert, Mischen in `merge`.
 3. **`Sortieren.istSortiert`**: aufsteigend, gleiche Nachbarn erlaubt.
 4. **`Suchen.ersteGroesserGleich(sortiert, wert)`**: Index des ersten Elements
-   `>= wert`, sonst `sortiert.length`. Binär, O(log n).
-5. **`Suchen.zaehleVorkommen(sortiert, wert)`** in O(log n) mit Aufgabe 4. Eine
-   lineare Lösung besteht die Tests auch, ob du halbierst, prüfst du selbst.
+   `>= wert`, sonst `sortiert.length`. Binär, O(log n). Eine lineare Lösung
+   besteht die Tests auch, ob du halbierst, prüfst du selbst.
+5. **`Suchen.zaehleVorkommen(sortiert, wert)`** in O(log n) mit Aufgabe 4. Auch
+   hier merken die Tests nicht, ob du linear zählst.
 6. **`MeineListe<E>`**: `add`, `get`, `set` (liefert den alten Wert), `size`,
    `remove(int)` (rückt nach links), `contains` (mit `equals`, `null` erlaubt),
    `toString` wie `[a, b]`. Kapazität 4, **Verdoppeln** beim Wachsen. Ungültiger
@@ -424,7 +442,8 @@ Element, sortiert, umgekehrt, Duplikate, negativ) und Zufallsdaten gegen `Arrays
 10. **Rückgängig** (14.10): `EinfuegenBefehl` und `LoeschenBefehl` mit
     `ausfuehren` und `rueckgaengig`, dann `Verlauf` mit `rueckgaengig()` und
     `wiederholen()` (beide `false`, wenn es nichts zu tun gibt) auf zwei
-    `ArrayDeque`s. Ein neuer Befehl verwirft das Wiederholbare.
+    `ArrayDeque`s, dazu `kannRueckgaengig()` und `kannWiederholen()`. Ein neuer
+    Befehl verwirft das Wiederholbare.
 
 ## Was gibt das aus?
 
@@ -500,7 +519,7 @@ Erst selbst antworten, dann vergleichen: Die Antworten stehen am Ende von
 - Warum ist `add` am Ende einer `ArrayList` amortisiert O(1), obwohl das Wachsen O(n) kostet?
 - Was bedeutet "stabil" beim Sortieren, und wann spielt es eine Rolle?
 - Stapel oder Warteschlange: Was passt zur Klammerprüfung, was zu Druckaufträgen, und warum?
-- Warum ist `Knoten` eine `static` innere Klasse, `StapelIterator` aber nicht?
+- Warum ist `Knoten` eine `static` verschachtelte Klasse, `StapelIterator` aber nicht?
 - Warum muss sich `LoeschenBefehl` den gelöschten Text beim Ausführen merken und nicht im Konstruktor?
 
 ---

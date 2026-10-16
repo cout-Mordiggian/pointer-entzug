@@ -1,5 +1,5 @@
 /**
- * Kapitel 07 - Exceptions.
+ * Kapitel 07: Exceptions.
  * Pruefen:  ./lerne.sh 07
  */
 public class Aufgaben {
@@ -21,7 +21,7 @@ public class Aufgaben {
      */
     public static int parseOderStandard(String text, int standard) {
         // TODO: Welche Exception wirft Integer.parseInt(null)?
-        //       Und welche bei "abc"? Probier beides aus - vielleicht
+        //       Und welche bei "abc"? Probier beides aus, vielleicht
         //       reicht ein einziger catch-Block.
         return standard;
     }
@@ -83,7 +83,7 @@ public class Aufgaben {
         //           if (fehlerWerfen) throw new RuntimeException("Panne");
         //           t.benutzen();
         //       } catch (RuntimeException e) {
-        //           // bewusst ignorieren - wir wollen nur sehen, dass close lief
+        //           // bewusst ignorieren, wir wollen nur sehen, dass close lief
         //       }
         return log.toString();
     }

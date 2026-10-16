@@ -1,11 +1,11 @@
 /**
- * Kapitel 14 - Musterloesung: Anwendungen des Stapels.
+ * Kapitel 14, Musterloesung: Anwendungen des Stapels.
  */
 public class Anwendungen {
 
     public static boolean klammernKorrekt(String s) {
         // Die Idee: Die zuletzt geoeffnete Klammer muss als erste geschlossen
-        // werden - "zuletzt rein, zuerst raus" ist genau ein Stapel.
+        // werden. "Zuletzt rein, zuerst raus" ist genau ein Stapel.
         // Nur zu zaehlen reicht NICHT: "([)]" hat von jeder Sorte gleich viele
         // offene und schliessende Klammern und ist trotzdem falsch.
         Stapel<Character> offen = new Stapel<>();
@@ -33,7 +33,7 @@ public class Anwendungen {
 
     public static String umkehren(String s) {
         // Alles hineinlegen, alles wieder herausnehmen: Ein Stapel dreht die
-        // Reihenfolge um. (StringBuilder.reverse() kann das auch - hier geht es
+        // Reihenfolge um. (StringBuilder.reverse() kann das auch, hier geht es
         // darum, den Stapel zu benutzen.)
         Stapel<Character> stapel = new Stapel<>();
         for (int i = 0; i < s.length(); i++) {
@@ -44,7 +44,7 @@ public class Anwendungen {
             sb.append(stapel.pop());
         }
         return sb.toString();
-        // Aufwand: O(n). StringBuilder statt "ergebnis += ..." - das waere
+        // Aufwand: O(n). StringBuilder statt "ergebnis += ...": Das waere
         // O(n^2), weil jedes += einen neuen String kopiert (Kapitel 3).
     }
 }

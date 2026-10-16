@@ -1,6 +1,6 @@
 # Kapitel 13: Testen und Fehlersuche
 
-**Ziel:** Du schreibst Tests, die echte Fehler finden, weil du weisst, *welche*
+**Ziel:** Du schreibst Tests, die echte Fehler finden, weil du weißt, *welche*
 Fälle du prüfen musst. Und wenn etwas schiefgeht, suchst du den Fehler
 systematisch statt durch Raten.
 
@@ -26,7 +26,7 @@ es in diesem Kapitel vor allem darum, **die richtigen Fälle** zu wählen.
 ## 13.2 Was einen guten Test ausmacht
 
 **Ein Verhalten pro Prüfung.** Schlägt "genau 20 Euro: 2,90 Versand" fehl,
-weisst du sofort, wo du suchen musst. Bei "Versand funktioniert" weisst du nichts.
+weißt du sofort, wo du suchen musst. Bei "Versand funktioniert" weißt du nichts.
 
 **Vorbereiten, Ausführen, Prüfen** (englisch *Arrange, Act, Assert*):
 
@@ -43,7 +43,7 @@ Methode aufgerufen wird: `"negativer Betrag wird abgelehnt"` statt `"test3"`.
 liefert, testest du nur, dass er tut, was er tut, mitsamt seinen Fehlern.
 
 **Wiederholbar.** Keine Zufallszahlen, keine Uhrzeit, keine Tastatureingabe.
-Sonst ist ein roter Test morgen wieder grün, und du weisst nicht warum.
+Sonst ist ein roter Test morgen wieder grün, und du weißt nicht warum.
 
 ## 13.3 Welche Fälle testen: Äquivalenzklassen und Grenzwerte
 
@@ -56,7 +56,7 @@ meisten Fehler (`>` statt `>=`, `<=` statt `<`).
 Checkliste für Grenzwerte: **0, 1, viele**, **leer** (`""`, `{}`),
 **`null`** (wenn die Spezifikation etwas dazu sagt), **negativ** (`-1`),
 **genau an der Grenze** (`2000` bei "ab 2000"), **knapp daneben** (`1999`),
-**sehr gross** (über `Integer.MAX_VALUE` = 2.147.483.647, wenn `long` erlaubt ist).
+**sehr groß** (über `Integer.MAX_VALUE` = 2.147.483.647, wenn `long` erlaubt ist).
 
 ### Durchgerechnet: Versandkosten
 
@@ -91,7 +91,7 @@ liefert 2000 die falschen 490 Cent; mit nur 1000, 3000 und 8000 merkst du das
 nie. Nebenbei: Auch 0 Cent Warenwert kosten 4,90 Versand. Gewollt? Das fragst
 du den Auftraggeber. **Gute Tests decken auch Lücken in der Anforderung auf.**
 
-## 13.4 Mit Prüf selbst testen
+## 13.4 Mit `Pruef` selbst testen
 
 `lib/Pruef.java` ist das Mini-Framework, das alle Kapiteltests benutzen. Du
 kannst es genauso für eigenen Code verwenden. Ein Testprogramm ist einfach
@@ -111,10 +111,14 @@ public class VersandTests {
 }
 ```
 
-Liegt sie in `src/`, startest du sie mit `./lerne.sh 13 -r VersandTests`.
+Die Klasse `Versand` mit `versandCent` gibt es noch nicht, die schreibst du
+dafür selbst, ebenfalls in `src/`. Ohne sie kompiliert das ganze Kapitel
+nicht mehr. Liegen beide in `src/`, startest du die Tests mit
+`./lerne.sh 13 -r VersandTests`.
 `490L` statt `490`, weil `gleich` Objekte vergleicht: Ein `Integer` ist nie
-`equals` zu einem `Long`. Und `() -> Versand.versandCent(-1)` ist ein
-**Lambda**: ein Stück Code, das `wirft` erst selbst in einem `try` ausführt
+`equals` zu einem `Long`. Ohne das `L` gibt es ein FEHL, obwohl auf beiden
+Seiten 490 steht; `Pruef` nennt dann die beiden Typen. Und
+`() -> Versand.versandCent(-1)` ist ein **Lambda**: ein Stück Code, das `wirft` erst selbst in einem `try` ausführt
 (mehr in Kapitel 9). Ohne Framework prüfst du Werte mit `if` und Exceptions
 mit `try`/`catch`, so wie in Teil A der Aufgaben:
 
@@ -123,16 +127,16 @@ try {
     Versand.versandCent(-1);
     System.out.println("FEHL: -1 haette werfen muessen");   // nur erreicht, wenn NICHT geworfen wurde
 } catch (IllegalArgumentException e) {
-    // erwartet - bestanden
+    // erwartet, also bestanden
 }
 ```
 
 ## 13.5 Ausblick: JUnit
 
-In echten Projekten nimmt man **JUnit 5**: `assertEquals` statt `Pruef.gleich`,
+In echten Projekten nimmt man **JUnit**: `assertEquals` statt `Pruef.gleich`,
 `assertThrows` statt `Pruef.wirft`, jeder Test eine Methode mit `@Test`, die
-Maven, Gradle oder die IDE automatisch finden. Beispiel in Abschnitt 12.12,
-Projektdateien in [`../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/`](../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/).
+Maven, Gradle oder die IDE automatisch finden. Beispiel in Abschnitt 12.12
+(JUnit), Projektvorlagen in [`../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/`](../12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/).
 Die Regeln für gute Testfälle gelten dort unverändert.
 
 ## 13.6 Fehlersuche systematisch
@@ -312,7 +316,7 @@ Pruef.gleich("Guten Morgen, Anna", new Begruessung(new NeunUhr()).text("Anna"), 
 
 Das kennst du schon: In Teil A dieses Kapitels bekommt `alleBestanden` den
 `Rabattrechner` **hineingereicht**. Nur deshalb kann derselbe Test einmal die
-richtige Implementierung und siebenmal einen Mutanten prüfen. Hätte
+richtige Implementierung und neunmal einen Mutanten prüfen. Hätte
 `alleBestanden` sich selbst einen Rabattrechner erzeugt, ginge das nicht.
 
 **Und Singletons?** Ein Singleton ist bequem, weil jeder es findet. Genau das ist
@@ -358,7 +362,7 @@ Das Interface [`Rabattrechner`](src/Rabattrechner.java) hat eine einzige Methode
    Endpreis = Gesamtpreis - Rabatt. Beispiel: 199 Cent * 10 = 1990, Rabatt
    99,5 -> 99, Endpreis 1891.
 
-In `src/Kandidaten.java` stecken eine korrekte Implementierung und **sieben
+In `src/Kandidaten.java` stecken eine korrekte Implementierung und **neun
 Mutanten**: Kopien mit je einem typischen Fehler. **Schau nicht hinein**,
 bevor du fertig bist. Die Übung ist, Fehler zu finden, die du nicht kennst.
 
@@ -366,13 +370,18 @@ Schreibe in [`src/MeineTests.java`](src/MeineTests.java) die Methode
 `static boolean alleBestanden(Rabattrechner r)`: deine Prüfungen gegen `r`,
 Ergebnis `true`, wenn alle stimmen. Benutze die Helfer `gleich(...)` und
 `fehlschlag(...)`, für erwartete Exceptions `try`/`catch` wie in 13.4. Die
-Tests rufen deine Methode achtmal auf. Mit der korrekten Implementierung muss
-`true` herauskommen, sonst ist einer **deiner** erwarteten Werte falsch. Mit
-jedem Mutanten muss `false` herauskommen: Deine Tests haben ihn **entlarvt**.
-Ein Mutant, der überlebt, zeigt eine Lücke in deinen Tests.
+Tests rufen deine Methode für jeden Mutanten einmal und für die korrekte
+Implementierung zweimal auf, in zufälliger Reihenfolge. Mit der korrekten
+Implementierung muss beide Male `true` herauskommen, sonst ist einer
+**deiner** erwarteten Werte falsch. Mit jedem Mutanten muss `false`
+herauskommen: Deine Tests haben ihn **entlarvt**. Ein Mutant, der überlebt,
+zeigt eine Lücke in deinen Tests.
 
-Das heisst **Mutationstest** (Werkzeuge wie PIT erzeugen Mutanten automatisch).
-Spielregel: Prüfe nur über `r.endpreisCent(...)`, kein `instanceof`.
+Das heißt **Mutationstest** (Werkzeuge wie PIT erzeugen Mutanten automatisch).
+Spielregeln: Prüfe nur über `r.endpreisCent(...)`, kein `instanceof` und
+keine anderen Kandidaten als Rechenhilfe. Jeder Aufruf steht für sich, deine
+Prüfungen merken sich nichts vom vorigen Aufruf. Genau deshalb darf die
+Reihenfolge zufällig sein: Am Ergebnis ändert sie nichts.
 
 ### Teil B: Fehlersuche
 

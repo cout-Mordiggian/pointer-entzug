@@ -7,7 +7,7 @@ public class Rechteck extends Figur implements Skalierbar {
 
     /** Oeffentlicher Konstruktor: Name ist "Rechteck". */
     public Rechteck(double breite, double hoehe) {
-        // Vorgegeben, damit die Datei kompiliert - verstehe, warum:
+        // Vorgegeben, damit die Datei kompiliert. Verstehe, warum:
         // Statt die Pruefungen doppelt zu schreiben, delegiert dieser
         // Konstruktor mit this(...) an den allgemeineren darunter.
         this("Rechteck", breite, hoehe);

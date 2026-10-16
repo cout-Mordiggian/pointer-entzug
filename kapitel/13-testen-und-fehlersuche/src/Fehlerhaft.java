@@ -1,8 +1,8 @@
 /**
- * Kapitel 13 - Teil B: Fehlersuche.
+ * Kapitel 13, Teil B: Fehlersuche.
  * Pruefen:  ./lerne.sh 13
  *
- * Jede Methode unten kompiliert - und jede enthaelt GENAU EINEN klassischen
+ * Jede Methode unten kompiliert, und jede enthaelt GENAU EINEN klassischen
  * Anfaengerfehler aus Abschnitt 13.7. Das Javadoc beschreibt jeweils, was
  * die Methode tun SOLL; die Tests pruefen dieses richtige Verhalten.
  *

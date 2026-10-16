@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8c: die Badewannen-Ente.
+ * Kapitel 6, Aufgabe 8c: die Badewannen-Ente.
  *
  *   Ente e = new Gummiente();
  *   e.anzeigen()   // "Ich bin eine Gummiente"

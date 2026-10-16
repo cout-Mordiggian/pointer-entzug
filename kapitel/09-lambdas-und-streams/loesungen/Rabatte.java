@@ -2,14 +2,14 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Kapitel 09 - Musterloesung: Strategien (Aufgabe 11) und eine Fabrik (Aufgabe 12).
+ * Kapitel 09, Musterloesung: Strategien (Aufgabe 11) und eine Fabrik (Aufgabe 12).
  */
 public final class Rabatte {
 
     private Rabatte() { }   // Utility-Klasse wie Pruef: nur statische Methoden
 
     // Diese Strategie hat keinen Zustand, eine einzige Instanz reicht fuer
-    // alle. Genau das darf eine Fabrikmethode - ein Konstruktor nicht: Er
+    // alle. Genau das darf eine Fabrikmethode, ein Konstruktor nicht: Er
     // muss bei jedem "new" ein neues Objekt liefern.
     // Nebenbei: Auch ein schlichtes "return betrag -> betrag;" liefert auf der
     // ueblichen JVM (HotSpot) jedes Mal dasselbe Objekt, weil ein Lambda ohne
@@ -49,13 +49,13 @@ public final class Rabatte {
 
     /**
      * Aufgabe 12: die Fabrik. Der Aufrufer nennt nur einen Code und bekommt
-     * "irgendeinen Rabatt" - welche Strategie dahintersteckt, bleibt hier.
+     * "irgendeinen Rabatt". Welche Strategie dahintersteckt, bleibt hier.
      * Kommt ein neuer Code dazu, aendert sich nur diese Methode.
      */
     public static Rabatt ausCode(String code) {
         Objects.requireNonNull(code, "code");
         // Locale.ROOT: Grossschreibung unabhaengig von der Spracheinstellung
-        // des Rechners (auf tuerkischen Systemen wird aus "i" sonst ein "İ").
+        // des Rechners (auf tuerkischen Systemen wird aus "i" sonst ein I mit Punkt, U+0130).
         String c = code.strip().toUpperCase(Locale.ROOT);
 
         if (c.equals("KEIN")) {
@@ -65,7 +65,7 @@ public final class Rabatte {
             // "PROZENTabc" -> parseInt wirft NumberFormatException. Die ist eine
             // Unterklasse von IllegalArgumentException, passt also schon.
             // "PROZENT150" -> prozent() wirft selbst. Zahl auslesen und
-            // pruefen - beides steckt schon in vorhandenen Methoden.
+            // pruefen: beides steckt schon in vorhandenen Methoden.
             return prozent(Integer.parseInt(c.substring("PROZENT".length())));
         }
         if (c.startsWith("MINUS")) {

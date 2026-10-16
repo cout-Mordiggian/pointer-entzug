@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Kapitel 08 - Collections und Generics.
+ * Kapitel 08: Collections und Generics.
  * Pruefen:  ./lerne.sh 08
  */
 public class Aufgaben {

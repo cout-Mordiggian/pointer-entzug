@@ -7,7 +7,7 @@ oder Gradle. Läuft unter Windows, macOS und Linux.
 Zielsprache: **Java 21 (LTS) oder neuer.** Der Kurs nutzt nur Sprachmittel, die
 es seit Java 21 gibt, und läuft deshalb mit jedem neueren JDK (welches du
 installiert hast, zeigt `java -version`). Wo neuere Versionen eine Regel
-gelockert haben, steht ein Hinweis *"Seit Java 25"*.
+gelockert haben, steht ein Hinweis *"Seit Java NN"* (etwa 22 oder 25).
 
 ---
 
@@ -66,6 +66,13 @@ Falls es hakt:
 - **`java` wird nicht gefunden:** Das JDK fehlt oder steht nicht im `PATH`.
   Nach der Installation das Terminal (bzw. die IDE) **neu starten**, siehe
   [`SETUP.md`](SETUP.md).
+- **`Error: A JNI error has occurred` mit `Module jdk.compiler not in boot
+  Layer`:** Installiert ist nur ein *JRE* (Laufzeit ohne Compiler). Du
+  brauchst ein *JDK*, siehe [`SETUP.md`](SETUP.md).
+- **`Dieser Kurs braucht Java 21 oder neuer`** (bei sehr altem Java auch
+  `Could not find or load main class Lerne.java` oder Kompilierfehler in
+  `Lerne.java`): Im `PATH` steht ein älteres Java vor dem neuen, siehe
+  [`SETUP.md`](SETUP.md).
 - **Windows: `./lerne.sh` klappt nicht** (Fehlermeldung, oder Windows fragt,
   mit welchem Programm es die Datei öffnen soll): Du bist in PowerShell oder
   cmd, nimm `.\lerne`.
@@ -74,7 +81,15 @@ Falls es hakt:
   `chmod +x lerne.sh projekt/starte.sh`, oder einfach `bash lerne.sh 01`.
 - **Seltsame Zeichen wie `←[32m` statt Farben:** Die alte Windows-Konsole
   kann keine Farben. Nimm das Terminal in IntelliJ oder VS Code oder das
-  *Windows Terminal* (bei Windows 11 dabei).
+  *Windows Terminal* (bei Windows 11 dabei). Wer ganz ohne Farben arbeiten
+  will, setzt die Umgebungsvariable `NO_COLOR=1`.
+- **Windows: `Batchvorgang abbrechen (J/N)?`** nach Strg+C (etwa um
+  `Zahlenraten` abzubrechen): Das fragt cmd, weil `lerne.cmd` eine
+  Batch-Datei ist. Mit `J` bestätigen, es geht nichts verloren.
+- **Windows: Fehler beim Löschen von `build\`** oder seltsam langsame Läufe:
+  Liegt der Kurs in einem OneDrive-Ordner (oft *Dokumente* oder *Desktop*),
+  synchronisiert OneDrive jede erzeugte `.class`-Datei und kann sie dabei
+  kurz sperren. Lege den Kurs besser außerhalb ab, etwa unter `C:\Users\<Name>\kurse\`.
 
 > Der wichtigste Lerneffekt entsteht zwischen "es kompiliert nicht" und "es ist grün".
 > Widerstehe der Versuchung, zu früh in `loesungen/` zu schauen.
@@ -86,11 +101,11 @@ Falls es hakt:
 | Nr | Kapitel | Worum es geht |
 |----|---------|---------------|
 | 01 | Erste Schritte | JVM, `main`, Kompilieren, Variablen, primitive Typen, Casting |
-| 02 | Kontrollfluss | Operatoren, `if`/`switch`, Schleifen, `break`/`continue` |
+| 02 | Operatoren und Kontrollfluss | Operatoren, `if`/`switch`, Schleifen, `break`/`continue` |
 | 03 | Strings und Arrays | Unveränderlichkeit, `equals` vs `==`, `StringBuilder`, 1D-/2D-Arrays |
 | 04 | Methoden | Signatur, call-by-value, Überladung, Rekursion, Varargs |
-| 05 | OOP I: Klassen und Objekte | Felder, Konstruktoren, Kapselung, `static`, `toString`/`equals`, Singleton, Fabrikmethode |
-| 06 | OOP II: Vererbung und Interfaces | `extends`, Polymorphie, abstrakte Klassen, Interfaces, Sichtbarkeiten, Strategie, Dekorierer, Adapter |
+| 05 | OOP I: Klassen und Objekte | Felder, Konstruktoren, Kapselung, `static`, `toString`/`equals`, Singleton, statische Fabrikmethode |
+| 06 | OOP II: Vererbung, Polymorphie, Interfaces | `extends`, Polymorphie, abstrakte Klassen, Interfaces, Sichtbarkeiten, Strategie, Dekorierer, Adapter |
 | 07 | Exceptions | checked/unchecked, `try`/`catch`/`finally`, try-with-resources, eigene Fehler |
 | 08 | Collections und Generics | `List`, `Set`, `Map`, `Comparator`, Typparameter, Wildcards |
 | 09 | Lambdas und Streams | funktionale Interfaces, Methodenreferenzen, Pipelines, `Optional`, Fabrik, Beobachter |
@@ -105,7 +120,7 @@ Zusätzlich:
 
 - [`SETUP.md`](SETUP.md): JDK, Editor, Kompilieren von Hand, Fehlermeldungen lesen
 - [`spickzettel/syntax.md`](spickzettel/syntax.md): Syntax auf einen Blick
-- [`spickzettel/glossar.md`](spickzettel/glossar.md): Begriffe von "Bytecode" bis "Wildcard"
+- [`spickzettel/glossar.md`](spickzettel/glossar.md): Begriffe von "Adapter" bis "Wrapper-Klasse"
 - [`spickzettel/fehlermeldungen.md`](spickzettel/fehlermeldungen.md): die häufigsten Compiler- und Laufzeitfehler und was sie bedeuten
 - [`spickzettel/entwurfsmuster.md`](spickzettel/entwurfsmuster.md): die Entwurfsmuster sind auf die Kapitel verteilt; hier stehen alle auf einen Blick, mit Fundstelle im Kurs und im JDK
 
@@ -118,8 +133,8 @@ kapitel/05-oop-klassen-und-objekte/
 ├── README.md        Dokumentation: Konzepte, Beispiele, Fallstricke,
 │                    Aufgaben, "Was gibt das aus?", Selbstcheck
 ├── TIPPS.md         gestufte Hinweise je Aufgabe + Antworten zum Selbstcheck
-├── src/             DEIN Arbeitsbereich - hier stehen die TODOs
-├── tests/           Pruefungen (nicht aendern - sie definieren die Aufgabe)
+├── src/             DEIN Arbeitsbereich, hier stehen die TODOs
+├── tests/           Pruefungen (nicht aendern, sie definieren die Aufgabe)
 └── loesungen/       Musterloesung mit Kommentaren (erst danach lesen)
 ```
 
@@ -143,7 +158,7 @@ bequemer, die interaktive Java-Konsole, siehe [`SETUP.md`](SETUP.md).
 3. **Klein ausprobieren**: in `jshell` oder mit `System.out.println` in einer
    eigenen Klasse (`./lerne.sh NN -r MeinTest`).
 4. **Das README-Kapitel noch einmal lesen**, gezielt den Abschnitt zum Thema.
-5. **`TIPPS.md` im Kapitelordner**: pro Aufgabe drei Stufen, von "in welche
+5. **`TIPPS.md` im Kapitelordner**: pro Aufgabe bis zu drei Stufen, von "in welche
    Richtung denken" bis "Gerüst mit Lücken". Immer nur die nächste Stufe
    aufklappen, dann wieder selbst probieren.
 6. Erst dann: die Musterlösung, und danach die Aufgabe **noch einmal ohne
@@ -159,8 +174,8 @@ bequemer, die interaktive Java-Konsole, siehe [`SETUP.md`](SETUP.md).
   Empfohlene Reihenfolge also: 1 bis 7, **13**, 8, **14**, 9 bis 12.
 - Nach jedem Kapitel: eine Sache aus dem Kapitel **freihändig** nachbauen, ohne README.
 - Nach Kapitel 8: Meilensteine M1 und M2 des Abschlussprojekts angehen.
-  M1 benutzt `record` und `enum`, lies dafür vorab die Abschnitte 10.2 und
-  10.3, sie sind kurz und setzen nur Kapitel 5 voraus.
+  M1 benutzt `record`, `enum` und `LocalDate`, lies dafür vorab die
+  Abschnitte 10.2, 10.3 und 10.7, sie sind kurz und setzen nur Kapitel 5 voraus.
 - Nach Kapitel 11: das Projekt fertigstellen (M3 bis M5), mit Kapitel 12 erweitern (M6).
 - Wiederholen lohnt sich: Die Selbstcheck-Fragen von zwei Kapiteln zuvor nach
   einer Woche noch einmal beantworten, Vergessenes jetzt aufzufrischen ist billiger als später.

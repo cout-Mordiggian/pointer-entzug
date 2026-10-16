@@ -2,14 +2,14 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Kapitel 10 - Modernes Java.
+ * Kapitel 10: Modernes Java.
  * Pruefen:  ./lerne.sh 10
  */
 public class Aufgaben {
 
     /**
      * Aufgabe 1: Flaeche per switch mit RECORD-MUSTERN.
-     * Kein default - weil Form sealed ist, kennt der Compiler alle Faelle.
+     * Kein default: Weil Form sealed ist, kennt der Compiler alle Faelle.
      * Dreieck nach Heron: s = (a+b+c)/2, A = sqrt(s(s-a)(s-b)(s-c))
      */
     public static double flaeche(Form form) {

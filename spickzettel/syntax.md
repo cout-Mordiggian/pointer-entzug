@@ -3,7 +3,7 @@
 ## Programmgerüst
 
 ```java
-package de.firma.app;          // optional, muss erste Zeile sein
+package de.firma.app;          // optional, erste Anweisung (nur Kommentare davor)
 import java.util.List;
 
 public class Start {
@@ -20,7 +20,8 @@ int i = 42;                    long l = 42L;
 double d = 3.14;               float f = 3.14f;
 char c = 'A';                  boolean b = true;
 String s = "Text";             var x = new ArrayList<String>();
-final double MWST = 0.19;      static final int MAX = 100;
+final double MWST = 0.19;      // lokal: final
+static final int MAX = 100;    // als Feld der Klasse: Konstante
 
 int gross = 2_000_000_000;     // Unterstriche als Lesehilfe
 int hex = 0xFF;  int bin = 0b1010;  int okt = 010;   // okt ist 8! fuehrende 0 = oktal
@@ -32,7 +33,8 @@ int hex = 0xFF;  int bin = 0b1010;  int okt = 010;   // okt ist 8! fuehrende 0 =
 +  -  *  /  %              // % = Rest
 ++  --  +=  -=  *=  /=
 ==  !=  <  >  <=  >=
-&&  ||  !                  // kurzschluessig
+&&  ||                     // kurzschluessig: rechts nur, wenn noetig
+!                          // nicht
 bedingung ? a : b          // ternaer
 instanceof Typ variable    // Pattern Matching
 ```
@@ -42,7 +44,7 @@ instanceof Typ variable    // Pattern Matching
 ```java
 if (a) { } else if (b) { } else { }
 
-String s = switch (x) {             // Ausdruck (bevorzugt) - liefert einen Wert
+String s = switch (x) {             // Ausdruck (bevorzugt), liefert einen Wert
     case 1, 2 -> "wenig";
     case 3    -> "mittel";
     default   -> { yield "viel"; }
@@ -65,7 +67,7 @@ break;  continue;  return wert;
 
 ```java
 public static int summe(int a, int b) { return a + b; }
-public static int summeAlle(int... zahlen) { }        // Varargs
+public static int summeAlle(int... zahlen) { return zahlen.length; } // Varargs: innen ein Array
 private void tuWas() { }
 ```
 
@@ -210,7 +212,8 @@ Deque<String> d = new ArrayDeque<>();     d.push(x); d.pop();
 
 m.getOrDefault(k, 0);
 m.merge(k, 1, Integer::sum);
-m.computeIfAbsent(k, x -> new ArrayList<>()).add(v);
+Map<String, List<String>> gruppen = new HashMap<>();
+gruppen.computeIfAbsent(k, schluessel -> new ArrayList<>()).add(wert);
 m.putIfAbsent(k, v);
 for (var e : m.entrySet()) { e.getKey(); e.getValue(); }
 
@@ -288,6 +291,6 @@ Double.parseDouble(s)  Double.compare(a, b)
 String.valueOf(x)
 Objects.equals(a, b)  Objects.hash(a, b)  Objects.requireNonNull(x)
 Character.isDigit/isLetter/isLetterOrDigit/toLowerCase
-Math.addExact(a, b)  Math.floorMod(a, b)             // Ueberlauf-Exception / Rest >= 0
+Math.addExact(a, b)  Math.floorMod(a, b)             // Ueberlauf-Exception / Rest >= 0 (bei b > 0)
 System.currentTimeMillis()  System.nanoTime()
 ```

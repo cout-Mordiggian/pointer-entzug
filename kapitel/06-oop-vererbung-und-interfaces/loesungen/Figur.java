@@ -1,7 +1,7 @@
 import java.util.Locale;
 
 /**
- * Kapitel 06 - Musterloesung: abstrakte Basisklasse.
+ * Kapitel 06, Musterloesung: abstrakte Basisklasse.
  */
 public abstract class Figur {
 
@@ -27,11 +27,11 @@ public abstract class Figur {
     /**
      * "Template Method": eine fertige Methode in der Basis, die Bausteine
      * aufruft, die erst die Unterklasse liefert. Figur weiss nicht, WIE
-     * eine Flaeche berechnet wird - nur, DASS es geht.
+     * eine Flaeche berechnet wird, nur DASS es geht.
      */
     public String beschreibung() {
         // Locale.ROOT erzwingt den Punkt als Dezimaltrennzeichen. Ohne diesen
-        // Parameter nimmt Java die Systemeinstellung - auf einem deutschen
+        // Parameter nimmt Java die Systemeinstellung. Auf einem deutschen
         // System kaeme "12,57" heraus und der Test schluege fehl. Das ist ein
         // echter, haeufiger Produktionsfehler bei Datenformaten und IDs.
         return String.format(Locale.ROOT, "%s: Flaeche=%.2f, Umfang=%.2f",

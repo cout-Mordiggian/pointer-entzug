@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 08 - Musterloesung: generische Klasse.
+ * Kapitel 08, Musterloesung: generische Klasse.
  */
 public final class Paar<A, B> {
 
@@ -15,11 +15,11 @@ public final class Paar<A, B> {
 
     /**
      * Die <A, B> vor dem Rueckgabetyp sind EIGENE Typparameter dieser Methode.
-     * Sie verdecken zufaellig die gleichnamigen der Klasse - das ist erlaubt,
+     * Sie verdecken zufaellig die gleichnamigen der Klasse, das ist erlaubt,
      * aber sie haben nichts miteinander zu tun. Eine statische Methode gehoert
      * keinem Objekt und kennt daher auch dessen Typargumente nicht.
      *
-     * Der Nutzen: Paar.von("a", 1) statt new Paar<String, Integer>("a", 1) -
+     * Der Nutzen: Paar.von("a", 1) statt new Paar<String, Integer>("a", 1),
      * der Compiler leitet die Typen aus den Argumenten ab.
      */
     public static <A, B> Paar<A, B> von(A a, B b) {
@@ -31,7 +31,7 @@ public final class Paar<A, B> {
 
     /**
      * Beachte den Rueckgabetyp: Paar<B, A>, nicht Paar<A, B>.
-     * Der Compiler prueft das - ein vertauschtes new Paar<>(erstes, zweites)
+     * Der Compiler prueft das: ein vertauschtes new Paar<>(erstes, zweites)
      * waere hier ein Fehler.
      */
     public Paar<B, A> getauscht() {

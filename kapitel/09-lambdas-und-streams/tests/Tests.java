@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class Tests {
                 Aufgaben.namenLaengen(LEUTE), "Name -> Laenge");
 
         Pruef.abschnitt("Aufgabe 9: Transformation.dann");
-        Transformation gross = s -> s.toUpperCase();
+        Transformation gross = s -> s.toUpperCase(Locale.ROOT);
         Transformation umgedreht = s -> new StringBuilder(s).reverse().toString();
         Transformation ausrufen = s -> s + "!";
         Pruef.gleich("CBA", gross.dann(umgedreht).anwenden("abc"), "gross, dann umgedreht");
@@ -235,7 +236,7 @@ public class Tests {
 
     /**
      * Fuehrt einen Pruefblock aus. Wirft dein Code unterwegs eine Exception,
-     * wird das als FEHL gemeldet - mit Datei und Zeile - und die restlichen
+     * wird das als FEHL gemeldet, mit Datei und Zeile, und die restlichen
      * Pruefungen laufen trotzdem weiter.
      */
     private static void sicher(String was, Runnable block) {

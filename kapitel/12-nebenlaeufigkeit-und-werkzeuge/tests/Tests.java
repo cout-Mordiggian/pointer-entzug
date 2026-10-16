@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 public class Tests {
     public static void main(String[] args) throws Exception {
+        warneBeiEinemKern();
 
         Pruef.abschnitt("Zaehler");
         Zaehler z = new Zaehler();
@@ -19,20 +21,25 @@ public class Tests {
         z.erhoeheUm(-3);
         Pruef.gleich(4, z.wert(), "negativer Schritt");
 
-        // Die eigentliche Pruefung der Thread-Sicherheit - unabhaengig davon,
+        // Die eigentliche Pruefung der Thread-Sicherheit, unabhaengig davon,
         // wie du zaehleMitZaehler baust. 8 Threads warten an einem Startsignal
         // und legen dann gleichzeitig los. Ohne synchronized gehen dabei
         // praktisch immer Erhoehungen verloren.
-        Pruef.gleich(800_000, gleichzeitig(8, 100_000, Zaehler::erhoehen),
+        Pruef.gleich(800_000, gleichzeitig(8, 100_000, i -> Zaehler::erhoehen),
                 "erhoehen() ist thread-sicher (8 Threads x 100.000)");
-        Pruef.gleich(1_600_000, gleichzeitig(8, 100_000, zz -> zz.erhoeheUm(2)),
+        Pruef.gleich(1_600_000, gleichzeitig(8, 100_000, i -> zz -> zz.erhoeheUm(2)),
                 "erhoeheUm() ist thread-sicher (8 Threads x 100.000 x 2)");
+        // Gemischt: Sperren beide Methoden auf verschiedene Objekte, schliessen
+        // sie sich nicht gegenseitig aus, und Erhoehungen gehen verloren.
+        Pruef.gleich(1_200_000, gleichzeitig(8, 100_000,
+                        i -> i % 2 == 0 ? Zaehler::erhoehen : zz -> zz.erhoeheUm(2)),
+                "erhoehen() und erhoeheUm() gleichzeitig (dieselbe Sperre)");
 
         Pruef.abschnitt("Aufgabe 1: zaehleMitZaehler (synchronized)");
         Pruef.gleich(0, Aufgaben.zaehleMitZaehler(0, 1000), "keine Threads");
         Pruef.gleich(1000, Aufgaben.zaehleMitZaehler(1, 1000), "ein Thread");
         // Der eigentliche Test: mit einem ungeschuetzten int++ schlaegt das
-        // fast immer fehl. Zur Sicherheit mehrfach wiederholen - Race
+        // fast immer fehl. Zur Sicherheit mehrfach wiederholen, denn Race
         // Conditions treten nicht bei jedem Lauf auf.
         for (int versuch = 1; versuch <= 3; versuch++) {
             Pruef.gleich(80_000, Aufgaben.zaehleMitZaehler(8, 10_000),
@@ -48,7 +55,7 @@ public class Tests {
 
         Pruef.abschnitt("Aufgabe 3: summeParallel");
         Pruef.gleich(5050L, Aufgaben.summeParallel(100, 4), "1..100 auf 4 Threads");
-        Pruef.gleich(1L, Aufgaben.summeParallel(1, 4), "1..1 - mehr Threads als Arbeit");
+        Pruef.gleich(1L, Aufgaben.summeParallel(1, 4), "1..1, mehr Threads als Arbeit");
         Pruef.gleich(0L, Aufgaben.summeParallel(0, 4), "leerer Bereich");
         Pruef.gleich(55L, Aufgaben.summeParallel(10, 3), "1..10 auf 3 Threads (geht nicht auf)");
         long n = 1_000_000L;
@@ -80,13 +87,25 @@ public class Tests {
                     "4 Threads x 25.000 IDs, keine doppelt (Versuch " + versuch + ")");
         }
 
+        warneBeiEinemKern();
         Pruef.bericht();
+    }
+
+    /** Auf einem einzigen Kern treten Race Conditions selten auf: dann deutlich warnen. */
+    private static void warneBeiEinemKern() {
+        if (Runtime.getRuntime().availableProcessors() > 1) return;
+        System.out.println();
+        System.out.println("  ACHTUNG: Dieser Rechner meldet nur EINEN Prozessorkern.");
+        System.out.println("  Die Nebenlaeufigkeitstests sagen hier wenig aus: Auch eine Loesung");
+        System.out.println("  ohne synchronized wird oft gruen. Gruen heisst hier NICHT korrekt.");
+        System.out.println("  Pruefe deinen Code selbst (README, Ehrlicher Hinweis) oder teste");
+        System.out.println("  auf einem Rechner mit mehreren Kernen.");
     }
 
     /**
      * Startet "threads" Threads, die nach einem gemeinsamen Startsignal je
      * "proThread" IDs holen. Liefert, wie viele VERSCHIEDENE IDs dabei
-     * herauskamen - bei korrektem Zaehler threads * proThread.
+     * herauskamen, bei korrektem Zaehler threads * proThread.
      */
     private static int verschiedeneIds(int threads, int proThread) throws InterruptedException {
         long[][] ids = new long[threads][proThread];
@@ -123,15 +142,17 @@ public class Tests {
 
     /**
      * Startet "threads" Threads, die nach einem gemeinsamen Startsignal je
-     * "proThread"-mal "aktion" auf DEMSELBEN Zaehler ausfuehren.
+     * "proThread"-mal ihre Aktion auf DEMSELBEN Zaehler ausfuehren.
+     * aktionFuer(i) liefert die Aktion fuer Thread Nummer i.
      * Liefert den Endstand.
      */
-    private static int gleichzeitig(int threads, int proThread, Consumer<Zaehler> aktion)
+    private static int gleichzeitig(int threads, int proThread, IntFunction<Consumer<Zaehler>> aktionFuer)
             throws InterruptedException {
         Zaehler zaehler = new Zaehler();
         CountDownLatch start = new CountDownLatch(1);
         List<Thread> alle = new ArrayList<>();
         for (int i = 0; i < threads; i++) {
+            Consumer<Zaehler> aktion = aktionFuer.apply(i);
             Thread t = new Thread(() -> {
                 try {
                     start.await();

@@ -9,7 +9,7 @@ public class Tests {
         Pruef.fastGleich(2.0, k.getRadius(), "getRadius");
         Pruef.fastGleich(Math.PI * 4, k.flaeche(), "Flaeche");
         Pruef.fastGleich(4 * Math.PI, k.umfang(), "Umfang");
-        // Bei r = 2 sind Flaeche und Umfang zufaellig gleich (4 * pi) - deshalb
+        // Bei r = 2 sind Flaeche und Umfang zufaellig gleich (4 * pi), deshalb
         // zusaetzlich r = 1, damit vertauschte Formeln auffallen.
         Pruef.fastGleich(2 * Math.PI, new Kreis(1).umfang(), "Umfang bei Radius 1");
         Pruef.wirft(IllegalArgumentException.class,
@@ -20,6 +20,8 @@ public class Tests {
         Pruef.gleich("Rechteck", r.getName(), "getName");
         Pruef.fastGleich(12.0, r.flaeche(), "Flaeche");
         Pruef.fastGleich(14.0, r.umfang(), "Umfang");
+        Pruef.fastGleich(3.0, r.getBreite(), "getBreite");
+        Pruef.fastGleich(4.0, r.getHoehe(), "getHoehe");
         Pruef.wirft(IllegalArgumentException.class,
                 () -> new Rechteck(-1, 2), "negative Breite abgelehnt");
         Pruef.wirft(IllegalArgumentException.class,
@@ -37,7 +39,7 @@ public class Tests {
 
         Pruef.abschnitt("beschreibung (Locale.ROOT!)");
         // Absichtlich ein deutsches Locale einstellen: Ohne Locale.ROOT kaeme
-        // dann "12,00" statt "12.00" heraus - egal, wie dein System eingestellt ist.
+        // dann "12,00" statt "12.00" heraus, egal, wie dein System eingestellt ist.
         Locale systemLocale = Locale.getDefault();
         Locale.setDefault(Locale.GERMANY);
         Pruef.gleich("Rechteck: Flaeche=12.00, Umfang=14.00", r.beschreibung(), "Rechteck");
@@ -58,7 +60,7 @@ public class Tests {
 
         Pruef.abschnitt("Kovarianter Rueckgabetyp");
         // Wenn skaliert() in Quadrat richtig ueberschrieben ist, braucht diese
-        // Zeile KEINEN Cast - der Compiler kennt den Typ Quadrat.
+        // Zeile KEINEN Cast, der Compiler kennt den Typ Quadrat.
         Quadrat q2 = q.skaliert(2);
         Pruef.fastGleich(6.0, q2.getSeite(), "Quadrat.skaliert liefert ein Quadrat");
         Pruef.gleich("Quadrat", q2.getName(), "und es heisst auch so");
@@ -70,15 +72,18 @@ public class Tests {
         Figur[] groessteVorne = { new Quadrat(4), new Kreis(1), new Rechteck(2, 3) };
         Pruef.gleich("Quadrat", Figuren.groesste(groessteVorne).getName(),
                 "groesste Figur steht vorne");
+        Figur[] groessteMitte = { new Kreis(1), new Quadrat(4), new Rechteck(2, 3) };
+        Pruef.gleich("Quadrat", Figuren.groesste(groessteMitte).getName(),
+                "groesste Figur steht in der Mitte");
         Pruef.fastGleich(0.0, Figuren.gesamtFlaeche(new Figur[]{}), "leeres Array");
         Pruef.gleich(null, Figuren.groesste(new Figur[]{}), "groesste von leer ist null");
 
         Pruef.abschnitt("Dynamische Bindung");
         // Statischer Typ ist Figur, dynamischer Typ ist Kreis.
-        // Aufgerufen wird die Kreis-Version - das ist der ganze Trick.
+        // Aufgerufen wird die Kreis-Version, das ist der ganze Trick.
         Figur alsFigur = new Kreis(1);
         Pruef.fastGleich(Math.PI, alsFigur.flaeche(), "Figur-Variable, Kreis-Verhalten");
-        Pruef.gleich("Kreis", alsFigur.getName(), "getName kommt vom echten Typ");
+        Pruef.gleich("Kreis", alsFigur.getName(), "Name stammt aus dem Kreis-Konstruktor");
 
         Pruef.abschnitt("Aufgabe 7a: MitZeilennummer (Dekorierer)");
         TextProtokoll pn1 = new TextProtokoll();
@@ -92,6 +97,13 @@ public class Tests {
         TextProtokoll pg1 = new TextProtokoll();
         new Grossgeschrieben(pg1).schreibe("Hallo Welt");
         Pruef.gleich("HALLO WELT\n", pg1.inhalt(), "Hallo Welt -> HALLO WELT");
+        // Absichtlich ein tuerkisches Locale: Dort macht toUpperCase() ohne
+        // Locale.ROOT aus "i" ein "I mit Punkt". Danach wieder zuruecksetzen.
+        Locale.setDefault(Locale.of("tr", "TR"));
+        TextProtokoll pg2 = new TextProtokoll();
+        new Grossgeschrieben(pg2).schreibe("info");
+        Locale.setDefault(systemLocale);
+        Pruef.gleich("INFO\n", pg2.inhalt(), "info -> INFO, auch auf einem tuerkischen System (Locale.ROOT)");
 
         Pruef.abschnitt("Aufgabe 7c: NurMit (Dekorierer)");
         String[] eingabe = {"INFO Start", "FEHLER Platte voll", "INFO weiter", "FEHLER Netz weg"};
@@ -150,7 +162,7 @@ public class Tests {
                 "schwimmen kommt fuer alle aus Ente");
 
         Pruef.abschnitt("Aufgabe 8a: Polymorphie ueber den Teich");
-        // Die Schleife kennt nur Ente - welche Strategie dahinter steckt, entscheidet jedes Objekt.
+        // Die Schleife kennt nur Ente. Welche Strategie dahinter steckt, entscheidet jedes Objekt.
         Ente[] teich = { new Stockente(), new Gummiente(), new Lockente() };
         StringBuilder laute = new StringBuilder();
         for (Ente e : teich) {

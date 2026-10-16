@@ -1,7 +1,7 @@
 # Kapitel 14: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `insertionSort`
 
@@ -15,7 +15,7 @@ und was muss ein Schritt tun, damit sie danach auch für einen Platz mehr gilt?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Aussen eine Schleife `i` von 1 bis `a.length - 1`. Merk dir `a[i]` in einer
+Außen eine Schleife `i` von 1 bis `a.length - 1`. Merk dir `a[i]` in einer
 Variablen, denn der Platz wird gleich überschrieben. Innen läuft ein zweiter
 Index `j` von `i - 1` nach **links**, solange `j >= 0` **und** `a[j]` größer
 als der gemerkte Wert ist. Dabei rückt jedes dieser Elemente einen Platz nach
@@ -26,7 +26,7 @@ anfassen, sonst gibt es bei `j == -1` eine `ArrayIndexOutOfBoundsException`.
 `&&` wertet von links aus und bricht früh ab (Kapitel 2).
 
 Kein `return` eines neuen Arrays: Der Test schaut auf das Array, das er dir
-gegeben hat. `a = ...` in der Methode hätte nach aussen keine Wirkung (4.2).
+gegeben hat. `a = ...` in der Methode hätte nach außen keine Wirkung (4.2).
 
 </details>
 
@@ -152,7 +152,7 @@ nach links, also `von = mitte + 1`. Sonst könnte `mitte` die Antwort sein, also
 
 Bei einem Treffer **nicht** abbrechen: Bei `{1, 3, 3, 3, 5}` trifft die erste
 `mitte` die mittlere 3, gesucht ist aber die erste. Am Ende ist `von == bis`,
-und das ist das Ergebnis, auch für das leere Array und "nichts ist gross genug".
+und das ist das Ergebnis, auch für das leere Array und "nichts ist groß genug".
 
 </details>
 
@@ -179,8 +179,8 @@ return ...;
 <details><summary>Tipp 1: Richtung</summary>
 
 In einem sortierten Array stehen alle Kopien eines Werts direkt hintereinander.
-Frag dich: Wenn du weisst, wo der Block **beginnt** und wo der nächstgrößere
-Wert beginnt, wie gross ist dann der Block?
+Frag dich: Wenn du weißt, wo der Block **beginnt** und wo der nächstgrößere
+Wert beginnt, wie groß ist dann der Block?
 
 </details>
 
@@ -365,8 +365,8 @@ Einen `Stapel<Character>` anlegen und den String Zeichen für Zeichen mit
 `charAt` durchlaufen:
 
 - öffnende Klammer: `push`
-- schliessende Klammer: Ist der Stapel leer, ist das Ergebnis `false` (`"))"`).
-  Sonst `pop` und prüfen, ob die geholte öffnende Klammer zur schliessenden
+- schließende Klammer: Ist der Stapel leer, ist das Ergebnis `false` (`"))"`).
+  Sonst `pop` und prüfen, ob die geholte öffnende Klammer zur schließenden
   **passt**. Wenn nicht: `false`. Eine kleine private Methode `passen(char, char)`
   hält das lesbar.
 - jedes andere Zeichen: ignorieren
@@ -437,7 +437,7 @@ return sb.toString();
 Abschnitt 14.9 und das Bild mit dem Zeiger `aktuell`. Der Iterator ist eine
 Art Lesezeichen in der Kette. Frag dich: Wo steht das Lesezeichen am Anfang,
 woran erkennst du, dass es hinter dem letzten Knoten steht, und was muss
-`next()` ausser "Wert liefern" noch tun?
+`next()` außer "Wert liefern" noch tun?
 
 </details>
 
@@ -512,6 +512,8 @@ Aktion **rückgängig** zu machen, und wann kenne ich sie?
   - `wiederholen()`: spiegelbildlich. Aber **nicht** `ausfuehren(b)` des
     Verlaufs benutzen, das würde den Wiederholen-Stapel leeren! Direkt
     `b.ausfuehren()` und auf den Rückgängig-Stapel pushen.
+  - `kannRueckgaengig()` und `kannWiederholen()`: Ist der jeweilige Stapel
+    nicht leer?
 
 </details>
 
@@ -548,7 +550,7 @@ Bei n = 1.000.000 sind n^2 = 10^12 Schritte, n log n dagegen nur rund 2 * 10^7.
 Bei grob 10^9 einfachen Schritten pro Sekunde sind das etwa 1.000 Sekunden (eine
 Viertelstunde) gegen 0,02 Sekunden. Der Unterschied wächst mit n immer weiter:
 Verdoppelst du die Daten, vervierfacht sich die Zeit bei O(n^2), bei O(n log n)
-verdoppelt sie sich nur knapp. Kein schnellerer Rechner gleicht das aus, nur ein
+wird sie nur etwas mehr als doppelt so groß. Kein schnellerer Rechner gleicht das aus, nur ein
 besserer Algorithmus.
 
 </details>
@@ -557,7 +559,7 @@ besserer Algorithmus.
 
 Erstens läuft Code anfangs im Interpreter. Erst nach dem Aufwärmen hat der
 JIT-Compiler ihn in Maschinencode übersetzt, die ersten Läufe sind also zu
-langsam. Zweitens stören Garbage Collector, andere Programme und die
+langsam, und auch danach kann der JIT noch einmal neu übersetzen. Zweitens stören Garbage Collector, andere Programme und die
 Taktanpassung der CPU einzelne Messungen zufällig. Drittens kann der JIT
 Rechnungen streichen, deren Ergebnis nie benutzt wird. Und sehr kurze Messungen
 bestehen vor allem aus der Ungenauigkeit der Uhr. Deshalb: aufwärmen, mehrfach
@@ -571,7 +573,7 @@ Messung. Oder gleich JMH benutzen.
 Das teure Umkopieren passiert selten, und nach jedem Wachsen ist wieder so viel
 Platz frei, wie schon belegt war. Beim Verdoppeln kopierst du bis n Elemente
 insgesamt 1 + 2 + 4 + ... + n < 2n Elemente um. Auf n Aufrufe verteilt sind das
-weniger als 2 Kopien pro `add`, also im Schnitt konstant. "Amortisiert" heisst
+weniger als 2 Kopien pro `add`, also im Schnitt konstant. "Amortisiert" heißt
 genau das: Einzelne Aufrufe können teuer sein, der Durchschnitt über viele ist
 O(1). Das funktioniert mit jedem festen Wachstumsfaktor größer als 1 (die echte
 `ArrayList` nimmt 1,5). Würde das Array jedes Mal um einen festen Betrag wachsen,
@@ -602,16 +604,16 @@ also wird immer das älteste Element gebraucht. In Java nimmst du für beides
 
 </details>
 
-<details><summary>Warum ist <code>Knoten</code> eine <code>static</code> innere Klasse, <code>StapelIterator</code> aber nicht?</summary>
+<details><summary>Warum ist <code>Knoten</code> eine <code>static</code> verschachtelte Klasse, <code>StapelIterator</code> aber nicht?</summary>
 
-Eine innere Klasse ohne `static` trägt einen versteckten Verweis auf das
+Eine verschachtelte Klasse ohne `static`, also eine innere Klasse, trägt einen versteckten Verweis auf das
 äußere Objekt, das sie erzeugt hat, und darf dessen Felder direkt benutzen.
 Das lohnt sich nur, wenn sie dieses Objekt wirklich braucht. Ein Knoten braucht
 keinen Stapel: Er hält nur einen Wert und den nächsten Knoten. Ohne `static`
 trüge jeder der vielleicht Millionen Knoten einen überflüssigen Verweis mit
 sich. Der Iterator dagegen gehört zu genau einem Stapel und startet bei dessen
 `oben`, hier ist der Verweis genau richtig. Deshalb gilt die Faustregel aus
-14.6: `static`, ausser man braucht das äußere Objekt.
+14.6: `static`, außer man braucht das äußere Objekt.
 
 </details>
 
@@ -620,7 +622,7 @@ sich. Der Iterator dagegen gehört zu genau einem Stapel und startet bei dessen
 Zwischen Erzeugen und Ausführen kann Zeit vergehen, und der Text kann sich
 ändern, etwa durch andere Befehle oder weil der Befehl erst beim Wiederholen
 erneut läuft. Rückgängig muss genau das wiederherstellen, was beim Ausführen
-**tatsächlich** gelöscht wurde. Das weiss man erst in diesem Moment:
+**tatsächlich** gelöscht wurde. Das weiß man erst in diesem Moment:
 `Textpuffer.loeschen` liefert es als Rückgabewert. Beim Einfügen gibt es das
 Problem nicht, denn der eingefügte Text steht schon im Befehl. Allgemein:
 Ein Befehl muss sich den Zustand merken, den er zerstört, und zwar dann, wenn er

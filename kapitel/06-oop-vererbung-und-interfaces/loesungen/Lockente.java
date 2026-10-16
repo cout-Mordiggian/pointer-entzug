@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Musterloesung: eine Holzente fuer Jaeger, sie fliegt nicht und ist stumm.
+ * Kapitel 6, Musterloesung: eine Holzente fuer Jaeger, sie fliegt nicht und ist stumm.
  */
 public class Lockente extends Ente {
 

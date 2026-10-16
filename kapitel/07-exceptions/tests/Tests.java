@@ -35,7 +35,7 @@ public class Tests {
 
         Pruef.abschnitt("Aufgabe 5: ablauf (finally)");
         Pruef.gleich("start|ok|ende", Aufgaben.ablauf(false), "ohne Fehler");
-        Pruef.gleich("start|fehler|ende", Aufgaben.ablauf(true), "mit Fehler - ende kommt trotzdem");
+        Pruef.gleich("start|fehler|ende", Aufgaben.ablauf(true), "mit Fehler: ende kommt trotzdem");
 
         Pruef.abschnitt("Aufgabe 6: abheben (checked Exception)");
         Pruef.gleich(700L, Aufgaben.abheben(1000, 300), "genug Deckung");

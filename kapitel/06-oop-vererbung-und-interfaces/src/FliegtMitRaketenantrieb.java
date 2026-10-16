@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Aufgabe 8d: ein neues FlugVerhalten, ganz ohne Ente zu aendern.
+ * Kapitel 6, Aufgabe 8d: ein neues FlugVerhalten, ganz ohne Ente zu aendern.
  *
  *   new FliegtMitRaketenantrieb().fliegen()   // "Ich fliege mit Raketenantrieb!"
  *

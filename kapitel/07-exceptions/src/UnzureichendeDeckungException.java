@@ -1,7 +1,7 @@
 /**
  * Kapitel 07: Eine eigene CHECKED Exception.
  *
- * "extends Exception" macht sie checked - der Compiler zwingt Aufrufer,
+ * "extends Exception" macht sie checked, der Compiler zwingt Aufrufer,
  * sie zu fangen oder mit throws weiterzureichen.
  */
 public class UnzureichendeDeckungException extends Exception {

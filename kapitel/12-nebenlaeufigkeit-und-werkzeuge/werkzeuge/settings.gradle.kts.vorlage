@@ -1,0 +1,9 @@
+// Vorlage: beim Kopieren in ein eigenes Projekt in settings.gradle.kts umbenennen.
+
+plugins {
+    // Erlaubt Gradle, ein fehlendes JDK fuer die Toolchain selbst herunterzuladen.
+    // Aktuelle Version: https://plugins.gradle.org (Suche nach "foojay-resolver")
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
+rootProject.name = "mein-projekt"

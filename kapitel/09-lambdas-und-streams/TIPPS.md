@@ -1,7 +1,7 @@
 # Kapitel 09: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `geradeQuadrate`
 
@@ -61,7 +61,7 @@ Stream.of("abc", "xyz").max((a, b) -> 0)     // Comparator, der alles fuer gleic
 ```
 
 Wenn du dich nicht auf dieses Verhalten verlassen willst, geht es auch explizit
-mit `reduce((a, b) -> ...)`: Du behältst `a`, ausser `b` ist *echt* länger.
+mit `reduce((a, b) -> ...)`: Du behältst `a`, außer `b` ist *echt* länger.
 
 Leere Liste und Ein-Wort-Liste erledigt `max` von selbst.
 
@@ -96,12 +96,12 @@ werden?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Erst `map(Person::getName)`, dann in Grossbuchstaben umwandeln, **dann**
+Erst `map(Person::getName)`, dann in Großbuchstaben umwandeln, **dann**
 `sorted()`. `toUpperCase(Locale.ROOT)` passt nicht als einfache
 Methodenreferenz, weil es ein Argument braucht, nimm dort ein Lambda.
 
-Denkfalle: Sortierst du *vor* dem Grossschreiben, gilt die natürliche
-String-Ordnung, und da stehen alle Grossbuchstaben vor allen Kleinbuchstaben:
+Denkfalle: Sortierst du *vor* dem Großschreiben, gilt die natürliche
+String-Ordnung, und da stehen alle Großbuchstaben vor allen Kleinbuchstaben:
 `["dora", "Bert", "anna"]` sortiert ergibt `[Bert, anna, dora]`. Der Test
 "gemischte Schreibweise" fällt dann durch.
 
@@ -124,7 +124,7 @@ return personen.stream()
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 9.5, Collectors. Suche den Collector, der Strings zu *einem* String
-verbindet, und der ausser dem Trenner auch noch Anfang und Ende kennt.
+verbindet, und der außer dem Trenner auch noch Anfang und Ende kennt.
 
 </details>
 
@@ -157,7 +157,7 @@ Aus einem `OptionalDouble` holst du den Wert mit einem Standardwert heraus,
 dieselbe Idee wie `orElse` bei `Optional`.
 
 Nicht selbst `summe / anzahl` rechnen: Bei leerer Liste ist das `0 / 0`, und bei
-`int`-Division wäre ausserdem `26.25` zu `26` abgeschnitten.
+`int`-Division wäre außerdem `26.25` zu `26` abgeschnitten.
 
 </details>
 
@@ -384,7 +384,7 @@ rechnet das Lambda **selbst**?
   mindestens `mindestCent`, `rabatt.anwenden(betrag)`, sonst `betrag`.
 
 Warum besteht `keiner()` den Test auch ohne Konstante? Ein Lambda, das keine
-Variablen von aussen benutzt, erzeugt die übliche JVM (HotSpot) nur einmal und
+Variablen von außen benutzt, erzeugt die übliche JVM (HotSpot) nur einmal und
 gibt danach immer dasselbe Objekt heraus. Das ist ein Implementierungsdetail, die
 Sprachspezifikation verspricht es nicht. Erst die Konstante macht es zu einer
 Zusage, auf die sich Aufrufer verlassen dürfen. Bei `prozent(10)` klappt der
@@ -528,7 +528,7 @@ public void entnehmen(String artikel, int menge) {
 
 Es hat **genau eine abstrakte Methode**. `default`- und `static`-Methoden zählen
 nicht mit, deshalb darf `Transformation` neben `anwenden` auch `dann` haben.
-Nur für solche Interfaces kann der Compiler ein Lambda einsetzen: Er weiss
+Nur für solche Interfaces kann der Compiler ein Lambda einsetzen: Er weiß
 dann, welche Methode das Lambda implementiert. `@FunctionalInterface` ist
 optional, lässt den Compiler aber prüfen, dass es bei einer abstrakten
 Methode bleibt.
@@ -551,7 +551,7 @@ Kapitel 12).
 
 Streams sind **faul**: `filter`, `map` und Co. beschreiben nur die Pipeline
 und liefern einen neuen Stream zurück. Erst die Terminaloperation (`toList`,
-`count`, `forEach`, …) zieht die Elemente einzeln durch alle Stufen. Das spart
+`forEach`, `findFirst`, …) zieht die Elemente einzeln durch alle Stufen. Das spart
 Arbeit, z. B. kann `findFirst` nach dem ersten Treffer aufhören.
 
 ```java

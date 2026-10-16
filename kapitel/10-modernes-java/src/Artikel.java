@@ -7,7 +7,7 @@
 public record Artikel(String name, long preisCent, int menge) {
 
     /**
-     * Kompakter Konstruktor - beachte: KEINE Parameterliste.
+     * Kompakter Konstruktor. Beachte: KEINE Parameterliste.
      * Die Zuweisung an die Felder passiert danach automatisch.
      */
     public Artikel {
@@ -27,7 +27,7 @@ public record Artikel(String name, long preisCent, int menge) {
         return new Artikel(name, preisCent, 1);
     }
 
-    /** Neues Objekt mit anderer Menge - dieses hier bleibt unveraendert. */
+    /** Neues Objekt mit anderer Menge, dieses hier bleibt unveraendert. */
     public Artikel mitMenge(int neueMenge) {
         // TODO
         return this;

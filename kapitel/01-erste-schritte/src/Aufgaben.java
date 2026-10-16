@@ -1,5 +1,5 @@
 /**
- * Kapitel 01 - Erste Schritte.
+ * Kapitel 01: Erste Schritte.
  *
  * Ersetze jedes TODO durch echten Code. Die Methoden geben aktuell
  * Platzhalterwerte zurueck, damit die Datei ueberhaupt kompiliert.
@@ -24,7 +24,7 @@ public class Aufgaben {
      * celsiusZuFahrenheit(37.0)  -> 98.6
      */
     public static double celsiusZuFahrenheit(double celsius) {
-        // TODO: Vorsicht - 9/5 ist in Java 1, nicht 1.8!
+        // TODO: Vorsicht, 9/5 ist in Java 1, nicht 1.8!
         return 0.0;
     }
 
@@ -34,7 +34,7 @@ public class Aufgaben {
      * kreisFlaeche(1.0) -> 3.14159...
      */
     public static double kreisFlaeche(double radius) {
-        // TODO: radius * radius ist hier klarer als Math.pow - warum wohl?
+        // TODO: radius * radius ist hier klarer als Math.pow. Warum wohl?
         return 0.0;
     }
 
@@ -66,7 +66,7 @@ public class Aufgaben {
      * Aufgabe 6: Millisekunden in einem Jahr (365 Tage).
      * Erwartet: 31536000000
      *
-     * Der Rueckgabetyp ist long - aber das allein genuegt nicht.
+     * Der Rueckgabetyp ist long, aber das allein genuegt nicht.
      * Wenn du 365 * 24 * 60 * 60 * 1000 schreibst, rechnet Java die
      * ganze Multiplikation in int und laeuft dabei ueber.
      */

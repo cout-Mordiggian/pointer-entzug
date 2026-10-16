@@ -12,7 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 
 Path p = Path.of("daten", "messwerte.csv");     // relativ zum Arbeitsverzeichnis
-Path abs = Path.of("/home/user/daten.csv");     // absolut
+Path abs = Path.of("/home/user/daten.csv");     // absolut (Linux, macOS)
+Path win = Path.of("C:\\Users\\anna\\daten.csv");  // absolut (Windows)
 Path kind = p.resolve("unterordner");           // anhaengen
 Path eltern = p.getParent();
 String name = p.getFileName().toString();
@@ -27,6 +28,10 @@ Die alte Klasse `java.io.File` gibt es seit 1996 und sie ist voller Fallen:
 `Path.of("daten/x.csv")` funktioniert plattformübergreifend, Java setzt den
 richtigen Trenner ein. Schreibe nie `"ordner\\datei"` von Hand.
 
+Unter Windows ist ein Pfad erst mit Laufwerk absolut: `/home/user/daten.csv`
+gilt dort als relativ zum aktuellen Laufwerk, und `toString()` zeigt
+Backslashes (`\home\user\daten.csv`).
+
 ## 11.2 Die einfachen Fälle
 
 ```java
@@ -36,7 +41,7 @@ List<String> zeilen = Files.readAllLines(pfad);
 
 // Schreiben (legt an oder ueberschreibt)
 Files.writeString(pfad, "Hallo");
-Files.write(pfad, List.of("Zeile 1", "Zeile 2"));
+Files.write(pfad, List.of("Zeile 1", "Zeile 2"));   // Zeilenende vom System, Windows: \r\n
 
 // Anhaengen
 Files.writeString(pfad, "mehr\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -55,9 +60,9 @@ Alle diese Methoden werfen `IOException`, eine **checked** Exception
 ## 11.3 Zeichensätze, die stille Fehlerquelle
 
 ```java
-Files.readString(pfad);                           // UTF-8 - bei Files.* schon immer
-Files.readString(pfad, StandardCharsets.UTF_8);   // explizit - noch besser
-new String(bytes);                                // Plattform-Standard - bis Java 17 GEFAEHRLICH
+Files.readString(pfad);                           // UTF-8, bei Files.* schon immer
+Files.readString(pfad, StandardCharsets.UTF_8);   // explizit, noch besser
+new String(bytes);                                // Plattform-Standard, bis Java 17 GEFAEHRLICH
 new FileReader(datei);                            // ebenso
 ```
 
@@ -67,14 +72,15 @@ UTF-8. Die *älteren* APIs (`FileReader`, `new String(bytes)`, `Scanner` auf
 einer Datei …) nahmen dagegen bis Java 17 den Plattform-Standard, dieselbe
 Datei las sich unter Linux korrekt und unter Windows als `Ã¤` statt `ä`.
 
-Seit Java 18 ist UTF-8 auch dort überall Standard. Trotzdem: **Schreib den
-Zeichensatz hin.** Es kostet nichts, dokumentiert die Absicht und schützt
+Seit Java 18 ist UTF-8 auch dort Standard, mit einer Ausnahme: der Konsole
+(11.7). Trotzdem: **Schreib den Zeichensatz hin.** Es kostet nichts, dokumentiert die Absicht und schützt
 dich, falls der Code doch einmal auf einer älteren JVM läuft.
 
 Wirft eine Datei `MalformedInputException`, ist sie nicht UTF-8 kodiert,
-häufig `ISO-8859-1` (Latin-1) aus alten Windows-Systemen.
+häufig `windows-1252` aus älteren Windows-Programmen (fast gleich mit
+`ISO-8859-1`, Latin-1).
 
-## 11.4 Grosse Dateien: `Files.lines`
+## 11.4 Große Dateien: `Files.lines`
 
 `readAllLines` lädt alles in den Speicher. Bei einer 2-GB-Logdatei ist das
 ein `OutOfMemoryError`. Die faule Variante:
@@ -108,7 +114,8 @@ try (BufferedWriter w = Files.newBufferedWriter(pfad, StandardCharsets.UTF_8)) {
 }
 ```
 
-Warum "Buffered"? Ohne Puffer geht jeder einzelne `read()` ans Betriebssystem.
+Warum "Buffered"? Ohne Puffer geht z. B. bei einem `FileInputStream` jeder
+einzelne `read()` ans Betriebssystem.
 Der Puffer holt einen ganzen Block auf einmal, das ist Größenordnungen
 schneller.
 
@@ -148,8 +155,13 @@ int alter = scanner.nextInt();
 > leeren String. Lösung: nach `nextInt()` ein zusätzliches `nextLine()`,
 > oder konsequent nur `nextLine()` verwenden und selbst parsen.
 
-`System.in` soll man **nicht** schliessen, danach ist die Eingabe für das
+`System.in` soll man **nicht** schließen, danach ist die Eingabe für das
 ganze Programm zu.
+
+> **Windows:** Der `Scanner` liest seit Java 18 UTF-8, die Konsole von cmd
+> und PowerShell liefert aber ihre alte Codepage (meist 850). Eingetippte
+> Umlaute kommen dann als `�` an. Abhilfe: das Terminal von IntelliJ oder
+> VS Code benutzen, oder vor dem Start `chcp 65001` eingeben.
 
 ## 11.8 Wo liegt eigentlich "daten.csv"?
 
@@ -179,7 +191,7 @@ BufferedReader r = new BufferedReader(          // Puffer und readLine()
                 StandardCharsets.UTF_8));
 ```
 
-Das sind die Muster aus 6.9:
+Zwei davon kennst du aus 6.9, dazu kommt die Fassade:
 
 - **`BufferedReader` ist ein Dekorierer.** Er *ist* ein `Reader` und *hat* einen
   `Reader`, reicht jedes `read()` an ihn weiter und legt einen Puffer dazu. Genauso
@@ -193,13 +205,13 @@ Das sind die Muster aus 6.9:
   Beim Übersetzen dekodiert er, fügt also Verhalten hinzu. Die Faustregel: Ist
   der äußere Typ derselbe wie der innere, ist es ein Dekorierer, sonst ein Adapter.
 - **`Files` ist eine Fassade.** `Files.readString(pfad)` öffnet, dekodiert, liest
-  und schliesst in einem Aufruf, `Files.newBufferedReader` baut die Kette oben
+  und schließt in einem Aufruf, `Files.newBufferedReader` baut die Kette oben
   fertig zusammen. Eine Fassade ist eine einfache Schnittstelle vor einem
   komplizierten Teilsystem. Sie versperrt es nicht: Wer mehr Kontrolle braucht,
   baut die Kette selbst.
 
 Eine Folge der Dekorierer-Kette: **`close()` wird nach innen weitergereicht.** Wer
-das äußerste Objekt schliesst, schliesst alle. Deshalb steht in
+das äußerste Objekt schließt, schließt alle. Deshalb steht in
 try-with-resources nur die äußerste Variable ("Was gibt das aus?" Nr. 4).
 
 ---
@@ -218,7 +230,8 @@ wird nichts in deinem Projekt angefasst.
 1. **`zeilenZaehlen(Path)`** -> `long`. Nutze `Files.lines` **in
    try-with-resources**.
 2. **`schreibeZeilen(Path, List<String>)`**: jede Zeile mit `\n`, UTF-8.
-   Bestehende Dateien werden überschrieben.
+   Bestehende Dateien werden überschrieben. Unter Windows wird der Test rot,
+   wenn das Betriebssystem den Zeilentrenner wählt (`Files.write`, `%n`).
 3. **`nichtLeereZeilen(Path)`** -> `List<String>`, ohne leere und
    Whitespace-Zeilen, jede Zeile `strip()`-behandelt.
 4. **`sicherLesen(Path)`** -> `Optional<String>`. Bei `IOException`
@@ -265,7 +278,7 @@ System.out.println(Path.of("/home/user/daten/x.csv").getParent());
 
 <details><summary>Auflösung</summary>
 
-`x.csv`, dann `/home/user/daten`, `Path` zerlegt den Pfad in seine Teile, ohne dass die Datei existieren muss. Es ist reine Textarbeit, bis du `Files.*` aufrufst.
+`x.csv`, dann `/home/user/daten` (unter Windows `\home\user\daten`). `Path` zerlegt den Pfad in seine Teile, ohne dass die Datei existieren muss. Es ist reine Textarbeit, bis du `Files.*` aufrufst.
 
 </details>
 
@@ -300,7 +313,7 @@ try {
 
 <details><summary>Auflösung</summary>
 
-`Stream closed`: `BufferedReader` ist ein Dekorierer (11.9) und reicht auch `close()` an den eingepackten `Reader` weiter. Nach `aussen.close()` ist `innen` ebenfalls zu, und `read()` wirft eine `IOException`. Deshalb reicht es, in try-with-resources nur das äußerste Objekt zu schliessen.
+`Stream closed`: `BufferedReader` ist ein Dekorierer (11.9) und reicht auch `close()` an den eingepackten `Reader` weiter. Nach `aussen.close()` ist `innen` ebenfalls zu, und `read()` wirft eine `IOException`. Deshalb reicht es, in try-with-resources nur das äußerste Objekt zu schließen.
 
 </details>
 

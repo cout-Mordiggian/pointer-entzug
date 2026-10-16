@@ -1,7 +1,7 @@
 # Kapitel 03: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `umdrehen`
 
@@ -21,6 +21,18 @@ wieder zurück?
 `StringBuilder` zurück, keinen `String`, du brauchst am Ende noch `toString()`,
 sonst kompiliert die Rückgabe nicht. Leerer String und ein einzelnes Zeichen
 funktionieren ohne Sonderfall. Das Ganze passt in eine verkettete Zeile.
+
+</details>
+
+<details><summary>Tipp 3: Gerüst</summary>
+
+```java
+public static String umdrehen(String text) {
+    return new StringBuilder(...)
+            ....()          // die passende Methode aus Abschnitt 3.4
+            .toString();
+}
+```
 
 </details>
 
@@ -45,7 +57,7 @@ Schritt 2, zwei Wege: Entweder den sauberen Text mit deinem `umdrehen()`
 vergleichen, dann mit `equals` auf zwei **Strings**. Achtung: `StringBuilder`
 hat kein inhaltliches `equals`, und `sb.equals(sb.reverse())` ist immer `true`,
 weil `reverse()` denselben Builder verändert und zurückgibt. Oder zwei Indizes
-`links`/`rechts` von aussen nach innen laufen lassen und bei der ersten
+`links`/`rechts` von außen nach innen laufen lassen und bei der ersten
 Abweichung `false` liefern. Der Test `"abca"` stellt sicher, dass du nicht nur
 die äußeren Zeichen vergleichst. Der leere String ist ein Palindrom.
 
@@ -87,7 +99,7 @@ oder mit Leerraum **beginnt**?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-`"\\s+"` heisst "ein oder mehr Leerraumzeichen", das deckt Leerzeichen, Tab
+`"\\s+"` heißt "ein oder mehr Leerraumzeichen", das deckt Leerzeichen, Tab
 und Zeilenumbruch ab (Test `"a\tb\nc"`) und fasst Mehrfachabstände zusammen.
 Zwei Fallen: Beginnt der Text mit Leerraum, liefert `split` vorne ein **leeres**
 Element (`"  a b".split("\\s+")` ergibt `["", "a", "b"]`), deshalb zuerst
@@ -164,7 +176,7 @@ Summe sammeln, durch `werte.length` teilen. Drei Fallen, alle vom Test geprüft:
   das eine `ArithmeticException` oder `NaN`. Erwartet ist `0.0`, also vorher
   selbst zurückgeben.
 - **Ganzzahldivision:** `summe / werte.length` mit zwei Ganzzahlen ergibt bei
-  `{1, 2}` den Wert `1.0` statt `1.5`. Auch `(double) (summe / laenge)` ist zu
+  `{1, 2}` den Wert `1.0` statt `1.5`. Auch `(double) (summe / werte.length)` ist zu
   spät, der Cast muss auf einen **Operanden**, nicht auf das Ergebnis.
 - **Überlauf:** `Integer.MAX_VALUE + Integer.MAX_VALUE` passt nicht in `int`
   (ergibt `-2`). Sammle die Summe deshalb in einem `long`.
@@ -273,7 +285,7 @@ Element bist?
 <details><summary>Tipp 2: Ansatz</summary>
 
 Bei `n` Teilen gibt es `n - 1` Trenner. Am saubersten: Hänge den Trenner
-**vor** jedem Element an, ausser vor dem ersten (Index `0`). Dafür brauchst du
+**vor** jedem Element an, außer vor dem ersten (Index `0`). Dafür brauchst du
 den Index, also keine `for-each`-Schleife. Die Alternative "immer Trenner
 anhängen und am Ende das letzte Zeichen abschneiden" hat zwei Fallen: Bei
 leerem Array gibt es nichts abzuschneiden, und beim mehrzeichigen Trenner

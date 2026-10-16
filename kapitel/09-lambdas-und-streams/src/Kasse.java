@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 09 - schon fertig: der "Kontext" im Strategie-Muster.
+ * Kapitel 09, schon fertig: der "Kontext" im Strategie-Muster.
  *
  * Die Kasse weiss nicht, WIE ein Rabatt gerechnet wird. Sie kennt nur das
  * Interface Rabatt und ruft anwenden() auf. Neue Rabattarten brauchen deshalb

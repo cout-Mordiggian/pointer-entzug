@@ -1,7 +1,7 @@
 # Kapitel 02: Operatoren und Kontrollfluss
 
 **Ziel:** Du steuerst den Programmablauf mit Bedingungen und Schleifen, kennst
-den Unterschied zwischen `switch`-Anweisung und `switch`-Ausdruck und weisst,
+den Unterschied zwischen `switch`-Anweisung und `switch`-Ausdruck und weißt,
 warum `&&` "faul" ist.
 
 ---
@@ -58,7 +58,7 @@ Die Kurzformen `+=`, `-=`, `*=` … enthalten einen **versteckten Cast**:
 ```java
 int x = 5;
 x = x + 1.7;    // Compilerfehler: possible lossy conversion from double to int
-x += 1.7;       // kompiliert! x ist jetzt 6 - die Nachkommastellen sind still weg
+x += 1.7;       // kompiliert! x ist jetzt 6, die Nachkommastellen sind still weg
 ```
 
 ### Vergleich
@@ -67,13 +67,14 @@ x += 1.7;       // kompiliert! x ist jetzt 6 - die Nachkommastellen sind still w
 
 > **Achtung:** Bei Objekten (also auch bei `String`) vergleicht `==` die
 > *Referenz*, nicht den Inhalt. Dazu ausführlich Kapitel 3. Merke fürs Erste:
-> **`equals` für Inhalt, `==` nur für primitive Typen.**
+> **`equals` für Inhalt, `==` nur für primitive Typen und für den Vergleich
+> mit `null`** (`text != null`, siehe unten).
 
 ### Logisch, und warum Kurzschluss wichtig ist
 
 ```java
-boolean b1 = a && b;   // UND - wertet b nur aus, wenn a true ist
-boolean b2 = a || b;   // ODER - wertet b nur aus, wenn a false ist
+boolean b1 = a && b;   // UND: wertet b nur aus, wenn a true ist
+boolean b2 = a || b;   // ODER: wertet b nur aus, wenn a false ist
 boolean b3 = !a;       // NICHT
 ```
 
@@ -159,7 +160,9 @@ String typ = switch (tag) {
 ```
 
 Kein `break`, kein Durchfallen, und der `switch` **liefert einen Wert**.
-Ausserdem prüft der Compiler bei `enum`-Typen, ob du alle Fälle abgedeckt hast.
+Weil ein Ausdruck immer einen Wert haben muss, besteht der Compiler darauf,
+dass jeder mögliche Eingabewert abgedeckt ist, bei Zahlen also praktisch
+immer mit `default`.
 
 Brauchst du mehrere Anweisungen in einem Zweig, nutze einen Block mit `yield`:
 
@@ -172,6 +175,16 @@ int laenge = switch (form) {
         yield 0;
     }
 };
+```
+
+Die Pfeile gehen auch ohne Ergebnis, als Anweisung. Auch dann gibt es kein
+Durchfallen:
+
+```java
+switch (tag) {
+    case 6, 7 -> System.out.println("Wochenende");
+    default   -> System.out.println("Werktag");
+}
 ```
 
 **Faustregel:** Neuen Code immer mit der Pfeil-Form schreiben.
@@ -188,7 +201,7 @@ while (rest > 0) {
 }
 ```
 
-Nimm `while`, wenn du **nicht vorher weisst**, wie oft es läuft.
+Nimm `while`, wenn du **nicht vorher weißt**, wie oft es läuft.
 
 ### `do`/`while`, mindestens einmal
 
@@ -252,7 +265,7 @@ in eine eigene Methode mit `return` auszulagern (Kapitel 4).
 
 ## 2.5 Gültigkeitsbereich (Scope)
 
-Eine Variable lebt von ihrer Deklaration bis zur schliessenden Klammer des
+Eine Variable lebt von ihrer Deklaration bis zur schließenden Klammer des
 Blocks, in dem sie steht.
 
 ```java
@@ -279,9 +292,11 @@ int alter = eingabe.nextInt();          // wartet, bis eine Zahl + Enter kommt
 System.out.println(alter >= 18 ? "volljaehrig" : "minderjaehrig");
 ```
 
-Was `import` und `new` genau bedeuten, kommt in Kapitel 5 und 8, für jetzt
-reicht: So bekommst du eine Zahl von der Tastatur. Die Fallstricke (Buchstaben
-statt Zahl, `nextInt` gemischt mit `nextLine`) behandelt Kapitel 11.7.
+Was `new` genau bedeutet, kommt in Kapitel 5, `import` (Klassen aus anderen
+Paketen benutzen) in Kapitel 12. Für jetzt reicht: So bekommst du eine Zahl
+von der Tastatur. Tippt jemand Buchstaben statt einer Zahl, bricht `nextInt`
+mit einer `InputMismatchException` ab; wie man so etwas abfängt, zeigt
+Kapitel 7. Die Falle "`nextInt` gemischt mit `nextLine`" behandelt Kapitel 11.7.
 
 ---
 
@@ -296,33 +311,48 @@ Datei: [`src/Aufgaben.java`](src/Aufgaben.java), prüfen mit `./lerne.sh 02`.
    von 5 -> `"Buzz"`, von beiden -> `"FizzBuzz"`, sonst die Zahl als String.
    Auch `0` ist durch 3 und 5 teilbar (Rest 0) und ergibt `"FizzBuzz"`.
    *Denkfalle:* Welche Bedingung musst du zuerst prüfen?
-2. **`notenText(int note)`**: 1 bis 6 in Text ("sehr gut" … "ungenügend"),
-   alles andere `"ungueltig"`. Nutze einen **switch-Ausdruck** mit Pfeilen.
+2. **`notenText(int note)`**: 1 bis 6 in Text (`"sehr gut"` … `"ungenuegend"`,
+   mit `ue` statt `ü`), alles andere `"ungueltig"`. Nutze einen
+   **switch-Ausdruck** mit Pfeilen.
 3. **`istPrimzahl(int n)`**: Zahlen < 2 (auch negative) sind keine Primzahlen.
    *Optimierung:* Es genügt, bis `Math.sqrt(n)` zu testen, warum?
-   Gleichwertig und ohne Kommazahlen: `i * i <= n` als Schleifenbedingung.
+   Ohne Kommazahlen geht das mit `i * i <= n` als Schleifenbedingung. Für sehr
+   große `n` läuft `i * i` allerdings über (Kapitel 1.4), sicher ist
+   `(long) i * i <= n`.
 4. **`fakultaet(int n)`**: `0! = 1`, `5! = 120`. Rückgabetyp `long`.
    Rekursiv geht das auch, aber hier bitte **iterativ** mit einer Schleife.
 5. **`quersumme(int n)`**: `1234` -> `10`. `while` mit `%` und `/`.
 6. **`summeVielfache(int grenze)`**: Summe aller Zahlen von 1 bis `grenze`
-   (einschliesslich), die durch 3 **oder** 5 teilbar sind. Nutze `continue`.
+   (einschließlich), die durch 3 **oder** 5 teilbar sind. Nutze `continue`.
 7. **`sternDreieck(int hoehe)`**: Verschachtelte Schleifen. Für `hoehe = 3`:
    ```
    *
    **
    ***
    ```
-   Jede Zeile endet mit `\n`, also auch die letzte.
+   Jede Zeile endet mit `\n`, also auch die letzte. `\n` ist *ein* Zeichen,
+   der Zeilenumbruch; der Backslash leitet solche Sonderzeichen ein, als
+   `char` schreibst du es `'\n'`.
+
+   Zum Zusammenbauen genügt ein String, an den du anhängst:
+   `ergebnis += "*";`. Eleganter (und bei vielen Zeilen schneller, warum,
+   erklärt Kapitel 3.4) ist ein `StringBuilder`:
+
+   ```java
+   StringBuilder sb = new StringBuilder();   // leerer "Textsammler"
+   sb.append('*');                           // etwas anhaengen
+   String fertig = sb.toString();            // am Ende in einen String verwandeln
+   ```
 
 ### Bonus: `Zahlenraten.java`, dein erstes Spiel
 
 Keine Tests, kein `Pruef`, du prüfst, indem du spielst. Das Programm denkt
-sich eine Zahl von 1 bis 100, du rätst, es antwortet mit "zu gross" oder
-"zu klein". Das Gerüst mit TODOs liegt in [`src/Zahlenraten.java`](src/Zahlenraten.java).
+sich eine Zahl von 1 bis 100, du rätst, es antwortet mit `Zu gross!` oder
+`Zu klein!`. Das Gerüst mit TODOs liegt in [`src/Zahlenraten.java`](src/Zahlenraten.java).
 
 ```bash
-bash lerne.sh 02 -r Zahlenraten        # dein Spiel
-bash lerne.sh 02 -l -r Zahlenraten     # die Musterloesung zum Vergleich
+./lerne.sh 02 -r Zahlenraten        # dein Spiel
+./lerne.sh 02 -l -r Zahlenraten     # die Musterloesung zum Vergleich
 ```
 
 Hier kommt alles aus diesem Kapitel zusammen: eine Schleife mit Abbruchbedingung,
@@ -388,4 +418,4 @@ Erst selbst antworten, dann vergleichen: Die Antworten stehen am Ende von
 - Warum ist `if (obj != null && obj.wert() > 0)` sicher, `if (obj.wert() > 0 && obj != null)` aber nicht?
 - Was passiert bei einem klassischen `switch` ohne `break`?
 - Wann nimmst du `while`, wann `for`, wann `for-each`?
-- Warum ist `for (int i = 0; ...)` besser als `i` ausserhalb zu deklarieren?
+- Warum ist `for (int i = 0; ...)` besser als `i` außerhalb zu deklarieren?

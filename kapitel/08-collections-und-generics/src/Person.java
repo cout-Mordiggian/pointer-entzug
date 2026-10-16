@@ -26,7 +26,7 @@ public final class Person implements Comparable<Person> {
 
     /**
      * Natuerliche Ordnung: nach Name.
-     * Negativ / 0 / positiv - String kann das schon selbst.
+     * Negativ / 0 / positiv, String kann das schon selbst.
      */
     @Override
     public int compareTo(Person andere) {
@@ -49,7 +49,7 @@ public final class Person implements Comparable<Person> {
 
     @Override
     public int hashCode() {
-        // TODO
-        return 0;
+        // TODO: super.hashCode() ist nur ein Platzhalter, er passt nicht zu equals.
+        return super.hashCode();
     }
 }

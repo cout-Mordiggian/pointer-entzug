@@ -1,6 +1,6 @@
 # Kapitel 09: Lambdas und Streams
 
-**Ziel:** Du schreibst Verhalten als Wert, baust Stream-Pipelines und weisst,
+**Ziel:** Du schreibst Verhalten als Wert, baust Stream-Pipelines und weißt,
 wann sie das Programm klarer machen, und wann nicht.
 
 ---
@@ -83,11 +83,15 @@ p -> p.getName()             ->   Person::getName
 Vier Formen: statische Methode, Methode eines bestimmten Objekts, Methode des
 Parameters, Konstruktor. Lesbarer, aber nur, wenn der Name für sich spricht.
 
+`String::toUpperCase` ist `s.toUpperCase()` **ohne** Locale, das Ergebnis hängt
+also von der Systemsprache ab (Kapitel 6). In den Beispielen hier ist das egal;
+in deinem Code schreibst du `s -> s.toUpperCase(Locale.ROOT)`.
+
 ## 9.4 Effektiv final
 
 ```java
 int faktor = 3;
-Function<Integer, Integer> f = x -> x * faktor;   // Compilerfehler - wegen der naechsten Zeile!
+Function<Integer, Integer> f = x -> x * faktor;   // Compilerfehler, wegen der naechsten Zeile!
 faktor = 4;                                        // macht faktor "nicht effektiv final"
 ```
 
@@ -147,11 +151,15 @@ Files.lines(pfad)                   // Kapitel 11
 .mapToInt(Person::getAlter)         // -> IntStream, kein Boxing
 ```
 
+`peek` taugt nur zum Hineinschauen, und selbst das nicht immer: Kennt der
+Stream seine Länge schon, darf `count()` die Pipeline überspringen.
+`Stream.of("a", "b").peek(System.out::println).count()` gibt nichts aus.
+
 ### Terminaloperationen
 
 ```java
 .toList()                           // seit Java 16, unveraenderlich
-.collect(Collectors.toList())       // aeltere, veraenderbare Variante
+.collect(Collectors.toList())       // aeltere Variante, Veraenderbarkeit nicht garantiert
 .forEach(System.out::println)
 .count()
 .anyMatch(p) / .allMatch(p) / .noneMatch(p)
@@ -200,7 +208,7 @@ Optional<Person> gefunden = personen.stream()
         .findFirst();
 
 gefunden.isPresent()                    // true/false
-gefunden.get()                          // wirft, wenn leer - meiden!
+gefunden.get()                          // wirft, wenn leer: meiden!
 gefunden.orElse(standardPerson)
 gefunden.orElseGet(() -> teuerBauen())  // faul: nur bei Bedarf
 gefunden.orElseThrow(() -> new NoSuchElementException("Anna fehlt"))
@@ -228,17 +236,17 @@ als Kette lesen lassen.
 **Schlecht:**
 
 ```java
-// Einfache Schleife mit Seiteneffekt - als Stream nur umstaendlicher:
+// Einfache Schleife mit Seiteneffekt, als Stream nur umstaendlicher:
 namen.stream().forEach(n -> System.out.println(n));   // -> for (String n : namen)
 
-// Zustand ausserhalb aendern - verfehlt den Zweck komplett:
+// Zustand ausserhalb aendern verfehlt den Zweck komplett:
 List<String> ergebnis = new ArrayList<>();
 namen.stream().filter(...).forEach(ergebnis::add);    // -> .filter(...).toList()
 
-// Indizes gebraucht, mehrere Sammlungen parallel - Schleife ist klarer.
+// Indizes gebraucht, mehrere Sammlungen parallel: Schleife ist klarer.
 ```
 
-Und `.parallelStream()`: fast nie. Es lohnt erst bei sehr grossen Datenmengen
+Und `.parallelStream()`: fast nie. Es lohnt erst bei sehr großen Datenmengen
 und teuren, unabhängigen Operationen, und bringt alle Probleme der
 Nebenläufigkeit mit (Kapitel 12). Miss nach, statt zu raten.
 
@@ -369,7 +377,7 @@ lager.anmelden((artikel, bestand) -> System.out.println(artikel + " nachbestelle
 ```
 
 Ist das Interface funktional, ist jeder Beobachter ein Lambda. Das Lager kennt nur
-`LagerBeobachter`, wer dahintersteckt, weiss es nicht.
+`LagerBeobachter`, wer dahintersteckt, weiß es nicht.
 
 **Fallstricke:**
 
@@ -403,9 +411,9 @@ lager.anmelden(new LagerBeobachter() {          // "eine Klasse, die LagerBeobac
 });
 ```
 
-Heute nimmst du ein Lambda, ausser du brauchst `this`, eigene Felder oder mehrere
+Heute nimmst du ein Lambda, außer du brauchst `this`, eigene Felder oder mehrere
 Methoden (dann ist das Interface ohnehin nicht funktional). Die Tests von
-Aufgabe 13 benutzen genau so eine Klasse. In einem Lambda heisst `this` dagegen
+Aufgabe 13 benutzen genau so eine Klasse. In einem Lambda heißt `this` dagegen
 dasselbe wie in der umgebenden Methode.
 
 ---
@@ -427,7 +435,7 @@ zum Muster.
    überhaupt? Die Javadoc sagt es nicht deutlich, schreib dir zwei Zeilen
    und probier es aus, bevor du dich auf eine Annahme verlässt.
 3. **`grossgeschriebenSortiert(List<Person>)`** -> `List<String>`,
-   Namen in Grossbuchstaben (`toUpperCase(Locale.ROOT)`), alphabetisch.
+   Namen in Großbuchstaben (`toUpperCase(Locale.ROOT)`), alphabetisch.
    Die Eingabe ist nicht sortiert.
 4. **`alsListe(List<String>)`** -> `"[a, b, c]"` mit `Collectors.joining`.
 5. **`durchschnittsalter(List<Person>)`** -> `double`, leere Liste -> `0.0`.
@@ -435,7 +443,7 @@ zum Muster.
 6. **`nachStadt(List<Person>)`** -> `Map<String, List<String>>`:
    Stadt -> Namen der dortigen Personen. `groupingBy` mit Downstream-Collector.
 7. **`volljaehrigkeit(List<Person>)`** -> `Map<Boolean, List<Person>>`
-   mit `partitioningBy`. Volljährig heisst `alter >= 18`.
+   mit `partitioningBy`. Volljährig heißt `alter >= 18`.
 8. **`namenLaengen(List<Person>)`** -> `Map<String, Integer>` mit `toMap`.
    Du darfst annehmen, dass die Namen eindeutig sind, eine Merge-Funktion
    für doppelte Schlüssel ist nicht nötig.
@@ -449,7 +457,7 @@ zum Muster.
     Lambda. Ungültige Werte scheitern **sofort**, nicht erst beim Anwenden.
     `keiner()` liefert bei jedem Aufruf dieselbe Instanz.
 12. **`Rabatte.ausCode`: Fabrik** (9.8): aus `"KEIN"`, `"PROZENT15"`, `"MINUS500"`
-    die passende Strategie, Gross-/Kleinschreibung und Leerzeichen am Rand egal.
+    die passende Strategie, Groß-/Kleinschreibung und Leerzeichen am Rand egal.
     Benutze deine Methoden aus Aufgabe 11, statt die Rechnungen zu wiederholen.
 13. **`Lager`: Beobachter** (9.9): Bestände verwalten, Beobachter an- und
     abmelden, benachrichtigen, wenn ein Artikel **unter** den Meldebestand fällt.

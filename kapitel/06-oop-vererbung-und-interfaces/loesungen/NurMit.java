@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 /**
- * Kapitel 6 - Musterloesung: Dekorierer, der nur Zeilen durchlaesst, die
+ * Kapitel 6, Musterloesung: Dekorierer, der nur Zeilen durchlaesst, die
  * einen bestimmten Text enthalten.
  */
 public class NurMit implements Protokoll {
@@ -17,7 +17,7 @@ public class NurMit implements Protokoll {
     @Override
     public void schreibe(String zeile) {
         // Ein Dekorierer muss nicht immer weiterreichen. Er darf auch
-        // verschlucken - von aussen sieht er trotzdem aus wie ein Protokoll.
+        // verschlucken. Von aussen sieht er trotzdem aus wie ein Protokoll.
         if (zeile.contains(teil)) {
             innen.schreibe(zeile);
         }

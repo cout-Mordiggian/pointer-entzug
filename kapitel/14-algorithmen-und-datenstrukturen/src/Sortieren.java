@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 14 - Algorithmen und Datenstrukturen: Sortieren.
+ * Kapitel 14, Algorithmen und Datenstrukturen: Sortieren.
  * Pruefen:  ./lerne.sh 14
  *
- * Wichtig: Arrays.sort ist hier TABU. Die Tests wuerden es nicht merken -
+ * Wichtig: Arrays.sort ist hier TABU. Die Tests wuerden es nicht merken,
  * aber dann haettest du nichts gelernt. Arrays.copyOfRange und clone sind
  * erlaubt, die sortieren nichts.
  */

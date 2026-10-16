@@ -1,8 +1,8 @@
 /**
- * Kapitel 6 - schon fertig: das "echte" Protokoll ganz innen.
+ * Kapitel 6, schon fertig: das "echte" Protokoll ganz innen.
  *
  * Es sammelt alle Zeilen, jede mit einem Zeilenumbruch dahinter. In einem
- * richtigen Programm stuende hier eine Datei oder die Konsole - fuer die
+ * richtigen Programm stuende hier eine Datei oder die Konsole, fuer die
  * Tests ist ein String praktischer.
  */
 public class TextProtokoll implements Protokoll {

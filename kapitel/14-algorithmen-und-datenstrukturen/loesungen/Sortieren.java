@@ -1,13 +1,13 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 14 - Musterloesung: Sortieren.
+ * Kapitel 14, Musterloesung: Sortieren.
  */
 public class Sortieren {
 
     public static void insertionSort(int[] a) {
         // Invariante: Vor jedem Durchlauf ist a[0..i-1] (alles LINKS von i)
-        // sortiert. Am Anfang (i = 1) ist das trivial wahr - ein einzelnes
+        // sortiert. Am Anfang (i = 1) ist das trivial wahr, ein einzelnes
         // Element ist immer sortiert. Am Ende ist i == a.length, also ist
         // alles sortiert. Leeres Array und ein Element: die Schleife laeuft
         // gar nicht, fertig.
@@ -16,7 +16,7 @@ public class Sortieren {
             int j = i - 1;
             // Alle groesseren Elemente eine Stelle nach rechts ruecken.
             // Nur STRENG groessere (>, nicht >=): gleiche Werte werden nicht
-            // uebersprungen, ihre Reihenfolge bleibt - das macht es stabil.
+            // uebersprungen, ihre Reihenfolge bleibt. Das macht es stabil.
             while (j >= 0 && a[j] > aktuell) {
                 a[j + 1] = a[j];
                 j--;
@@ -30,12 +30,12 @@ public class Sortieren {
 
     public static int[] mergeSort(int[] a) {
         // Basisfall: 0 oder 1 Element ist sortiert. Trotzdem eine KOPIE
-        // zurueckgeben - der Vertrag sagt "neues Array", und der Aufrufer
+        // zurueckgeben: Der Vertrag sagt "neues Array", und der Aufrufer
         // soll das Ergebnis aendern duerfen, ohne sein Original zu treffen.
         if (a.length <= 1) return a.clone();
 
         // Teilen: zwei Haelften als neue Arrays. copyOfRange(von, bis) ist
-        // halboffen - "bis" ist nicht mehr dabei.
+        // halboffen, "bis" ist nicht mehr dabei.
         int mitte = a.length / 2;
         int[] links = mergeSort(Arrays.copyOfRange(a, 0, mitte));
         int[] rechts = mergeSort(Arrays.copyOfRange(a, mitte, a.length));
@@ -47,7 +47,7 @@ public class Sortieren {
         // einmal an (O(n)), und es gibt ca. log2(n) Ebenen, weil jede Ebene
         // halbiert -> O(n log n), und zwar IMMER, auch im schlimmsten Fall.
         // Preis: O(n) Zusatzspeicher fuer die Teil-Arrays.
-        // Rekursionstiefe nur log2(n) - bei einer Million ca. 20. Ein
+        // Rekursionstiefe nur log2(n), bei einer Million ca. 20. Ein
         // StackOverflowError (Kapitel 4.4) droht hier also nicht.
     }
 
@@ -68,7 +68,7 @@ public class Sortieren {
             }
         }
         // Eine Haelfte ist aufgebraucht, der Rest der anderen ist schon sortiert
-        // und groesser als alles bisher - einfach anhaengen. Hoechstens eine
+        // und groesser als alles bisher, einfach anhaengen. Hoechstens eine
         // der beiden Schleifen laeuft ueberhaupt.
         while (i < links.length) ergebnis[k++] = links[i++];
         while (j < rechts.length) ergebnis[k++] = rechts[j++];

@@ -1,13 +1,13 @@
 import java.util.Arrays;
 
 /**
- * Kapitel 03 - Musterloesung mit Erklaerungen.
+ * Kapitel 03: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
     public static String umdrehen(String text) {
         // StringBuilder.reverse() arbeitet auf dem internen Puffer und gibt
-        // den Builder selbst zurueck - daher die Kette mit toString().
+        // den Builder selbst zurueck, daher die Kette mit toString().
         return new StringBuilder(text).reverse().toString();
     }
 
@@ -37,7 +37,7 @@ public class Aufgaben {
     public static int wortAnzahl(String satz) {
         String s = satz.strip();
         // Ohne diesen Sonderfall liefert "".split("\\s+") ein Array
-        // mit EINEM leeren String - also faelschlich 1 statt 0.
+        // mit EINEM leeren String, also faelschlich 1 statt 0.
         if (s.isEmpty()) return 0;
         // \\s+ ist ein regulaerer Ausdruck: ein oder mehr Whitespace-Zeichen
         // (Leerzeichen, Tab, Zeilenumbruch). Das + fasst Mehrfachtrenner zusammen.
@@ -47,7 +47,7 @@ public class Aufgaben {
     public static int maximum(int[] werte) {
         // Startwert ist das ERSTE Element, nicht 0. Mit 0 als Startwert
         // wuerde maximum({-5,-2,-9}) faelschlich 0 liefern.
-        // Alternative: Integer.MIN_VALUE als Startwert - funktioniert auch.
+        // Alternative: Integer.MIN_VALUE als Startwert, funktioniert auch.
         // Bei einem leeren Array verhalten sich beide aber verschieden:
         // werte[0] wirft sofort eine Exception (Fehler faellt auf), MIN_VALUE
         // liefert still einen falschen Wert (Fehler bleibt verborgen).
@@ -71,7 +71,7 @@ public class Aufgaben {
     }
 
     public static int[] sortierteKopie(int[] werte) {
-        // Arrays.sort sortiert IN PLACE - es veraendert das uebergebene Array.
+        // Arrays.sort sortiert IN PLACE: Es veraendert das uebergebene Array.
         // Deshalb erst kopieren. clone() taete es auch; copyOf ist die
         // gebraeuchlichere Form, weil sie zusaetzlich die Laenge aendern kann.
         int[] kopie = Arrays.copyOf(werte, werte.length);
@@ -103,6 +103,6 @@ public class Aufgaben {
             sb.append(teile[i]);
         }
         return sb.toString();
-        // In echtem Code: String.join(trenner, teile) - eine Zeile.
+        // In echtem Code: String.join(trenner, teile), eine Zeile.
     }
 }

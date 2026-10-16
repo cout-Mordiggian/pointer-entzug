@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * So sieht ein JUnit-5-Test aus. Diese Datei gehoert nach
+ * So sieht ein JUnit-Test aus (JUnit 5 und 6 gleich). Diese Datei gehoert nach
  * src/test/java/de/beispiel/ in einem Maven- oder Gradle-Projekt.
  *
  * Vergleiche mit lib/Pruef.java aus diesem Kurs: dieselben Ideen,
@@ -28,7 +28,7 @@ class BeispielTest {
 
     private Konto konto;
 
-    /** Laeuft vor JEDEM Test neu - jeder Test startet auf gruener Wiese. */
+    /** Laeuft vor JEDEM Test neu, jeder Test startet auf gruener Wiese. */
     @BeforeEach
     void aufbauen() {
         konto = new Konto("Anna", 1000);
@@ -49,14 +49,14 @@ class BeispielTest {
         assertEquals(1000, konto.getGuthaben(), "Guthaben darf sich nicht geaendert haben");
     }
 
-    /** Ein Test pro Wert - die Meldung nennt den fehlgeschlagenen. */
+    /** Ein Test pro Wert, die Meldung nennt den fehlgeschlagenen. */
     @ParameterizedTest
     @ValueSource(ints = {0, -1, -100})
     void ungueltigeBetraegeWerdenAbgelehnt(int betrag) {
         assertThrows(IllegalArgumentException.class, () -> konto.einzahlen(betrag));
     }
 
-    /** Verwandte Tests gruppieren - die Ausgabe wird dadurch lesbar. */
+    /** Verwandte Tests gruppieren, die Ausgabe wird dadurch lesbar. */
     @Nested
     class Ueberweisungen {
 
@@ -73,7 +73,7 @@ class BeispielTest {
     // Was einen guten Test ausmacht:
     //  - EIN Verhalten pro Test
     //  - der Name ist ein Satz, der beschreibt, was gelten soll
-    //  - Aufbau: Vorbereiten - Ausfuehren - Pruefen (arrange, act, assert)
+    //  - Aufbau: Vorbereiten, Ausfuehren, Pruefen (arrange, act, assert)
     //  - keine Abhaengigkeit zwischen Tests, keine Reihenfolge
     //  - Randfaelle mitnehmen: leer, null, negativ, genau an der Grenze
 }

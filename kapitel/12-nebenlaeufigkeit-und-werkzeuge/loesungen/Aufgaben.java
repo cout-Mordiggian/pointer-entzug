@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Kapitel 12 - Musterloesung mit Erklaerungen.
+ * Kapitel 12, Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -28,14 +28,14 @@ public class Aufgaben {
 
         // Erst ALLE starten, dann ALLE joinen. Wuerde man direkt nach dem
         // start() joinen, liefe jeder Thread bis zum Ende, bevor der
-        // naechste beginnt - also strikt nacheinander. Ein haeufiger und
+        // naechste beginnt, also strikt nacheinander. Ein haeufiger und
         // gut versteckter Fehler: das Programm ist korrekt, aber nicht parallel.
         for (Thread t : alle) {
             t.join();
         }
         return zaehler.wert();
         // "zaehler" ist im Lambda effektiv final (Kapitel 9): die REFERENZ
-        // aendert sich nie. Das Objekt dahinter darf sich sehr wohl aendern -
+        // aendert sich nie. Das Objekt dahinter darf sich sehr wohl aendern,
         // genau deshalb muss es selbst thread-sicher sein.
     }
 
@@ -69,20 +69,20 @@ public class Aufgaben {
         // ExecutorService ist seit Java 19 AutoCloseable: close() wartet auf
         // alle laufenden Aufgaben und faehrt den Pool herunter. Frueher
         // brauchte es shutdown() + awaitTermination() in einem finally-Block.
-        // Ohne Herunterfahren beendet sich das Programm NICHT - die
+        // Ohne Herunterfahren beendet sich das Programm NICHT, die
         // Pool-Threads sind keine Daemon-Threads.
         try (ExecutorService pool = Executors.newFixedThreadPool(threads)) {
             List<Future<Long>> ergebnisse = new ArrayList<>();
 
             // Aufrunden statt abrunden: bei bis=10, threads=3 ergibt das
-            // Abschnitte der Laenge 4 (1-4, 5-8, 9-10) - also hoechstens
+            // Abschnitte der Laenge 4 (1-4, 5-8, 9-10), also hoechstens
             // "threads" Teilaufgaben. Mit bis / threads (=3) entstuende ein
             // vierter Rest-Abschnitt (1-3, 4-6, 7-9, 10).
             long proAbschnitt = (bis + threads - 1) / threads;
             for (long von = 1; von <= bis; von += proAbschnitt) {
                 long start = von;
                 long ende = Math.min(von + proAbschnitt - 1, bis);
-                // start und ende sind lokale Kopien - sie sind effektiv final
+                // start und ende sind lokale Kopien, sie sind effektiv final
                 // und duerfen deshalb im Lambda benutzt werden. "von" direkt
                 // waere ein Compilerfehler, weil die Schleife es veraendert.
                 ergebnisse.add(pool.submit(() -> teilsumme(start, ende)));
@@ -96,7 +96,7 @@ public class Aufgaben {
         }
         // Anmerkung zur Ehrlichkeit: fuer eine Summe lohnt sich das nicht.
         // Thread-Erzeugung und Koordination kosten mehr als die Addition.
-        // Parallelisierung zahlt sich erst bei teurer Arbeit pro Element aus -
+        // Parallelisierung zahlt sich erst bei teurer Arbeit pro Element aus,
         // und ob, das misst man, statt es zu vermuten.
     }
 
@@ -119,7 +119,7 @@ public class Aufgaben {
             }
 
             // invokeAll startet alle Aufgaben, wartet auf ALLE und liefert die
-            // Futures in der REIHENFOLGE DER EINGABELISTE zurueck - unabhaengig
+            // Futures in der REIHENFOLGE DER EINGABELISTE zurueck, unabhaengig
             // davon, welche zuerst fertig war. Genau das brauchen wir hier.
             List<Future<Integer>> futures = pool.invokeAll(aufgaben);
 
@@ -127,7 +127,7 @@ public class Aufgaben {
             for (Future<Integer> f : futures) {
                 ergebnis.add(f.get());
                 // f.get() wirft ExecutionException, wenn die Aufgabe eine
-                // Exception geworfen hat. Das Original steckt in getCause() -
+                // Exception geworfen hat. Das Original steckt in getCause(),
                 // wie das "Caused by" aus Kapitel 7.
             }
             return ergebnis;

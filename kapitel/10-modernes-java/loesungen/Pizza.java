@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Kapitel 10 - Musterloesung: Builder (README 10.9).
+ * Kapitel 10, Musterloesung: Builder (README 10.9).
  */
 public final class Pizza {
 
@@ -40,7 +40,7 @@ public final class Pizza {
         this.extraKaese = b.extraKaese;
     }
 
-    /** Statische Fabrikmethode, die den Builder liefert - Pflichtangaben als Parameter. */
+    /** Statische Fabrikmethode, die den Builder liefert. Pflichtangaben als Parameter. */
     public static Builder builder(Groesse groesse) {
         return new Builder(groesse);
     }
@@ -63,9 +63,9 @@ public final class Pizza {
 
     /**
      * Static, weil ein Builder vor der Pizza existiert und kein Pizza-Objekt
-     * braucht (vgl. Knoten in Kapitel 14.6). Als innere Klasse darf er auf
-     * den privaten Konstruktor von Pizza zugreifen - und umgekehrt Pizza auf
-     * seine privaten Felder.
+     * braucht (statische verschachtelte Klasse, README 10.9). Als
+     * verschachtelte Klasse darf er auf den privaten Konstruktor von Pizza
+     * zugreifen, und umgekehrt Pizza auf seine privaten Felder.
      */
     public static final class Builder {
         private final Groesse groesse;
@@ -93,7 +93,7 @@ public final class Pizza {
 
         public Pizza build() {
             // Regeln, die das GANZE Objekt betreffen, prueft build(). Hier
-            // koennte man auch schon in belag() pruefen - build() ist aber
+            // koennte man auch schon in belag() pruefen. build() ist aber
             // die Stelle, an der man alle Regeln an einem Ort findet.
             if (belaege.size() > MAX_BELAEGE) {
                 throw new IllegalStateException("hoechstens " + MAX_BELAEGE + " Belaege, gewuenscht: "

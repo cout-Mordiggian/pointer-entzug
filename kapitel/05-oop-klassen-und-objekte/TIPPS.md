@@ -1,7 +1,7 @@
 # Kapitel 05: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Konto.java: Felder, Zähler und Konstruktor
 
@@ -23,7 +23,8 @@ Zählen und Zuweisen passieren?
 - `nummer` und `inhaber` sind `private final`, `guthaben` ist `private long`
   (nicht `final`, es ändert sich ja).
 - Der Zähler ist `private static int anzahlKonten`. Jedes Konto bekommt den
-  Zählerstand **nach** dem Hochzählen als Nummer, so beginnt die erste bei 1.
+  Zählerstand **nach** dem Hochzählen als Nummer, so beginnt die erste bei 1
+  (der Test prüft das).
 - Prüfung des Inhabers: erst `null`, dann `isBlank()`. Die Reihenfolge ist
   wichtig: `inhaber.isBlank()` auf `null` wirft eine `NullPointerException`
   statt der erwarteten `IllegalArgumentException`. Mit `||` wird der zweite
@@ -101,7 +102,7 @@ Programmierfehler (Exception) oder ein normaler Geschäftsfall (`false`)?
 **Die Falle der Tests:** "Das komplette Guthaben abzuheben ist erlaubt." Emil hat
 300 Cent und hebt 300 ab, das muss `true` liefern. Die Deckung fehlt also erst,
 wenn der Betrag **größer** als das Guthaben ist, nicht schon bei Gleichheit.
-Achte ausserdem auf die Reihenfolge: Die Betragsprüfung kommt zuerst, sonst
+Achte außerdem auf die Reihenfolge: Die Betragsprüfung kommt zuerst, sonst
 liefert `abheben(-5)` womöglich `true` und *erhöht* das Guthaben.
 
 </details>
@@ -144,6 +145,8 @@ Der Javadoc verlangt eine `NullPointerException`, wenn `ziel` `null` ist. Prüfe
 das **vor** dem Abheben, am besten mit `Objects.requireNonNull(ziel, "ziel")`
 (Abschnitt 5.7). Prüfst du erst danach bzw. gar nicht, ist das Geld beim
 Sender schon abgebucht, wenn `ziel.einzahlen(...)` knallt, es wäre verschwunden.
+Der Test prüft deshalb auch, dass der Sender nach `ueberweiseAn(null, ...)` sein
+Guthaben noch hat.
 
 </details>
 
@@ -178,7 +181,7 @@ welche Felder darf sie deshalb zugreifen?
 <details><summary>Tipp 2: Ansatz</summary>
 
 `getAnzahlKonten` gibt nur den statischen Zähler zurück, auf `nummer` oder
-`guthaben` kann sie gar nicht zugreifen (kein `this`).
+`guthaben` kann sie ohne ein konkretes Konto gar nicht zugreifen (kein `this`).
 
 `toString` baut den String per Verkettung mit `+`. Das Format muss **zeichengenau**
 stimmen: `Konto[1, Anna, 5000 Cent]`, eckige Klammern, Komma **plus Leerzeichen**
@@ -201,7 +204,8 @@ deshalb `this.x = x`?
 
 Zwei Felder `private final double x` und `y`, im Konstruktor gesetzt, die Getter
 geben sie zurück. Wenn du ein `final`-Feld im Konstruktor vergisst, meldet der
-Compiler `variable x might not have been initialized`, das ist der Compiler,
+Compiler `variable x might not have been initialized` (deutsch: `Variable x
+wurde möglicherweise nicht initialisiert`), das ist der Compiler,
 der dich an deine Invariante erinnert. Die Tests rufen `new Punkt(3, 4)` mit
 `int`-Werten auf; die werden automatisch zu `double` erweitert.
 
@@ -304,7 +308,10 @@ Der Parameter muss `Object` sein, nicht `Punkt`, sonst überlädst du nur, und
 auf dich auf.
 
 `hashCode` benutzt **genau die Felder**, die `equals` vergleicht:
-`Objects.hash(...)`.
+`Objects.hash(...)`. Das vorgegebene `return 0;` erfüllt den Vertrag zwar
+formal, steckt aber alle Punkte in denselben Eimer und macht jedes `HashSet`
+zur langsamen Liste. Der Test prüft deshalb auch, dass verschiedene Punkte
+nicht alle denselben Hashwert bekommen.
 
 </details>
 
@@ -344,7 +351,7 @@ neues erzeugt? Und bei `polar`: Was muss vor `Math.cos` mit dem Winkel passieren
   (5.4, Konstanten). Die Methode gibt nur noch `URSPRUNG` zurück. Das ist nur
   möglich, weil `Punkt` unveränderlich ist: Niemand kann den geteilten
   Ursprung verschieben. Bei einem veränderlichen Objekt wäre das gefährlich.
-- `polar`: `Math.cos` und `Math.sin` erwarten den Winkel im **Bogenmass**
+- `polar`: `Math.cos` und `Math.sin` erwarten den Winkel im **Bogenmaß**
   (ein Vollkreis ist 2 * Pi statt 360). `Math.toRadians(winkelGrad)` rechnet um.
   Dann `new Punkt(radius * Math.cos(w), radius * Math.sin(w))`.
 - Kleine Rundungsfehler sind normal: `Math.cos(Math.toRadians(90))` ist nicht
@@ -388,13 +395,15 @@ nach deiner Änderung noch `new Konfiguration()` schreiben?
   in der Klasse. Innerhalb der Klasse darf der private Konstruktor aufgerufen
   werden, genau das tut diese Zeile.
 - Den Konstruktor auf `private` setzen. **Nicht** löschen: Ohne eigenen
-  Konstruktor erzeugt der Compiler einen öffentlichen (5.2).
+  Konstruktor erzeugt der Compiler einen mit der Sichtbarkeit der Klasse,
+  hier also einen öffentlichen (5.2).
 - `instanz()` gibt nur noch `INSTANZ` zurück.
 - `setSprache`: dieselbe Prüfung wie beim Inhaber von `Konto`, erst `null`,
   dann `isBlank()`, und erst danach zuweisen.
 
-Wenn du willst, schreib testweise in `Punkt` irgendwo `new Konfiguration();`:
-Der Compiler meldet jetzt *has private access*. Genau das soll er. (Danach
+Wenn du willst, schreib testweise in eine Methode von `Punkt` die Zeile
+`new Konfiguration();`: Der Compiler meldet jetzt *has private access*
+(deutsch: *hat private-Zugriff*). Genau das soll er. (Danach
 wieder löschen.)
 
 </details>
@@ -438,20 +447,23 @@ es aber gerade gewollt, dass niemand ein Konto ohne Inhaber anlegen kann.
 `einzahlen` beschreibt einen **fachlichen Vorgang** mit Regeln: nur positive
 Beträge, das Guthaben wächst. Ein `setGuthaben` erlaubt jedem, einen beliebigen
 Wert hineinzuschreiben, auch `-5000`, und die Invariante des Kontos wäre
-wertlos. Kapselung heisst Kontrolle darüber, **wie** sich der Zustand ändert,
+wertlos. Kapselung heißt Kontrolle darüber, **wie** sich der Zustand ändert,
 nicht nur, dass ein Feld `private` ist. Ein blinder Setter ist Kapselung nur dem
 Namen nach.
 
 </details>
 
-<details><summary>Warum darf eine <code>static</code>-Methode nicht auf Instanzfelder zugreifen?</summary>
+<details><summary>Warum darf eine <code>static</code>-Methode nicht direkt auf Instanzfelder zugreifen?</summary>
 
 Eine `static`-Methode gehört der Klasse, nicht einem Objekt, sie wird z. B. als
 `Konto.getAnzahlKonten()` ohne jedes Objekt aufgerufen. Deshalb gibt es in ihr
 kein `this`. Instanzfelder wie `guthaben` existieren aber nur pro Objekt: Welches
 Konto sollte gemeint sein? Der Compiler meldet
-`non-static variable guthaben cannot be referenced from a static context`.
-Statische Felder wie `anzahlKonten` darf sie dagegen benutzen.
+`non-static variable guthaben cannot be referenced from a static context`
+(deutsch: `Variable guthaben ist nicht statisch und kann nicht aus einem
+statischen Kontext referenziert werden`). Statische Felder wie `anzahlKonten`
+darf sie dagegen benutzen. Und bekommt sie ein konkretes Konto, etwa als
+Parameter `k`, darf sie auch `k.guthaben` lesen: Dann ist klar, welches gemeint ist.
 
 </details>
 
@@ -483,7 +495,7 @@ Inhalt einfrieren, brauchst du eine unveränderliche Liste, z. B. `List.copyOf(.
 1. **Einen sprechenden Namen haben.** `Punkt.polar(2, 90)` und `new Punkt(2, 90)`
    haben dieselbe Parameterliste `(double, double)`. Zwei Konstruktoren damit
    erlaubt der Compiler nicht, zwei Methoden mit verschiedenen Namen schon. Der
-   Name sagt ausserdem, was die Zahlen bedeuten.
+   Name sagt außerdem, was die Zahlen bedeuten.
 2. **Ein vorhandenes Objekt zurückgeben.** `Punkt.ursprung()` liefert immer
    dieselbe Konstante, `Integer.valueOf(5)` ein Objekt aus einem
    Zwischenspeicher. `new` erzeugt dagegen garantiert jedes Mal ein neues.
@@ -499,8 +511,9 @@ Der Sinn des Singletons ist, dass es nur **ein** Objekt gibt. Kann irgendwer
 `new Konfiguration()` schreiben, gibt es beliebig viele, und das statische Feld
 ist nur noch eine unter vielen. Der private Konstruktor lässt genau einen
 Aufrufer zu: die Klasse selbst, in der Zeile mit `INSTANZ`. Schreibst du gar
-keinen Konstruktor, erzeugt der Compiler automatisch einen öffentlichen
-parameterlosen (5.2), und jeder kann wieder Objekte anlegen. Deshalb steht in
+keinen Konstruktor, erzeugt der Compiler automatisch einen parameterlosen mit
+der Sichtbarkeit der Klasse, bei `public class Konfiguration` also einen
+öffentlichen (5.2), und jeder kann wieder Objekte anlegen. Deshalb steht in
 jedem Singleton ein leerer `private Konfiguration() { }`.
 
 </details>

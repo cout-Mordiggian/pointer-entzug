@@ -1,5 +1,5 @@
 /**
- * Kapitel 04 - Musterloesung mit Erklaerungen.
+ * Kapitel 04, Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -26,7 +26,7 @@ public class Aufgaben {
 
     public static double max(double a, double b) {
         // Ueberladung: gleicher Name, andere Parametertypen. Der Compiler
-        // waehlt anhand der Argumente aus - bei max(3.2, 5.5) diese hier.
+        // waehlt anhand der Argumente aus, bei max(3.2, 5.5) diese hier.
         return a > b ? a : b;
     }
 
@@ -34,7 +34,7 @@ public class Aufgaben {
         if (n <= 1) return n;                             // Basisfall
         return fibRekursiv(n - 1) + fibRekursiv(n - 2);   // zwei Aufrufe pro Ebene
         // Aufwand: O(2^n). fibRekursiv(50) berechnet fib(10) millionenfach neu.
-        // Heilbar mit Memoisierung (Zwischenspeicher) - oder eben iterativ.
+        // Heilbar mit Memoisierung (Zwischenspeicher) oder eben iterativ.
     }
 
     public static long fibIterativ(int n) {
@@ -48,7 +48,7 @@ public class Aufgaben {
         }
         return letzte;
         // O(n) Zeit, O(1) Speicher. fib(92) ist der letzte Wert, der in long
-        // passt - ab fib(93) laeuft die Rechnung still ueber.
+        // passt, ab fib(93) laeuft die Rechnung still ueber.
     }
 
     public static int summeAlle(int... zahlen) {
@@ -86,7 +86,7 @@ public class Aufgaben {
         for (int i = 0; i < werte.length; i++) {
             werte[i] *= 2;
         }
-        // Achtung: "werte = new int[]{...}" haette KEINE Wirkung nach aussen -
+        // Achtung: "werte = new int[]{...}" haette KEINE Wirkung nach aussen,
         // das wuerde nur die lokale Kopie der Referenz umbiegen.
     }
 

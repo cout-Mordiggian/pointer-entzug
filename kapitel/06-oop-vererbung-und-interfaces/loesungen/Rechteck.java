@@ -1,5 +1,5 @@
 /**
- * Kapitel 06 - Musterloesung: Rechteck.
+ * Kapitel 06, Musterloesung: Rechteck.
  */
 public class Rechteck extends Figur implements Skalierbar {
 
@@ -19,7 +19,7 @@ public class Rechteck extends Figur implements Skalierbar {
     /**
      * protected, damit Quadrat einen eigenen Namen durchreichen kann.
      * Vorsicht: protected heisst "Unterklassen UND dasselbe Paket". Alle
-     * Kursklassen liegen im selben (unbenannten) Paket - hier koennte also
+     * Kursklassen liegen im selben (unbenannten) Paket, hier koennte also
      * jede Klasse beliebige Namen setzen. Echten Schutz gibt es erst mit
      * eigenen Paketen.
      */

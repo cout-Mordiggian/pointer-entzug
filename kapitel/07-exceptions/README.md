@@ -12,7 +12,7 @@ Throwable
 ├── Error                     JVM ist am Ende: OutOfMemoryError, StackOverflowError
 │                             -> NICHT fangen
 └── Exception
-    ├── RuntimeException      unchecked - Programmierfehler
+    ├── RuntimeException      unchecked: Programmierfehler
     │   ├── NullPointerException
     │   ├── IllegalArgumentException
     │   │   └── NumberFormatException
@@ -23,7 +23,7 @@ Throwable
     │   │   └── StringIndexOutOfBoundsException
     │   ├── ClassCastException
     │   └── UnsupportedOperationException
-    └── alles andere          checked - erwartbare Aussenwelt-Probleme
+    └── alles andere          checked: erwartbare Aussenwelt-Probleme
         ├── IOException
         │   └── FileNotFoundException
         ├── InterruptedException
@@ -36,7 +36,7 @@ jede `NumberFormatException`, `catch (IOException e)` auch jede
 
 ## 7.2 Checked gegen unchecked, die zentrale Unterscheidung
 
-**Checked** (alles unter `Exception`, ausser `RuntimeException`):
+**Checked** (alles unter `Exception`, außer `RuntimeException`):
 Der Compiler zwingt dich, sie zu behandeln oder weiterzureichen.
 
 ```java
@@ -57,7 +57,7 @@ Sie dürfen überall auftreten.
 |-----------|-----|----------|
 | Aufrufer hat Mist gebaut | unchecked | `IllegalArgumentException` bei negativem Betrag |
 | Objekt im falschen Zustand | unchecked | `IllegalStateException` bei geschlossener Verbindung |
-| Aussenwelt kann fehlschlagen, Aufrufer kann sinnvoll reagieren | checked | Datei fehlt, Netzwerk weg |
+| Außenwelt kann fehlschlagen, Aufrufer kann sinnvoll reagieren | checked | Datei fehlt, Netzwerk weg |
 
 Die Faustregel: **Kann der Aufrufer den Fehler sinnvoll behandeln, checked.
 Ist es ein Bug, unchecked.**
@@ -163,13 +163,16 @@ try {
 ```
 
 Ohne das `e` verlierst du den ursprünglichen Stacktrace, und damit die
-Information, wo es wirklich schiefging. Im Log erscheint dann:
+Information, wo es wirklich schiefging. Im Log erscheint dann (gekürzt):
 
 ```
-IllegalStateException: Ungueltiger Konfigurationswert: abc
+java.lang.IllegalStateException: Ungueltiger Konfigurationswert: abc
     at Konfig.lesen(Konfig.java:12)
+    ...
 Caused by: java.lang.NumberFormatException: For input string: "abc"
-    at java.base/java.lang.Integer.parseInt(Integer.java:652)
+    at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+    at java.base/java.lang.Integer.parseInt(Integer.java:662)
+    ...
 ```
 
 `Caused by` ist oft die einzige Zeile, die dich zum echten Problem führt.
@@ -189,7 +192,7 @@ try {
 // Modern:
 try (BufferedReader r = new BufferedReader(new FileReader("datei.txt"))) {
     ...
-}   // close() laeuft automatisch - auch bei Exception, auch bei return
+}   // close() laeuft automatisch, auch bei Exception, auch bei return
 ```
 
 Alles, was `AutoCloseable` implementiert, funktioniert hier. Mehrere Ressourcen
@@ -204,7 +207,7 @@ sie, wie beim alten Muster, zu verlieren.
 ## 7.8 Anti-Muster
 
 ```java
-// 1. Verschlucken - der schlimmste Fehler ueberhaupt
+// 1. Verschlucken: der schlimmste Fehler ueberhaupt
 try { riskant(); } catch (Exception e) { }
 
 // 2. Alles fangen, inklusive echter Bugs

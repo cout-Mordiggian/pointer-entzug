@@ -15,7 +15,8 @@ for (var e : map.entrySet()) { ... }
 ```
 
 Nur für **lokale Variablen** mit Initialisierung. Nicht für Felder, nicht für
-Parameter, nicht für Rückgabetypen.
+Methodenparameter, nicht für Rückgabetypen. (Einzige Ausnahme: Lambda-Parameter
+dürfen seit Java 11 `var` heißen, `(var a, var b) -> a + b`.)
 
 **Nimm `var`,** wenn der Typ rechts ohnehin dasteht (`var x = new Kunde()`) oder
 der Typ so lang ist, dass er nichts erklärt.
@@ -34,7 +35,7 @@ Zugriffsmethoden `x()` und `y()` (ohne `get`!), `equals`, `hashCode` und
 
 ```java
 var p = new Punkt(3, 4);
-p.x();                      // 3.0    - kein getX()
+p.x();                      // 3.0, kein getX()
 p.toString();               // "Punkt[x=3.0, y=4.0]"
 p.equals(new Punkt(3, 4));  // true
 ```
@@ -78,7 +79,7 @@ Warum eine statische Fabrik oft besser ist als ein weiterer Konstruktor: 5.10.
 - Aber nur *flach* unveränderlich: Ist eine Komponente eine `ArrayList`, kann
   man die Liste trotzdem ändern (Kapitel 5.5). Abhilfe im kompakten
   Konstruktor: `namen = List.copyOf(namen);`
-- Keine zusätzlichen Instanzfelder ausser den Komponenten
+- Keine zusätzlichen Instanzfelder außer den Komponenten
 - Keine Vererbung (aber `implements` beliebig vieler Interfaces)
 
 **Wann ein `record`?** Immer wenn ein Typ vor allem *Daten transportiert*:
@@ -95,7 +96,7 @@ public enum Ampel {
 
 Ampel a = Ampel.ROT;
 a.name();       // "ROT"
-a.ordinal();    // 0     - benutze das nicht fuer Fachlogik!
+a.ordinal();    // 0: benutze das nicht fuer Fachlogik!
 Ampel.values(); // Ampel[]{ROT, GELB, GRUEN}
 Ampel.valueOf("ROT");
 ```
@@ -127,10 +128,11 @@ public enum Rechenart {
 }
 ```
 
-Im `switch`-**Ausdruck** (Pfeilform mit Ergebnis, Kapitel 2) prüft der
-Compiler bei Enums die Vollständigkeit, kommt eine Konstante dazu, zeigt er
-dir jede Stelle, die du anpassen musst. (Eine klassische `switch`-Anweisung
-ohne Ergebnis prüft er nicht; ein weiterer Grund für die Pfeilform.) Das ist der
+Im `switch`-**Ausdruck** (mit Ergebnis, Kapitel 2) prüft der Compiler bei
+Enums die Vollständigkeit, kommt eine Konstante dazu, zeigt er dir jede Stelle,
+die du anpassen musst. Eine `switch`-**Anweisung** ohne Ergebnis prüft er
+dagegen nicht, auch nicht in Pfeilform: Fehlt dort eine Konstante, passiert
+für sie einfach nichts. Ein weiterer Grund für den Ausdruck. Das ist der
 Hauptgrund, Enums statt `String`-Konstanten oder `int`-Codes zu verwenden.
 
 `ordinal()` hängt an der Deklarationsreihenfolge. Speicherst du den Wert
@@ -146,11 +148,12 @@ public record Rechteck(double breite, double hoehe) implements Form { }
 public record Dreieck(double a, double b, double c) implements Form { }
 ```
 
-`sealed` heisst: **Nur diese** Typen dürfen `Form` implementieren. Damit weiss
+`sealed` heißt: **Nur diese** Typen dürfen `Form` implementieren. Damit weiß
 der Compiler, dass die Liste vollständig ist.
 
-Sind alle Untertypen in **derselben Datei** (z. B. als verschachtelte Records),
-darf `permits` entfallen.
+Sind alle Untertypen in **derselben Datei** (z. B. als verschachtelte Records
+innerhalb von `Form`, mehr zu verschachtelten Typen in 10.9), darf `permits`
+entfallen.
 
 Jeder erlaubte Untertyp muss selbst `final`, `sealed` oder `non-sealed` sein,
 sonst wäre das Siegel löchrig. Records sind automatisch `final`.
@@ -179,6 +182,7 @@ String text = switch (o) {
 Mit Bedingung (*guarded pattern*):
 
 ```java
+Object zahl = ...;          // irgendein Objekt, vielleicht eine Zahl
 String bewertung = switch (zahl) {
     case Integer i when i < 0   -> "negativ";
     case Integer i when i == 0  -> "null";
@@ -203,7 +207,7 @@ Das Muster **zerlegt** den Record direkt in seine Komponenten, kein
 `k.radius()` nötig. Statt des Typs darfst du auch `var` schreiben
 (`case Kreis(var r)`), und *seit Java 22* steht `_` für eine Komponente, die
 dich nicht interessiert: `case Rechteck(var b, _) -> ...`. Und weil `Form` `sealed` ist, braucht dieser `switch`
-**kein `default`**: Der Compiler weiss, dass alle Fälle abgedeckt sind.
+**kein `default`**: Der Compiler weiß, dass alle Fälle abgedeckt sind.
 
 Der Gewinn wird beim Erweitern sichtbar: Kommt `Dreieck` dazu, meldet der
 Compiler **jeden** `switch`, dem der Fall fehlt. Bei einer `instanceof`-Kette
@@ -225,7 +229,7 @@ String abfrage = """
         """;
 ```
 
-Die gemeinsame Einrückung wird abgeschnitten; die Position der schliessenden
+Die gemeinsame Einrückung wird abgeschnitten; die Position der schließenden
 `"""` bestimmt, wie viel. `\` am Zeilenende unterdrückt den Umbruch,
 `\s` erzwingt ein Leerzeichen am Zeilenende.
 
@@ -258,8 +262,8 @@ LocalDate termin  = LocalDate.of(2026, 12, 24);
 LocalDate parsed  = LocalDate.parse("2026-09-05");     // ISO-Format jjjj-mm-tt
 
 termin.isBefore(heute)                  // true/false
-termin.plusDays(7)                      // NEUES Objekt - termin bleibt unveraendert!
-LocalDate.of(2026, 1, 31).plusMonths(1) // 2026-02-28 - rechnet kalenderrichtig
+termin.plusDays(7)                      // NEUES Objekt, termin bleibt unveraendert!
+LocalDate.of(2026, 1, 31).plusMonths(1) // 2026-02-28, rechnet kalenderrichtig
 ChronoUnit.DAYS.between(heute, termin)  // Tage dazwischen (long)
 termin.getDayOfWeek()                   // DayOfWeek.THURSDAY
 
@@ -268,8 +272,19 @@ termin.format(deutsch)                  // "24.12.2026"
 LocalDate.parse("24.12.2026", deutsch)  // und zurueck
 ```
 
-`LocalDate.parse("2026-02-30")` wirft eine `DateTimeParseException`, ungültige
-Daten gibt es gar nicht erst.
+`LocalDate.parse("2026-02-30")` wirft eine `DateTimeParseException`, das
+ISO-Format prüft streng. **Vorsicht** bei eigenen Mustern wie `deutsch` oben:
+Die sind nachsichtig, `LocalDate.parse("30.02.2026", deutsch)` liefert still
+`2026-02-28`. Wer ungültige Eingaben ablehnen will, prüft streng:
+
+```java
+DateTimeFormatter streng = DateTimeFormatter.ofPattern("dd.MM.uuuu")   // uuuu statt yyyy!
+        .withResolverStyle(ResolverStyle.STRICT);
+LocalDate.parse("30.02.2026", streng)   // DateTimeParseException
+```
+
+(Mit `yyyy` scheitert `STRICT` sogar an gültigen Daten, weil `yyyy` das Jahr
+*der Ära* meint und die Ära fehlt.)
 
 Merke dir drei Dinge:
 
@@ -290,7 +305,7 @@ Merke dir drei Dinge:
 | 9 | `List.of`, Module |
 | 10 | `var` |
 | 11 | `String.strip/isBlank/repeat`, `Files.readString`, HTTP-Client |
-| 14 | `switch`-Ausdruck, hilfreiche NPE-Meldungen |
+| 14 | `switch`-Ausdruck, hilfreiche NPE-Meldungen (ab 15 standardmäßig an) |
 | 15 | Textblöcke |
 | 16 | `record`, `instanceof`-Pattern, `Stream.toList` |
 | 17 | `sealed` |
@@ -347,7 +362,7 @@ public final class Pizza {
 
     public static Builder builder(Groesse g) { return new Builder(g); }
 
-    public static final class Builder {         // statische innere Klasse wie Knoten in 14.6
+    public static final class Builder {         // statische verschachtelte Klasse, siehe unten
         private final Groesse groesse;
         private final List<String> belaege = new ArrayList<>();
 
@@ -370,10 +385,19 @@ public final class Pizza {
 - Jede Methode liefert **`this`** zurück, deshalb lässt sich alles verketten
   (eine *fluent* Schnittstelle).
 - **`build()`** prüft Regeln, die das ganze Objekt betreffen, an einer Stelle.
-- **`static`**, weil ein Builder vor der Pizza existiert. Aussen und innen dürfen
-  gegenseitig auf ihre privaten Member zugreifen, wie bei `Knoten` in 14.6.
+- **`static`**, weil ein Builder vor der Pizza existiert (dazu gleich mehr).
 - **`List.copyOf`** im Konstruktor: Ohne Kopie teilten sich Builder und Pizza
   eine Liste, und ein späteres `belag()` änderte die schon fertige Pizza.
+
+**Neu: die statische verschachtelte Klasse.** `Builder` steht *innerhalb* von
+`Pizza`, von außen heißt er `Pizza.Builder`. Das `static` bedeutet: Ein
+`Builder`-Objekt braucht kein `Pizza`-Objekt, es entsteht ja vorher. Außen und
+innen dürfen gegenseitig auf ihre `private` Member zugreifen, deshalb kann
+`build()` den privaten Konstruktor von `Pizza` aufrufen und dieser `b.belaege`
+lesen. Die Records in `Form` (10.4) sind genauso verschachtelt; Records, Enums
+und Interfaces innerhalb eines Typs sind automatisch `static`. Ohne `static`
+wäre `Builder` eine *innere* Klasse, deren Objekte immer an ein Objekt der
+äußeren Klasse gebunden sind. Die brauchst du hier nicht.
 
 Im JDK: `StringBuilder` (sammelt Text, `toString()` baut den String),
 `HttpRequest.newBuilder().uri(...).GET().build()`, `Stream.builder()`,
@@ -465,7 +489,7 @@ Fünf Dateien in [`src/`](src/), prüfen mit `./lerne.sh 10`.
 
 - Kompakter Konstruktor: `null`, leerer oder nur aus Leerzeichen bestehender
   Name, negativer Preis, negative Menge -> `IllegalArgumentException`
-  (auch bei `null` bitte keine `NullPointerException`); ausserdem `name` mit
+  (auch bei `null` bitte keine `NullPointerException`); außerdem `name` mit
   `strip()` normalisieren
 - `long gesamtCent()`
 - `static Artikel einzeln(String name, long preisCent)`
@@ -508,7 +532,7 @@ prüfen nur negative Werte.
    Menge:   3
    Gesamt:  1497 Cent
    ```
-   (mit abschliessendem Zeilenumbruch)
+   (mit abschließendem Zeilenumbruch)
 5. **`werktageZaehlen(List<Wochentag>)`** -> `long`.
 
 ### `Pizza.java`: Builder (10.9)
@@ -559,7 +583,7 @@ System.out.println(t.namen());
 
 <details><summary>Auflösung</summary>
 
-`[Anna, Bert]`: Der Record speichert nur die **Referenz** auf die Liste. Wer die Liste von aussen ändert, ändert den "unveränderlichen" Record mit. Abhilfe: `namen = List.copyOf(namen);` im kompakten Konstruktor.
+`[Anna, Bert]`: Der Record speichert nur die **Referenz** auf die Liste. Wer die Liste von außen ändert, ändert den "unveränderlichen" Record mit. Abhilfe: `namen = List.copyOf(namen);` im kompakten Konstruktor.
 
 </details>
 

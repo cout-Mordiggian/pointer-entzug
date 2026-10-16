@@ -1,7 +1,7 @@
 # Kapitel 13: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 > **Teil A und Teil B sind unabhängig.** In Teil A sind die Tests in
 > `tests/Tests.java` ausnahmsweise *nicht* die Aufgabenstellung, sondern nur
@@ -28,19 +28,23 @@ Eine gute Tabelle deckt mindestens ab:
 - **beide Seiten jeder Grenze**: knapp darunter und genau darauf,
 - die **Null-Fälle**, die die Spezifikation ausdrücklich erlaubt,
 - einen Fall, in dem der Rabatt **kein ganzer Cent** ist (Regel 6 hat ein Beispiel),
-- **grosse Werte**, bei denen der Gesamtpreis nicht mehr in einen `int` passt,
+- **große Werte**, bei denen der Gesamtpreis nicht mehr in einen `int` passt,
 - **jeden** Parameter einzeln negativ, jeweils mit `try`/`catch`.
 
 Zwei Fallen: Wirft ein Aufruf, bei dem du *keine* Exception erwartest, fliegt
 sie aus deiner Methode heraus. Das zählt zwar als "nicht bestanden", aber du
-siehst nicht, welche Prüfung es war. Pack solche Aufrufe in ein
+siehst nur eine Zeilennummer statt deiner Beschreibung, und alle Prüfungen
+dahinter laufen gar nicht mehr. Pack solche Aufrufe in ein
 `try`/`catch`, das `fehlschlag(...)` meldet. Und: Steig nicht mit `return false`
 bei der ersten Abweichung aus. Wenn alle Prüfungen laufen, siehst du alle
 Meldungen auf einmal.
 
 Ist schon die Prüfung gegen die **korrekte** Implementierung rot, stimmt
 einer deiner erwarteten Werte nicht. Die Meldung `[deine Pruefung] ...` davor
-sagt dir, welcher. Rechne ihn noch einmal von Hand nach.
+sagt dir, welcher. Rechne ihn noch einmal von Hand nach. Ist nur die Prüfung
+"Zweiter Durchlauf ... dasselbe Ergebnis" rot, merkt sich deine Methode etwas
+zwischen zwei Aufrufen, etwa in einem `static`-Feld, das du am Anfang nicht
+zurücksetzt.
 
 </details>
 
@@ -67,7 +71,7 @@ try {
 }
 ```
 
-Grosse Zahlen schreibst du mit `L` und Unterstrichen: `3_000_000_000L`.
+Große Zahlen schreibst du mit `L` und Unterstrichen: `3_000_000_000L`.
 
 </details>
 
@@ -92,9 +96,11 @@ Welche Regel der Spezifikation der jeweilige Mutant verletzt:
 | 2 | Regel 5: untere Rabattgrenze |
 | 3 | Regel 2: Validierung |
 | 4 | Regel 5: höchste Rabattstufe |
-| 5 | Regel 4: grosse Werte |
+| 5 | Regel 4: große Werte |
 | 6 | Regel 3: Null-Fälle |
 | 7 | Regel 5: obere Rabattgrenze |
+| 8 | Regel 2: Validierung |
+| 9 | Regel 3: Null-Fälle |
 
 </details>
 
@@ -112,6 +118,8 @@ rechnest du selbst aus:
 | 5 | 5_000_000 | 500 |
 | 6 | 500 | 0 |
 | 7 | 100 | 50 |
+| 8 | 100 | -1 |
+| 9 | 0 | 20 |
 
 Erst danach, wenn alles grün ist: `src/Kandidaten.java` lesen und vergleichen,
 ob du die Fehler richtig vermutet hast.
@@ -252,7 +260,7 @@ Damit der Fehler nie unbemerkt zurückkommt. Schon beim Reproduzieren hast du
 eine Eingabe gefunden, die den Fehler auslöst. Als fester Test ist sie ab jetzt
 bei jedem Lauf dabei. Wird der Fehler später durch eine andere Änderung
 wieder eingebaut (das passiert öfter, als man denkt), ist der Test sofort
-rot. Ausserdem beweist der Test, dass deine Reparatur wirklich wirkt: vorher
+rot. Außerdem beweist der Test, dass deine Reparatur wirklich wirkt: vorher
 rot, nachher grün.
 
 </details>
@@ -261,7 +269,7 @@ rot, nachher grün.
 
 Weil Assertions standardmäßig **ausgeschaltet** sind. Ohne `java -ea` wird die
 `assert`-Zeile gar nicht ausgewertet, und der negative Preis rutscht im Betrieb
-einfach durch. Ein negativer Preis kommt von aussen, vom Aufrufer, und muss
+einfach durch. Ein negativer Preis kommt von außen, vom Aufrufer, und muss
 immer abgewiesen werden. Das ist ein Fall für
 `throw new IllegalArgumentException(...)`. `assert` ist nur für interne
 Annahmen gedacht, die bei korrektem Code ohnehin immer gelten.

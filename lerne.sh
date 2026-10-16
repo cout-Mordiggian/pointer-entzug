@@ -9,4 +9,4 @@
 #   ./lerne.sh alle         alle Kapitel pruefen
 #   ./lerne.sh 03 -r Demo   Klasse "Demo" aus dem Kapitel ausfuehren
 #
-exec java "$(dirname "${BASH_SOURCE[0]}")/Lerne.java" "$@"
+exec java -Dlerne.aufruf=./lerne.sh "$(dirname "${BASH_SOURCE[0]}")/Lerne.java" "$@"

@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Aufgabe 10, schon fertig: der Text, den die Befehle bearbeiten.
+ * Kapitel 14, Aufgabe 10, schon fertig: der Text, den die Befehle bearbeiten.
  *
  * Im Befehl-Muster heisst das der "Empfaenger": Er kann die eigentliche
  * Arbeit, weiss aber nichts von Befehlen oder Rueckgaengig.

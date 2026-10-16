@@ -1,14 +1,14 @@
 # Kapitel 02: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `fizzbuzz`
 
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 2.1 (`%` und `&&`) und Abschnitt 2.2 (`if` / `else if`). "Durch 3
-teilbar" heisst: Der Rest der Division durch 3 ist 0. Frag dich: Wenn eine Zahl
+teilbar" heißt: Der Rest der Division durch 3 ist 0. Frag dich: Wenn eine Zahl
 durch 15 teilbar ist, welche deiner Bedingungen sind dann alle wahr, und
 welche davon wird zuerst geprüft?
 
@@ -55,7 +55,7 @@ zurückgeben kannst. Pro Note ein `case` mit `->`, kein `break`. Für alle
 übrigen Werte gibt es den `default`-Zweig, ohne ihn meldet der Compiler
 `the switch expression does not cover all possible input values`, denn ein
 Ausdruck muss immer einen Wert haben. Vergiss nicht das Semikolon nach der
-schliessenden Klammer: Das Ganze ist ein Ausdruck in einer `return`-Anweisung.
+schließenden Klammer: Das Ganze ist ein Ausdruck in einer `return`-Anweisung.
 Achte auf die exakte Schreibweise, z. B. `"ungenuegend"` und `"ungueltig"`.
 
 </details>
@@ -96,7 +96,7 @@ die Wurzel von `n`, größere Kandidaten musst du nicht prüfen.
 Die Falle sitzt in der Schleifenbedingung: Mit `i * i < n` (echt kleiner)
 würdest du bei `9` und `25` den Teiler `3` bzw. `5` nie testen und sie als
 prim melden. Genau diese Quadratzahlen prüft der Test, es muss `<=` sein.
-Für sehr grosse `n` kann `i * i` als `int` überlaufen; mit `(long) i * i` bist
+Für sehr große `n` kann `i * i` als `int` überlaufen; mit `(long) i * i` bist
 du auf der sicheren Seite.
 
 </details>
@@ -158,14 +158,14 @@ public static long fakultaet(int n) {
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 2.4, "`while`", das Beispiel dort ist fast genau diese Aufgabe.
-Frag dich: Woher weisst du, wann keine Ziffer mehr übrig ist?
+Frag dich: Woher weißt du, wann keine Ziffer mehr übrig ist?
 
 </details>
 
 <details><summary>Tipp 2: Ansatz</summary>
 
 `% 10` holt die letzte Ziffer, `/ 10` schneidet sie ab (Ganzzahldivision).
-Wiederhole das, solange die Zahl größer als `0` ist. Du weisst vorher nicht,
+Wiederhole das, solange die Zahl größer als `0` ist. Du weißt vorher nicht,
 wie viele Ziffern es sind, deshalb `while`, nicht `for`. Bei `0` läuft die
 Schleife gar nicht und die Summe bleibt `0`, genau wie erwartet. Guter Stil:
 Arbeite mit einer Kopie (`int rest = n;`) statt den Parameter zu verändern.
@@ -201,7 +201,7 @@ teilbar"?
 
 <details><summary>Tipp 2: Ansatz</summary>
 
-Die Schleife läuft von `1` bis einschliesslich `grenze` (also `<=`, sonst fehlt
+Die Schleife läuft von `1` bis einschließlich `grenze` (also `<=`, sonst fehlt
 bei `summeVielfache(10)` die `10`). Uninteressante Zahlen überspringst du mit
 `continue`, alle anderen addierst du. Denkfalle beim Verneinen: "nicht (durch 3
 teilbar **oder** durch 5 teilbar)" ist "nicht durch 3 teilbar **und** nicht
@@ -243,7 +243,8 @@ Zeile an. Die Grenze der inneren Schleife ist die **Zeilennummer** der äußeren
 nicht `hoehe`, sonst bekommst du ein Rechteck. Nach der inneren Schleife kommt
 `'\n'`, und zwar nach **jeder** Zeile, auch der letzten (`"*\n"` bei Höhe 1).
 Sammle alles in einem `StringBuilder` mit `append(...)` und gib am Ende
-`toString()` zurück. Bei Höhe `0` läuft keine Schleife und es kommt `""`
+`toString()` zurück (kurz erklärt im Aufgabentext); ein String mit `+=` geht
+auch. Bei Höhe `0` läuft keine Schleife und es kommt `""`
 heraus.
 
 </details>
@@ -270,7 +271,7 @@ public static String sternDreieck(int hoehe) {
 <details><summary>Tipp 1: Richtung</summary>
 
 Abschnitt 2.4 (Schleifen) und 2.6 (Scanner). Frag dich: Wie oft muss das
-Programm fragen? Du weisst es vorher nicht, aber **mindestens einmal**.
+Programm fragen? Du weißt es vorher nicht, aber **mindestens einmal**.
 Welche Schleifenart garantiert genau das?
 
 </details>
@@ -331,7 +332,7 @@ Die Pfeilform `case 1 ->` hat dieses Problem nicht.
 
 <details><summary>Wann nimmst du `while`, wann `for`, wann `for-each`?</summary>
 
-`while`, wenn du vorher **nicht weisst**, wie oft die Schleife läuft, etwa bei
+`while`, wenn du vorher **nicht weißt**, wie oft die Schleife läuft, etwa bei
 der Quersumme, die so lange läuft, bis keine Ziffer mehr übrig ist. `for`,
 wenn die Anzahl feststeht oder du einen Zähler bzw. Index brauchst, z. B. von
 `1` bis `n`. `for-each`, wenn du einfach jedes Element eines Arrays oder einer
@@ -340,12 +341,12 @@ Standardwahl, weil dabei keine Off-by-one-Fehler möglich sind.
 
 </details>
 
-<details><summary>Warum ist `for (int i = 0; ...)` besser als `i` ausserhalb zu deklarieren?</summary>
+<details><summary>Warum ist `for (int i = 0; ...)` besser als `i` außerhalb zu deklarieren?</summary>
 
 So lebt `i` nur innerhalb der Schleife (Abschnitt 2.5, "so spät und so eng wie
 möglich"). Nach der Schleife kann niemand versehentlich mit dem veralteten
 Endwert von `i` weiterrechnen, der Compiler meldet dann `cannot find symbol`.
-Ausserdem kannst du in der nächsten Schleife wieder `int i` deklarieren, ohne
+Außerdem kannst du in der nächsten Schleife wieder `int i` deklarieren, ohne
 dass sich die beiden in die Quere kommen. Und der Leser sieht sofort: `i` gehört
 nur zu dieser Schleife.
 

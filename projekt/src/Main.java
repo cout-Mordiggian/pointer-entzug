@@ -1,12 +1,12 @@
 import java.nio.file.Path;
 
 /**
- * Abschlussprojekt - Einstiegspunkt.
+ * Abschlussprojekt: Einstiegspunkt.
  *
- * Starten:  ./starte.sh
+ * Starten:  ./starte.sh   (Windows: .\starte)
  *
  * Aktuell ein Geruest, das bewusst schon kompiliert und startet: Es benutzt
- * noch keine der Klassen aus M2-M5 (Aufgabenliste, CsvSpeicher, Konsole) -
+ * noch keine der Klassen aus M2-M5 (Aufgabenliste, CsvSpeicher, Konsole),
  * die stehen unten nur im Kommentar. Arbeite dich an den Meilensteinen aus
  * README.md entlang und ersetze diesen Rumpf Schritt fuer Schritt.
  */
@@ -34,6 +34,6 @@ public class Main {
         //
         // Achtung: laden() und speichern() werfen IOException (checked).
         // Entweder hier fangen und eine klare Meldung ausgeben, oder
-        // main mit "throws IOException" deklarieren - siehe README, M5.
+        // main mit "throws IOException" deklarieren, siehe README, M5.
     }
 }

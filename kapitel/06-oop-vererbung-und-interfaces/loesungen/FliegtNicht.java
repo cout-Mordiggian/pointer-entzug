@@ -1,5 +1,5 @@
 /**
- * Kapitel 6 - Musterloesung: nicht fliegen koennen.
+ * Kapitel 6, Musterloesung: nicht fliegen koennen.
  */
 public class FliegtNicht implements FlugVerhalten {
 

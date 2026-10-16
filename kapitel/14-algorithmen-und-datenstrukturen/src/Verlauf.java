@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Aufgabe 10b: Rueckgaengig und Wiederholen.
+ * Kapitel 14, Aufgabe 10b: Rueckgaengig und Wiederholen.
  * Pruefen:  ./lerne.sh 14
  *
  *   Verlauf v = new Verlauf();
@@ -13,7 +13,7 @@
  *     Befehl rueckgaengig, wiederholen() den zuletzt rueckgaengig gemachten.
  *   - Beide liefern false und tun nichts, wenn es nichts zu tun gibt.
  *   - Ein neuer Befehl ueber ausfuehren() verwirft alles, was man noch haette
- *     wiederholen koennen - wie in jedem Editor.
+ *     wiederholen koennen, wie in jedem Editor.
  *
  * Tipp: zwei Stapel (README 14.6). ArrayDeque mit push/pop.
  */
@@ -36,11 +36,13 @@ public class Verlauf {
         return false;
     }
 
+    /** true, wenn rueckgaengig() etwas zu tun haette. */
     public boolean kannRueckgaengig() {
         // TODO
         return false;
     }
 
+    /** true, wenn wiederholen() etwas zu tun haette. */
     public boolean kannWiederholen() {
         // TODO
         return false;

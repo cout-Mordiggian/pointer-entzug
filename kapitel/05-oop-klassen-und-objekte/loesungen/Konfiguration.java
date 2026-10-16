@@ -1,24 +1,25 @@
 /**
- * Kapitel 05 - Musterloesung Konfiguration: ein klassischer Singleton.
+ * Kapitel 05, Musterloesung Konfiguration: ein klassischer Singleton.
  *
  * Die drei Zutaten:
  *   1. private Konstruktor   -> niemand ausserhalb kann "new" sagen
- *   2. private static final  -> die eine Instanz, beim Laden der Klasse erzeugt
+ *   2. private static final  -> die eine Instanz, beim ersten Zugriff auf die Klasse erzeugt
  *   3. static instanz()      -> der einzige Weg an das Objekt heran
  */
 public final class Konfiguration {
 
     // Die JVM legt dieses Objekt genau einmal an, wenn die Klasse zum ersten
-    // Mal benutzt wird. Das ist sogar bei mehreren Threads sicher - warum die
+    // Mal benutzt wird. Das ist sogar bei mehreren Threads sicher. Warum die
     // "faule" Variante mit if (instanz == null) das nicht ist, zeigt 12.3.
     private static final Konfiguration INSTANZ = new Konfiguration();
 
     private String sprache = "de";
     private boolean farbig = false;
 
-    // private: nur diese Klasse selbst darf den Konstruktor aufrufen - und tut
+    // private: nur diese Klasse selbst darf den Konstruktor aufrufen, und tut
     // es genau einmal, in der Zeile mit INSTANZ. Ganz weglassen geht nicht:
-    // Ohne eigenen Konstruktor erzeugt der Compiler einen oeffentlichen.
+    // Ohne eigenen Konstruktor erzeugt der Compiler einen mit der Sichtbarkeit
+    // der Klasse, hier also einen oeffentlichen.
     // "final" an der Klasse: keine Unterklassen. Die koennten wegen des privaten
     // Konstruktors ohnehin nicht entstehen, so steht die Absicht aber im Code.
     private Konfiguration() { }

@@ -1,7 +1,7 @@
 /**
  * Kapitel 09, Aufgabe 9: ein eigenes funktionales Interface.
  *
- * @FunctionalInterface ist optional - aber der Compiler prueft dann,
+ * @FunctionalInterface ist optional, aber der Compiler prueft dann,
  * dass wirklich nur EINE abstrakte Methode da ist. Nimm die Annotation
  * immer, wenn das deine Absicht ist.
  */

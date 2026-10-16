@@ -1,5 +1,5 @@
 /**
- * Kapitel 09 - Aufgabe 11 (Strategien) und Aufgabe 12 (Fabrik), siehe README 9.8.
+ * Kapitel 09: Aufgabe 11 (Strategien) und Aufgabe 12 (Fabrik), siehe README 9.8.
  * Pruefen:  ./lerne.sh 09
  *
  * Jede Methode liefert eine Rabatt-Strategie (Interface Rabatt, schon fertig).

@@ -1,5 +1,5 @@
 /**
- * Kapitel 06 - Musterloesung: Kreis.
+ * Kapitel 06, Musterloesung: Kreis.
  *
  * extends Figur          -> "ist eine" Figur (Herkunft)
  * implements Skalierbar  -> "kann" skaliert werden (Faehigkeit)
@@ -11,8 +11,8 @@ public class Kreis extends Figur implements Skalierbar {
     public Kreis(double radius) {
         // In Java 21 MUSS super(...) die erste Anweisung sein, deshalb steht
         // die Pruefung hier danach. Seit Java 25 duerfte sie auch davor stehen,
-        // solange sie das Objekt (this) noch nicht benutzt - dann wird ein
-        // ungueltiger Radius abgelehnt, bevor Figur ueberhaupt initialisiert wird.
+        // solange sie das Objekt noch nicht liest. Dann wird ein ungueltiger
+        // Radius abgelehnt, bevor Figur ueberhaupt initialisiert wird.
         super("Kreis");
         if (radius < 0) {
             throw new IllegalArgumentException("Radius darf nicht negativ sein: " + radius);
@@ -34,7 +34,7 @@ public class Kreis extends Figur implements Skalierbar {
 
     @Override
     public Figur skaliert(double faktor) {
-        // Neues Objekt statt Aenderung - dieselbe Idee wie bei Punkt in Kapitel 5.
+        // Neues Objekt statt Aenderung, dieselbe Idee wie bei Punkt in Kapitel 5.
         return new Kreis(radius * faktor);
     }
 }

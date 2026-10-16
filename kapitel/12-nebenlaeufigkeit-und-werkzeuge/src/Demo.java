@@ -3,12 +3,13 @@
  *
  *     ./lerne.sh 12 -r Demo
  *
- * Fuehr das mehrmals aus - das Ergebnis der unsicheren Variante
- * ist jedes Mal ein anderes, und praktisch nie das richtige.
+ * Fuehr das mehrmals aus: Das Ergebnis der unsicheren Variante
+ * ist jedes Mal ein anderes, und auf Rechnern mit mehreren Kernen
+ * praktisch nie das richtige. (Auf einem einzigen Kern oefter.)
  */
 public class Demo {
 
-    // Bewusst UNGESCHUETZT - genau darum geht es.
+    // Bewusst UNGESCHUETZT, genau darum geht es.
     private static int unsicher = 0;
 
     public static void main(String[] args) throws InterruptedException {
@@ -20,7 +21,7 @@ public class Demo {
         for (int i = 0; i < THREADS; i++) {
             alle[i] = new Thread(() -> {
                 for (int j = 0; j < PRO_THREAD; j++) {
-                    unsicher++;     // lesen, addieren, schreiben - drei Schritte
+                    unsicher++;     // lesen, addieren, schreiben: drei Schritte
                 }
             });
         }
@@ -34,7 +35,7 @@ public class Demo {
                 + "  (" + String.format(java.util.Locale.ROOT, "%.2f",
                         100.0 * (ERWARTET - unsicher) / ERWARTET) + " %)");
         System.out.println();
-        System.out.println("  Kein Fehler, keine Exception - nur ein falsches Ergebnis.");
+        System.out.println("  Kein Fehler, keine Exception, nur ein falsches Ergebnis.");
         System.out.println("  Genau das macht Race Conditions so gefaehrlich.");
         System.out.println("  Starte die Demo mehrmals: die Zahl ist jedes Mal anders.");
         System.out.println();

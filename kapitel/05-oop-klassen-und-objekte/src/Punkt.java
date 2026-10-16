@@ -3,7 +3,7 @@ import java.util.Objects;
 /**
  * Kapitel 05, Aufgabe 2: Ein unveraenderlicher Punkt.
  *
- * "final class" verhindert Unterklassen - dazu mehr in Kapitel 6.
+ * "final class" verhindert Unterklassen, dazu mehr in Kapitel 6.
  */
 public final class Punkt {
 
@@ -43,7 +43,7 @@ public final class Punkt {
     }
 
     /**
-     * Statische Fabrikmethode: der Punkt (0, 0) - bei jedem Aufruf DASSELBE Objekt.
+     * Statische Fabrikmethode: der Punkt (0, 0), bei jedem Aufruf DASSELBE Objekt.
      * (README 5.10: eine Fabrikmethode muss kein neues Objekt liefern.)
      */
     public static Punkt ursprung() {
@@ -71,14 +71,15 @@ public final class Punkt {
     @Override
     public boolean equals(Object o) {
         // TODO: 1. this == o?  2. instanceof mit Pattern?
-        //       3. Felder vergleichen - bei double mit Double.compare, nicht mit ==
+        //       3. Felder vergleichen, bei double mit Double.compare, nicht mit ==
         //          (warum? siehe README 5.6).
         return false;
     }
 
     @Override
     public int hashCode() {
-        // TODO: Objects.hash(...) - muss zu equals passen!
+        // TODO: Objects.hash(...), muss zu equals passen!
+        //       Der Platzhalter "return 0" ist zwar vertragstreu, aber nutzlos.
         return 0;
     }
 }

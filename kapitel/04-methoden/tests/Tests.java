@@ -2,7 +2,7 @@ public class Tests {
     public static void main(String[] args) {
         Pruef.abschnitt("Aufgabe 1: ggT");
         Pruef.gleich(6, Aufgaben.ggT(48, 18), "ggT(48,18)");
-        Pruef.gleich(6, Aufgaben.ggT(18, 48), "ggT(18,48) - Reihenfolge egal");
+        Pruef.gleich(6, Aufgaben.ggT(18, 48), "ggT(18,48): Reihenfolge egal");
         Pruef.gleich(7, Aufgaben.ggT(7, 0), "ggT(7,0)");
         Pruef.gleich(5, Aufgaben.ggT(0, 5), "ggT(0,5)");
         Pruef.gleich(1, Aufgaben.ggT(13, 17), "teilerfremd");
@@ -24,7 +24,7 @@ public class Tests {
         Pruef.gleich(0L, Aufgaben.fibIterativ(0), "fibIterativ(0)");
         Pruef.gleich(55L, Aufgaben.fibIterativ(10), "fibIterativ(10)");
         Pruef.gleich(2_880_067_194_370_816_120L, Aufgaben.fibIterativ(90),
-                "fibIterativ(90) - rekursiv unmoeglich");
+                "fibIterativ(90): rekursiv unmoeglich");
 
         Pruef.abschnitt("Aufgabe 4: summeAlle (Varargs)");
         Pruef.gleich(0, Aufgaben.summeAlle(), "ohne Argumente");

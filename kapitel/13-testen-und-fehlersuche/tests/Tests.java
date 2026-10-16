@@ -1,3 +1,8 @@
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
+
 public class Tests {
 
     /**
@@ -13,20 +18,58 @@ public class Tests {
     public static void main(String[] args) {
 
         // ------------------------------------------------------------ Teil A
-        Pruef.abschnitt("Teil A: Deine Tests gegen die korrekte Implementierung");
-        // Verglichen wird der Rueckgabewert von alleBestanden: true = alles bestanden.
-        Pruef.gleich(true, laeuftDurch(new Kandidaten.Referenz()),
-                "Deine Tests bestehen mit der korrekten Implementierung");
-
-        Pruef.abschnitt("Teil A: Deine Tests gegen die Mutanten");
-        Rabattrechner[] mutanten = {
+        Rabattrechner[] kandidaten = {
+            new Kandidaten.Referenz(),
             new Kandidaten.Mutant1(), new Kandidaten.Mutant2(), new Kandidaten.Mutant3(),
             new Kandidaten.Mutant4(), new Kandidaten.Mutant5(), new Kandidaten.Mutant6(),
-            new Kandidaten.Mutant7()
+            new Kandidaten.Mutant7(), new Kandidaten.Mutant8(), new Kandidaten.Mutant9()
         };
-        for (int i = 0; i < mutanten.length; i++) {
+
+        // Jeder Mutant laeuft einmal, die korrekte Implementierung (Index 0)
+        // zweimal, und zwar in zufaelliger Reihenfolge. Ehrliche Tests ohne
+        // Zustand zwischen den Aufrufen liefern trotzdem jedes Mal dasselbe
+        // Ergebnis. Wer stattdessen Aufrufe mitzaehlt, faellt auf.
+        int[] reihenfolge = new int[kandidaten.length + 1];
+        for (int i = 0; i < kandidaten.length; i++) reihenfolge[i] = i;
+        reihenfolge[kandidaten.length] = 0;
+        mischen(reihenfolge, new Random());
+
+        boolean[] ergebnis = new boolean[kandidaten.length];
+        String[] meldungen = new String[kandidaten.length];
+        boolean referenzSchonGelaufen = false;
+        boolean referenzZweiterLauf = false;
+        String meldungenZweiterLauf = "";
+        for (int k : reihenfolge) {
+            ByteArrayOutputStream puffer = new ByteArrayOutputStream();
+            boolean bestanden = mitgeschnitten(kandidaten[k], puffer);
+            String text = puffer.toString(StandardCharsets.UTF_8);
+            if (k == 0 && referenzSchonGelaufen) {
+                referenzZweiterLauf = bestanden;
+                meldungenZweiterLauf = text;
+            } else {
+                ergebnis[k] = bestanden;
+                meldungen[k] = text;
+                if (k == 0) referenzSchonGelaufen = true;
+            }
+        }
+
+        // Ausgabe in fester Reihenfolge, egal in welcher gerechnet wurde.
+        Pruef.abschnitt("Teil A: Deine Tests gegen die korrekte Implementierung");
+        // Verglichen wird der Rueckgabewert von alleBestanden: true = alles bestanden.
+        System.out.print(meldungen[0]);
+        Pruef.gleich(true, ergebnis[0], "Deine Tests bestehen mit der korrekten Implementierung");
+        if (ergebnis[0] != referenzZweiterLauf) {
+            System.out.print(meldungenZweiterLauf);
+        }
+        Pruef.gleich(ergebnis[0], referenzZweiterLauf,
+                "Zweiter Durchlauf mit der korrekten Implementierung: dasselbe Ergebnis"
+                + " (deine Tests merken sich nichts zwischen zwei Aufrufen)");
+
+        Pruef.abschnitt("Teil A: Deine Tests gegen die Mutanten");
+        for (int i = 1; i < kandidaten.length; i++) {
             // Hier muss alleBestanden false liefern: Deine Tests haben den Fehler bemerkt.
-            Pruef.gleich(false, laeuftDurch(mutanten[i]), "Deine Tests entlarven Mutant " + (i + 1));
+            System.out.print(meldungen[i]);
+            Pruef.gleich(false, ergebnis[i], "Deine Tests entlarven Mutant " + i);
         }
 
         // ------------------------------------------------------------ Teil B
@@ -77,7 +120,7 @@ public class Tests {
     /**
      * Ruft deine Methode alleBestanden auf. Wirft sie selbst eine Exception
      * (etwa, weil ein Mutant an einer Stelle wirft, an der du keine erwartest),
-     * gilt der Durchlauf als NICHT bestanden - genau wie in JUnit, wo eine
+     * gilt der Durchlauf als NICHT bestanden, genau wie in JUnit, wo eine
      * unerwartete Exception einen Test rot macht.
      */
     private static boolean laeuftDurch(Rabattrechner r) {
@@ -90,9 +133,35 @@ public class Tests {
     }
 
     /**
+     * Wie laeuftDurch, schreibt aber alle Ausgaben in den Puffer statt auf
+     * den Bildschirm. Nur der uebergebene Kandidat darf in dieser Zeit rechnen.
+     */
+    private static boolean mitgeschnitten(Rabattrechner r, ByteArrayOutputStream puffer) {
+        PrintStream original = System.out;
+        System.setOut(new PrintStream(puffer, true, StandardCharsets.UTF_8));
+        Kandidaten.freigeben(r);
+        try {
+            return laeuftDurch(r);
+        } finally {
+            Kandidaten.freigeben(null);
+            System.setOut(original);
+        }
+    }
+
+    /** Bringt die Eintraege in zufaellige Reihenfolge (Fisher-Yates). */
+    private static void mischen(int[] a, Random zufall) {
+        for (int i = a.length - 1; i > 0; i--) {
+            int j = zufall.nextInt(i + 1);
+            int merker = a[i];
+            a[i] = a[j];
+            a[j] = merker;
+        }
+    }
+
+    /**
      * Fuehrt den Aufruf aus und vergleicht das Ergebnis. Wirft der Aufruf eine
      * Exception, wird sie als FEHL gemeldet, statt den ganzen Testlauf
-     * abzubrechen - so siehst du auch alle uebrigen Pruefungen.
+     * abzubrechen. So siehst du auch alle uebrigen Pruefungen.
      */
     private static void pruefe(Object erwartet, Aufruf aufruf, String was) {
         Object ergebnis;
@@ -109,7 +178,7 @@ public class Tests {
         }
     }
 
-    /** "ArrayIndexOutOfBoundsException (Index 4 ...) in Fehlerhaft.java:37" */
+    /** "ArrayIndexOutOfBoundsException (Index 4 ...) in Fehlerhaft.java:35" */
     private static String beschreibe(RuntimeException e) {
         String text = e.getClass().getSimpleName() + " (" + e.getMessage() + ")";
         // Die erste Stacktrace-Zeile aus deinem Code heraussuchen (Abschnitt 13.6)

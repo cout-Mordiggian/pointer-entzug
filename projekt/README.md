@@ -11,10 +11,10 @@ fertig bist**. Genau das ist der Punkt: Du entscheidest über den Entwurf.
 ## Was am Ende laufen soll
 
 ```
-$ bash starte.sh
+$ ./starte.sh
 
-  Aufgabenverwaltung  (14 Aufgaben, 3 offen)
-  ------------------------------------------
+  Aufgabenverwaltung  (3 Aufgaben, 2 offen)
+  -----------------------------------------
   1  Aufgaben anzeigen
   2  Aufgabe hinzufuegen
   3  Aufgabe abhaken
@@ -73,11 +73,17 @@ Optional<Aufgabe> finde(int id)
 List<Aufgabe> alle()                                             // unveraenderliche Sicht!
 ```
 
+`Optional` (Abschnitt 9.6) kommt erst nach diesem Meilenstein. Für M2 reicht:
+`finde` gibt `Optional.of(aufgabe)` zurück oder `Optional.empty()`, wenn es die
+ID nicht gibt. Der Aufrufer fragt mit `isPresent()` und holt den Wert mit
+`orElseThrow()` (ohne Argument). Den Rest von 9.6, mit Lambdas, brauchst du
+erst später.
+
 Eigene Exception `AufgabeNichtGefundenException`.
 *Entwurfsfrage:* checked oder unchecked? Begründe deine Wahl in einem Kommentar.
 
 Die Liste ist der einzige Ort, an dem IDs vergeben werden, und `alle()` gibt
-keine veränderbare Referenz nach draussen (Kapitel 5).
+keine veränderbare Referenz nach draußen (Kapitel 5).
 
 Der Konstruktor bekommt die beim Start geladenen Aufgaben (leere Liste beim
 ersten Start). Die nächste freie ID ist dann *größte vorhandene ID + 1*,
@@ -106,7 +112,20 @@ void speichern(Path pfad, List<Aufgabe> aufgaben) throws IOException
 List<Aufgabe> laden(Path pfad) throws IOException     // fehlende Datei -> leere Liste
 ```
 
-Format (Trennzeichen `;`, erste Zeile ist die Kopfzeile):
+Format: eine Aufgabe pro Zeile, Trennzeichen `;`, erste Zeile ist die
+Kopfzeile, Zeichensatz UTF-8 (`StandardCharsets.UTF_8` ausdrücklich angeben).
+Die Felder in dieser Reihenfolge:
+
+- `id`: ganze Zahl
+- `titel`: Text; was mit einem `;` darin passiert, entscheidest du (siehe Fallen unten)
+- `prioritaet`: genau der Name der Konstante, `NIEDRIG`, `MITTEL` oder `HOCH`
+- `erledigt`: `true` oder `false`
+- `faellig`: ISO-Format `jjjj-mm-tt`, also das, was `LocalDate.toString()`
+  liefert und `LocalDate.parse(...)` liest; leer, wenn es keinen Termin gibt.
+  Nicht `dd.MM.yyyy`: ISO braucht keinen eigenen Formatter, und als Text
+  sortiert, steht es gleich in zeitlicher Reihenfolge.
+
+Beispiel:
 
 ```
 id;titel;prioritaet;erledigt;faellig
@@ -123,6 +142,9 @@ Fallen, die du lösen musst:
 - Kaputte Zeile: Überspringen mit Warnung oder abbrechen? Entscheide und
   begründe es.
 - `Prioritaet.valueOf(...)` wirft bei unbekanntem Text
+- `Boolean.parseBoolean(...)` wirft dagegen **nie**: Aus `"ja"` oder `"ture"`
+  wird still `false`. Willst du kaputte Zeilen erkennen, prüfe selbst auf
+  `"true"` und `"false"`.
 
 ### M5: Benutzeroberfläche *(Kapitel 2, 3, 11)*
 
@@ -132,12 +154,18 @@ Klasse `Konsole` mit der Menüschleife. Anforderungen:
 - Zahlen mit `Integer.parseInt` in `try`/`catch`, nicht `scanner.nextInt()`
 - Die Tabelle sauber ausrichten, wie im Beispiel oben:
   `String.format("  %4s  %-8s %-12s %s", id, prio, termin, titel)`: `%4s`
-  richtet rechtsbündig aus, `%-8s` linksbündig auf 8 Zeichen
+  richtet rechtsbündig aus, `%-8s` linksbündig auf 8 Zeichen. Für `termin`
+  setzt du `"-"` ein, wenn `faellig()` `null` ist (sonst steht dort `null`),
+  und vor den Titel kommt `[ ]` bzw. `[x]`.
 - Beim Beenden speichern
 - `laden` und `speichern` werfen `IOException` (checked). `main` muss sie also
   fangen und eine verständliche Meldung ausgeben, oder `main` bekommt
   `throws IOException`. Entscheide dich; ein Stacktrace ist keine Meldung
   für Benutzer.
+- Umlaute in Eingaben: In der klassischen Windows-Konsole (cmd, PowerShell)
+  kommen Zeichen wie `ä` bei `Scanner` oft kaputt an, weil Konsole und Java
+  verschiedene Zeichensätze benutzen. Abhilfe: das Terminal in IntelliJ oder
+  VS Code nehmen oder vor dem Start `chcp 65001` eingeben.
 
 ### M6: Ausbau (freiwillig)
 
@@ -147,7 +175,7 @@ Klasse `Konsole` mit der Menüschleife. Anforderungen:
 - Farbige Ausgabe für überfällige Aufgaben (ANSI-Codes wie in `lib/Pruef.java`)
 - Statt CSV: JSON von Hand schreiben und lesen
 - JUnit-Tests für `Aufgabenliste` und `CsvSpeicher`
-  (Kapitel 12, `werkzeuge/pom.xml` als Vorlage)
+  (Kapitel 12.12, Vorlage `kapitel/12-nebenlaeufigkeit-und-werkzeuge/werkzeuge/pom.xml.vorlage`)
 - Rückgängig: jede Änderung als Befehl-Objekt, ein Verlauf mit zwei Stapeln
   (Kapitel 14.10)
 - Speicherformat austauschbar: ein Interface `Speicher` mit CSV- und

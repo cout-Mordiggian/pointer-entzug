@@ -1,7 +1,7 @@
 # Kapitel 01: Erste Schritte
 
 **Ziel:** Du verstehst, was beim Kompilieren und Starten passiert, kennst Javas
-primitive Datentypen und weisst, warum `1/2` in Java `0` ergibt.
+primitive Datentypen und weißt, warum `1/2` in Java `0` ergibt.
 
 ---
 
@@ -20,14 +20,14 @@ Jedes Wort hat eine Aufgabe:
 | Teil | Bedeutung |
 |------|-----------|
 | `public` | Sichtbar von überall (mehr dazu in Kapitel 6) |
-| `class Hallo` | Java kennt keinen Code ausserhalb von Klassen. Alles wohnt in einer Klasse. |
+| `class Hallo` | Java kennt keinen Code außerhalb von Klassen. Alles wohnt in einer Klasse. |
 | `static` | Gehört zur Klasse, nicht zu einem Objekt, die JVM kann sie aufrufen, ohne vorher ein `Hallo`-Objekt zu bauen. |
 | `void` | Der Rückgabetyp: "gibt nichts zurück". |
 | `main` | Der genaue Name, nach dem die JVM sucht. |
 | `String[] args` | Kommandozeilenargumente. `java Hallo abc` füllt `args[0] = "abc"`. |
 | `System.out.println(...)` | `System` ist eine Klasse, `out` ein Feld darin, `println` eine Methode darauf. |
 
-**Warum so umständlich?** Weil Java 1995 für grosse, langlebige Systeme
+**Warum so umständlich?** Weil Java 1995 für große, langlebige Systeme
 entworfen wurde, nicht für Einzeiler. Die Ausführlichkeit ist Absicht: Der
 Compiler soll dir möglichst viel abnehmen, bevor das Programm überhaupt läuft.
 
@@ -39,9 +39,10 @@ Aufgaben.java   --javac-->   Aufgaben.class   --java-->   Ausgabe
 ```
 
 Der Bytecode ist plattformunabhängig. Dieselbe `.class`-Datei läuft auf Linux,
-Windows und macOS, die JVM übersetzt sie zur Laufzeit in Maschinencode
-(**JIT**, Just-in-Time-Compiler). Deshalb ist Java beim Start langsam und im
-Dauerbetrieb schnell.
+Windows und macOS. Die JVM führt ihn zunächst Befehl für Befehl aus
+(interpretiert) und übersetzt häufig benutzte Teile zur Laufzeit in
+Maschinencode (**JIT**, Just-in-Time-Compiler). Deshalb ist Java beim Start
+eher langsam und im Dauerbetrieb schnell.
 
 ## 1.3 Variablen und Typen
 
@@ -61,14 +62,19 @@ Variable vom Typ `String`, endgültig. Der Compiler tippt nur weniger.
 
 | Typ | Größe | Wertebereich | Literal |
 |-----|---------|--------------|---------|
-| `byte` | 8 Bit | −128 … 127 | `(byte) 100` |
-| `short` | 16 Bit | −32.768 … 32.767 | `(short) 1000` |
+| `byte` | 8 Bit | -128 … 127 | `100` |
+| `short` | 16 Bit | -32.768 … 32.767 | `1000` |
 | `int` | 32 Bit | ca. ±2,1 Mrd. | `42` |
 | `long` | 64 Bit | ca. ±9,2 Trillionen | `42L` |
 | `float` | 32 Bit | ~7 Stellen genau | `3.14f` |
 | `double` | 64 Bit | ~15 Stellen genau | `3.14` |
 | `char` | 16 Bit | ein UTF-16-Zeichen (genauer: eine UTF-16-Codeeinheit) | `'A'` |
 | `boolean` |    | `true` / `false` | `true` |
+
+Für `byte` und `short` gibt es keine eigenen Literale. `byte b = 100;`
+kompiliert trotzdem, weil der Compiler sieht, dass die Konstante passt. Ist
+der Wert zu groß oder steht er erst zur Laufzeit fest, brauchst du einen Cast
+(1.5).
 
 **Merke:** `int` und `double` sind die Standardwahl. `long` erst, wenn `int`
 zu klein wird; `float` praktisch nie.
@@ -82,6 +88,19 @@ int primitiv = 5;
 Integer objekt = 5;   // Autoboxing: automatisch verpackt
 int wieder = objekt;  // Unboxing: automatisch ausgepackt
 ```
+
+### Strings verketten
+
+Ein `String` ist ein Text in doppelten Anführungszeichen. Der Operator `+`
+hängt Strings aneinander, auch mit Zahlen oder Variablen:
+
+```java
+String name = "Anna";
+String satz = "Hallo " + name + ", du bist " + 34 + ".";   // "Hallo Anna, du bist 34."
+```
+
+Leerzeichen und Satzzeichen musst du selbst mit hineinschreiben, `+` fügt
+nichts hinzu. Eine Falle bei `+` mit Zahlen und Strings zeigt Kapitel 2.1.
 
 ## 1.4 Drei Fallstricke, die jeden Anfänger erwischen
 
@@ -99,9 +118,9 @@ Sobald **einer** der beiden Operanden eine Kommazahl ist, rechnet Java mit Komma
 Das Gegenstück zur Ganzzahldivision ist der **Rest-Operator** `%` (Modulo):
 
 ```java
-int ganz = 17 / 5;    // 3  - wie oft passt 5 in 17?
-int rest = 17 % 5;    // 2  - was bleibt uebrig?  (3 * 5 + 2 = 17)
-int ziffer = 1234 % 10;   // 4  - die letzte Ziffer
+int ganz = 17 / 5;    // 3: wie oft passt 5 in 17?
+int rest = 17 % 5;    // 2: was bleibt uebrig?  (3 * 5 + 2 = 17)
+int ziffer = 1234 % 10;   // 4: die letzte Ziffer
 ```
 
 Zusammen zerlegen `/` und `%` eine Zahl in Einheiten: `125` Minuten sind
@@ -140,12 +159,12 @@ oder rechne in Cent mit `long`.
 ## 1.5 Casting: Typen umwandeln
 
 ```java
-// Erweiternd (widening) - passiert automatisch, kein Datenverlust:
+// Erweiternd (widening): passiert automatisch, kein Datenverlust:
 int i = 42;
 long l = i;
 double d = l;
 
-// Einengend (narrowing) - musst du explizit hinschreiben, Daten koennen verloren gehen:
+// Einengend (narrowing): musst du explizit hinschreiben, Daten koennen verloren gehen:
 double pi = 3.99;
 int abgeschnitten = (int) pi;   // 3  <- schneidet ab, rundet NICHT
 ```
@@ -170,6 +189,10 @@ Wichtige Platzhalter: `%s` String, `%d` Ganzzahl, `%f` Kommazahl,
 `%.2f` zwei Nachkommastellen, `%02d` zweistellig mit führender Null,
 `%n` Zeilenumbruch (plattformrichtig), `%%` ein echtes Prozentzeichen.
 
+`printf` und `String.format` richten sich nach der Spracheinstellung deines
+Systems (*Locale*): Unter Deutsch wird `%.2f` zu `20,00`, unter Englisch zu
+`20.00`. Wundere dich also nicht, wenn bei dir ein Komma erscheint.
+
 ## 1.7 Kommentare
 
 ```java
@@ -179,7 +202,7 @@ Wichtige Platzhalter: `%s` String, `%d` Ganzzahl, `%f` Kommazahl,
    ueber mehrere Zeilen */
 
 /**
- * Javadoc - wird zu HTML-Dokumentation und in der IDE angezeigt.
+ * Javadoc: wird zu HTML-Dokumentation und in der IDE angezeigt.
  * @param name der Name der begruesst wird
  * @return den fertigen Begruessungssatz
  */
@@ -210,7 +233,7 @@ kannst du stattdessen `tests/Tests.java` per Klick starten, siehe
 Am Beispiel von Aufgabe 1. **1. Prüfen, bevor du etwas schreibst:**
 
 ```
-$ bash lerne.sh 01
+$ ./lerne.sh 01
 
   Aufgabe 1: begruessung
   ----------------------
@@ -256,12 +279,14 @@ Anführungszeichen in der Ausgabe helfen dir, auch Leerzeichen am Rand zu sehen.
 einziger Test, stattdessen meldet der Compiler:
 
 ```
-kapitel/01-erste-schritte/src/Aufgaben.java:17: error: ';' expected
+.../kapitel/01-erste-schritte/src/Aufgaben.java:17: error: ';' expected
         return "Hallo, " + name + "!"
                                      ^
 ```
 
-Datei, Zeile, Art des Fehlers, und das `^` zeigt auf die Stelle. Details dazu
+Datei, Zeile, Art des Fehlers, und das `^` zeigt auf die Stelle. Vor
+`kapitel` steht bei dir der vollständige Pfad zum Kursordner (unter Windows
+z. B. `C:\Users\...\kapitel\...`), hier ist er mit `...` abgekürzt. Details dazu
 stehen in [`SETUP.md`](../../SETUP.md), Abschnitt 5.
 
 Diesen Kreislauf, **prüfen, kleinsten Schritt schreiben, prüfen**, machst

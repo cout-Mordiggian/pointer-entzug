@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Kapitel 08 - Musterloesung mit Erklaerungen.
+ * Kapitel 08: Musterloesung mit Erklaerungen.
  */
 public class Aufgaben {
 
@@ -23,7 +23,7 @@ public class Aufgaben {
             // Ersetzt die klassische Sequenz:
             //     Integer alt = map.get(wort);
             //     map.put(wort, alt == null ? 1 : alt + 1);
-            // Integer::sum ist eine Methodenreferenz - Kapitel 9.
+            // Integer::sum ist eine Methodenreferenz (README 8.5, genauer in Kapitel 9).
             zaehler.merge(wort, 1, Integer::sum);
         }
         return zaehler;
@@ -44,7 +44,7 @@ public class Aufgaben {
                 Map.Entry.<String, Integer>comparingByValue().reversed()
                         // Gleichstand? Dann alphabetisch aufsteigend nach Schluessel.
                         // Ohne thenComparing waere die Reihenfolge bei Gleichstand
-                        // zwar stabil, aber von der Map-Reihenfolge abhaengig -
+                        // zwar stabil, aber von der Map-Reihenfolge abhaengig,
                         // also nicht vorhersagbar.
                         .thenComparing(Map.Entry.comparingByKey()));
 
@@ -73,7 +73,7 @@ public class Aufgaben {
     public static double summe(List<? extends Number> zahlen) {
         // "? extends Number" = eine Liste von IRGENDEINEM Untertyp von Number.
         // Damit passt List<Integer> genauso wie List<Double>.
-        // Lesen ist erlaubt (alles ist eine Number), Hinzufuegen nicht -
+        // Lesen ist erlaubt (alles ist eine Number), Hinzufuegen nicht:
         // der Compiler weiss ja nicht, welcher Untertyp genau erlaubt waere.
         // Merksatz PECS: Producer extends, Consumer super.
         double summe = 0;
@@ -85,14 +85,14 @@ public class Aufgaben {
 
     public static List<Person> nachAlterDannName(List<Person> personen) {
         // Kopie, damit die Eingabeliste unangetastet bleibt. sort() arbeitet
-        // in place - haetten wir direkt sortiert, waere das eine versteckte
+        // in place. Haetten wir direkt sortiert, waere das eine versteckte
         // Nebenwirkung (Kapitel 4).
         List<Person> kopie = new ArrayList<>(personen);
         kopie.sort(Comparator.comparingInt(Person::getAlter)
                              .thenComparing(Person::getName));
         return kopie;
         // comparingInt statt comparing: vermeidet das Boxing zu Integer.
-        // Person::getAlter ist eine Methodenreferenz - Kapitel 9.
+        // Person::getAlter ist eine Methodenreferenz, genauer in Kapitel 9.
     }
 
     public static Map<Character, List<String>> gruppiereNachAnfangsbuchstabe(List<String> woerter) {

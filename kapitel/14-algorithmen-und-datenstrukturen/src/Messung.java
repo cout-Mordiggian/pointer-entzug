@@ -3,10 +3,10 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- * Kapitel 14 - fertige Mess-Demo. Hier ist nichts zu tun: starten und die
+ * Kapitel 14: fertige Mess-Demo. Hier ist nichts zu tun: starten und die
  * Spalte "Faktor" beobachten.
  *
- *   ./lerne.sh 14 -r Messung        (oder: bash lerne.sh 14 -r Messung)
+ *   ./lerne.sh 14 -r Messung        (Windows: .\lerne 14 -r Messung)
  *
  * Die Demo benutzt NUR eigene Methoden aus dieser Datei und Arrays.sort /
  * Arrays.binarySearch. Sie laeuft also auch, solange deine Aufgaben noch
@@ -23,7 +23,7 @@ public class Messung {
     /**
      * Alle Ergebnisse landen hier und werden am Ende ausgegeben. Wuerden wir
      * sie wegwerfen, duerfte der JIT-Compiler die ganze Rechnung als "tot"
-     * erkennen und weglassen - dann messen wir nichts.
+     * erkennen und weglassen, dann messen wir nichts.
      */
     private static long senke = 0;
 
@@ -39,14 +39,14 @@ public class Messung {
         sortieren();
 
         System.out.println();
-        System.out.printf(Locale.GERMANY, "  (Pruefsumme %d - nur damit der JIT nichts wegoptimiert."
+        System.out.printf(Locale.GERMANY, "  (Pruefsumme %d, nur damit der JIT nichts wegoptimiert."
                 + " Gesamtdauer %.1f s)%n", senke, (System.nanoTime() - gesamtStart) / 1e9);
         System.out.println();
     }
 
     // ------------------------------------------------------------ Teil 1
 
-    /** Dieselbe Arbeit zehnmal hintereinander - die ersten Laeufe sind langsamer. */
+    /** Dieselbe Arbeit zehnmal hintereinander: Die ersten Laeufe sind langsamer. */
     private static void kaltUndWarm() {
         System.out.println();
         System.out.println("  1) Dieselbe Arbeit zehnmal gemessen (Selection Sort, n = 3.000):");
@@ -62,14 +62,16 @@ public class Messung {
         }
         System.out.println(" (ms)");
         System.out.println("     Die ersten Laeufe laufen im Interpreter, dann uebersetzt der JIT die");
-        System.out.println("     Methode in Maschinencode. Eine einzelne Messung sagt deshalb wenig.");
+        System.out.println("     Methode in Maschinencode. Auch danach schwanken die Zeiten, oft ist ein");
+        System.out.println("     spaeterer Lauf wieder langsamer: Der JIT uebersetzt manchmal neu, dazu");
+        System.out.println("     kommen GC und andere Programme. Eine einzelne Messung sagt deshalb wenig.");
     }
 
     /**
      * Vor den eigentlichen Messungen: alle gemessenen Methoden ein paar hundert
      * Mal laufen lassen, damit der JIT sie schon uebersetzt hat. Sonst misst die
      * erste Zeile der Tabellen den Interpreter und die spaeteren Zeilen den
-     * Maschinencode - und die Faktoren waeren Unsinn.
+     * Maschinencode, und die Faktoren waeren Unsinn.
      */
     private static void aufwaermen() {
         System.out.println();
@@ -165,7 +167,7 @@ public class Messung {
         System.out.println();
         System.out.println("     Selection Sort: n mal 2 -> Zeit ungefaehr mal 4 (O(n^2)).");
         System.out.println("     Arrays.sort:    n mal 2 -> Zeit gut mal 2 (O(n log n)). Bei kleinen n");
-        System.out.println("     schwanken die Werte stark - die Messungen sind dort sehr kurz.");
+        System.out.println("     schwanken die Werte stark, die Messungen sind dort sehr kurz.");
     }
 
     private static long zeitSelectionSort(int[] daten) {
@@ -206,7 +208,7 @@ public class Messung {
     /**
      * Selection Sort: das kleinste Element des unsortierten Rests suchen und
      * nach vorn tauschen. Immer ca. n*n/2 Vergleiche -> O(n^2).
-     * (Nicht zu verwechseln mit Insertion Sort - das ist deine Aufgabe.)
+     * (Nicht zu verwechseln mit Insertion Sort, das ist deine Aufgabe.)
      */
     private static void selectionSort(int[] a) {
         for (int i = 0; i < a.length - 1; i++) {
@@ -228,7 +230,7 @@ public class Messung {
         return a;
     }
 
-    /** "x 4,1" - wie viel mal so lange wie in der Zeile davor. */
+    /** "x 4,1": wie viel mal so lange wie in der Zeile davor. */
     private static String faktor(double jetzt, double vorher) {
         if (vorher <= 0) return "-";
         return String.format(Locale.GERMANY, "x %.1f", jetzt / vorher);

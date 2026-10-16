@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Aufgabe 6: eine eigene ArrayList.
+ * Kapitel 14, Aufgabe 6: eine eigene ArrayList.
  * Pruefen:  ./lerne.sh 14
  *
  * Im Inneren: ein Array plus ein Zaehler, wie viele Plaetze davon belegt sind.
@@ -7,7 +7,7 @@
  *
  * Warum Object[] und nicht E[]? "new E[4]" verbietet der Compiler, weil der
  * Typparameter zur Laufzeit geloescht ist (Type Erasure, Kapitel 8.8).
- * Deshalb speichern wir Object und casten beim Herausgeben - so macht es
+ * Deshalb speichern wir Object und casten beim Herausgeben, so macht es
  * java.util.ArrayList auch. Siehe README, Abschnitt 14.5.
  */
 public class MeineListe<E> {
@@ -31,7 +31,7 @@ public class MeineListe<E> {
      * Element an Position index. Ungueltiger Index (kleiner 0 oder >= size())
      * -> IndexOutOfBoundsException.
      */
-    @SuppressWarnings("unchecked")   // der Cast unten ist ungeprueft - siehe README 14.5
+    @SuppressWarnings("unchecked")   // der Cast unten ist ungeprueft, siehe README 14.5
     public E get(int index) {
         // TODO: Index pruefen, dann: return (E) elemente[index];
         return null;
@@ -43,7 +43,7 @@ public class MeineListe<E> {
         return null;
     }
 
-    /** Anzahl der Elemente - NICHT die Laenge des Arrays. */
+    /** Anzahl der Elemente, NICHT die Laenge des Arrays. */
     public int size() {
         // TODO
         return 0;

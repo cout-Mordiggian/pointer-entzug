@@ -1,5 +1,5 @@
 /**
- * Kapitel 14 - Aufgabe 10a: der Befehl "Text loeschen".
+ * Kapitel 14, Aufgabe 10a: der Befehl "Text loeschen".
  * Pruefen:  ./lerne.sh 14
  *
  *   Textpuffer t = ...;                          // "Hallo Welt"

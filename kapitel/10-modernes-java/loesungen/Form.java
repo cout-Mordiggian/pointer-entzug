@@ -1,9 +1,9 @@
 /**
- * Kapitel 10 - Musterloesung: sealed interface.
+ * Kapitel 10, Musterloesung: sealed interface.
  *
  * "sealed" ohne permits ist erlaubt, weil alle Untertypen in derselben
  * Datei stehen. Damit weiss der Compiler abschliessend, welche Formen
- * es gibt - und kann in switch-Ausdruecken auf Vollstaendigkeit pruefen.
+ * es gibt, und kann in switch-Ausdruecken auf Vollstaendigkeit pruefen.
  */
 public sealed interface Form {
 

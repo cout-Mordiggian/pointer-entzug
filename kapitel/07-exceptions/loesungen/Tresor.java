@@ -1,5 +1,5 @@
 /**
- * Kapitel 07 - Musterloesung: AutoCloseable-Ressource.
+ * Kapitel 07, Musterloesung: AutoCloseable-Ressource.
  */
 public class Tresor implements AutoCloseable {
 
@@ -14,7 +14,7 @@ public class Tresor implements AutoCloseable {
 
     public void benutzen() {
         // IllegalStateException heisst: "Das Objekt ist im falschen Zustand
-        // fuer diese Operation." Nicht IllegalArgumentException - es liegt
+        // fuer diese Operation." Nicht IllegalArgumentException: es liegt
         // ja nicht am Argument, es gibt gar keines.
         if (!offen) {
             throw new IllegalStateException("Tresor ist geschlossen");
@@ -29,7 +29,7 @@ public class Tresor implements AutoCloseable {
     @Override
     public void close() {
         // AutoCloseable.close() darf Exception werfen. Wir deklarieren hier
-        // KEIN throws - eine Ueberschreibung darf die geworfenen Exceptions
+        // KEIN throws: eine Ueberschreibung darf die geworfenen Exceptions
         // einschraenken. Das erspart jedem Aufrufer einen catch-Block.
         //
         // close() sollte ausserdem idempotent sein: ein zweiter Aufruf darf

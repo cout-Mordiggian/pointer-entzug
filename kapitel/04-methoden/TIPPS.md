@@ -1,7 +1,7 @@
 # Kapitel 04: Tipps und Antworten
 
 > Erst selbst probieren. Klappe immer nur die **nächste** Stufe auf, jede verrät mehr.
-> Die Tests in `tests/Tests.java` zeigen dir ausserdem genau, welche Eingabe welches Ergebnis erwartet.
+> Die Tests in `tests/Tests.java` zeigen dir außerdem genau, welche Eingabe welches Ergebnis erwartet.
 
 ## Aufgabe 1: `ggT`
 
@@ -18,7 +18,7 @@ Schritt kleiner?
 
 Basisfall: Ist `b` gleich `0`, ist `a` das Ergebnis (`ggT(7, 0)` ist `7`).
 Sonst rufst du `ggT` mit neuen Argumenten auf, dem alten `b` und dem Rest
-`a % b`: und gibst dessen Ergebnis mit `return` weiter. Denkfalle: Den
+`a % b`, und gibst dessen Ergebnis mit `return` weiter. Denkfalle: Den
 rekursiven Aufruf ohne `return` hinschreiben; dann wird das Ergebnis
 weggeworfen. Die Reihenfolge der Argumente musst du nicht vorher sortieren:
 Bei `ggT(18, 48)` ist `18 % 48` gleich `18`, der erste Schritt vertauscht die
@@ -41,7 +41,7 @@ wie bekommst du damit das Maximum von drei?
 
 `max(int, int)` und `max(double, double)` haben denselben Rumpf, nur andere
 Typen: eine Bedingung "ist `a` größer als `b`?" und je nach Ergebnis `a` oder
-`b`: kurz mit `? :`. `Math.max` gibt es natürlich auch, hier sollst du den
+`b`, kurz mit `? :`. `Math.max` gibt es natürlich auch, hier sollst du den
 Vergleich aber selbst schreiben. Für drei Werte **keine** neue Vergleichslogik
 bauen: Die Zwei-Parameter-Version zweimal aufrufen, wobei das Ergebnis des einen
 Aufrufs Argument des anderen ist. Der Compiler wählt anhand der
@@ -149,7 +149,7 @@ weiter, wenn das mittlere Element zu klein ist?
 Die Hilfsmethode bekommt Array, gesuchten Wert, `von` und `bis` (beide
 inklusiv; der Startaufruf steht im TODO). Ablauf pro Aufruf:
 
-1. Basisfall: `von > bis` heisst "Bereich leer" -> `-1`.
+1. Basisfall: `von > bis` heißt "Bereich leer" -> `-1`.
 2. Mitte bestimmen, **nicht** mit `(von + bis) / 2`, denn die Summe kann bei
    riesigen Indizes überlaufen. Rechne stattdessen von `von` aus die halbe
    Differenz dazu.
@@ -242,7 +242,7 @@ public static int[] getauscht(int[] werte, int i, int j) {
 
 ## Selbstcheck: Antworten
 
-<details><summary>Warum wirkt `arr[0] = 99` in einer Methode nach aussen, `arr = neuesArray` aber nicht?</summary>
+<details><summary>Warum wirkt `arr[0] = 99` in einer Methode nach außen, `arr = neuesArray` aber nicht?</summary>
 
 Java übergibt immer eine Kopie des Werts, bei Arrays und Objekten ist dieser
 Wert die **Referenz**. Methode und Aufrufer haben also zwei Variablen, die auf
@@ -261,7 +261,9 @@ Compiler wählt die Überladung anhand der **Argumente** aus, und die wären bei
 `int wert()` und `long wert()` identisch. Da ein Aufruf wie `wert();` als
 Anweisung gültig ist und sein Ergebnis gar nicht verwendet, gäbe es keinen
 Anhaltspunkt, welche Methode gemeint ist. Deshalb meldet schon die zweite
-Deklaration einen Compilerfehler (`method wert() is already defined in class ...`).
+Deklaration einen Compilerfehler (`method wert() is already defined in class ...`,
+auf einem deutsch eingestellten System, etwa in der IDE:
+`Methode wert() ist bereits in Klasse ... definiert`).
 
 </details>
 

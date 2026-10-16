@@ -1,6 +1,6 @@
 # Kapitel 12: Nebenläufigkeit und Werkzeuge
 
-**Ziel:** Du weisst, warum `zaehler++` aus zwei Threads falsch zählt, nutzt
+**Ziel:** Du weißt, warum `zaehler++` aus zwei Threads falsch zählt, nutzt
 `ExecutorService` statt roher Threads, und findest dich in einem echten
 Java-Projekt mit Maven, Gradle und JUnit zurecht.
 
@@ -41,7 +41,7 @@ public void erhoehen() {
 ```
 1. lies zaehler          (Thread A liest 5)
 2. addiere 1             (Thread B liest ebenfalls 5)
-3. schreib zurueck       (beide schreiben 6 - eine Erhoehung ist verloren)
+3. schreib zurueck       (beide schreiben 6, eine Erhoehung ist verloren)
 ```
 
 Das nennt man **Race Condition**. Sie tritt nicht immer auf, sondern
@@ -99,7 +99,8 @@ zaehler.get();
 ```
 
 Nutzt CPU-Befehle (Compare-and-Swap) statt Sperren, schneller und ohne
-Deadlock-Gefahr. **Für einzelne Zähler und Flags immer die erste Wahl.**
+Deadlock-Gefahr. **Für einzelne Zähler immer die erste Wahl.** Für ein
+einfaches Flag genügt auch `volatile` (12.2).
 
 ### Gar keinen gemeinsamen Zustand
 
@@ -133,14 +134,15 @@ Das ist dasselbe Muster wie `zaehler++`: prüfen, dann handeln (*check-then-act*
 und dazwischen kann ein anderer Thread drankommen. Zwei Threads sehen `null`,
 beide erzeugen ein Objekt, und es gibt zwei "einzige" Instanzen. Sicher ist
 dagegen die Variante mit `private static final ... = new ...()` aus 5.10: Die
-JVM lädt jede Klasse genau einmal und sichert das selbst mit einer Sperre ab.
+JVM initialisiert jede Klasse genau einmal und sichert das selbst mit einer
+Sperre ab.
 Die Instanz entsteht beim ersten Zugriff auf die Klasse ("Was gibt das aus?"
 Nr. 4). Ebenso sicher ist das `enum` aus 10.9. Faulheit lohnt sich fast nie, das
 Objekt ist klein. Wer sie trotzdem braucht, macht `instanz()` `synchronized`.
 (Die berühmte Variante *double-checked locking* ist nur mit `volatile` korrekt
 und ein Klassiker für subtile Fehler.)
 
-**Der Zustand.** "Genau eine Instanz" heisst nicht "thread-sicher". Ändern alle
+**Der Zustand.** "Genau eine Instanz" heißt nicht "thread-sicher". Ändern alle
 Threads dasselbe Feld des Singletons, gilt alles aus 12.2: Ein `long zaehler`
 mit `zaehler++` verliert Erhöhungen, eine `HashMap` darin kann kaputtgehen.
 Abhilfe wie oben: `AtomicLong`, `synchronized` oder eine `ConcurrentHashMap`
@@ -194,6 +196,12 @@ auf asynchrone Callback-Ketten auszuweichen.
 
 **Aber:** Sie lösen keine Race Conditions. Alles aus 12.2 gilt unverändert.
 
+Und eine Eigenheit von Java 21 bis 23: Blockiert ein virtueller Thread
+*innerhalb* von `synchronized` (etwa beim Warten auf Netzwerk), hält er seinen
+Träger-Thread fest (*pinning*), und bei vielen solchen Threads geht der Vorteil
+verloren. Dort nimmt man stattdessen `ReentrantLock` (12.7). Seit Java 24 ist
+das behoben.
+
 ## 12.6 Nebenläufige Collections
 
 ```java
@@ -211,7 +219,7 @@ schützt **nicht** vor zusammengesetzten Operationen:
 
 ```java
 if (!map.containsKey(k)) map.put(k, v);    // zwei Aufrufe = zwei Luecken
-map.putIfAbsent(k, v);                     // atomar - so ist es richtig
+map.putIfAbsent(k, v);                     // atomar, so ist es richtig
 ```
 
 ## 12.7 Deadlock
@@ -244,7 +252,7 @@ Reihenfolge** nehmen, möglichst wenige gleichzeitig halten, und wo möglich
 
 ```
 mein-projekt/
-├── pom.xml                       (Maven)  oder build.gradle.kts (Gradle)
+├── pom.xml                       (Maven)  oder build.gradle.kts + settings.gradle.kts (Gradle)
 └── src/
     ├── main/java/de/firma/app/   Produktivcode
     ├── main/resources/           Konfiguration, Textdateien
@@ -257,7 +265,7 @@ Diese Struktur ist Konvention, jedes Werkzeug und jede IDE erwartet sie.
 ### Pakete
 
 ```java
-package de.firma.app.domain;      // MUSS die erste Zeile sein
+package de.firma.app.domain;      // MUSS ganz oben stehen, davor nur Kommentare
 
 import java.util.List;
 import de.firma.app.util.Helfer;
@@ -269,7 +277,10 @@ Modifier) ist die Sichtbarkeit "nur innerhalb dieses Pakets".
 
 ## 12.10 Maven
 
-`pom.xml`: Beispiel in [`werkzeuge/pom.xml`](werkzeuge/pom.xml).
+`pom.xml`: Beispiel in [`werkzeuge/pom.xml.vorlage`](werkzeuge/pom.xml.vorlage).
+Die Vorlagen heißen `.vorlage`, damit die IDE diesen Kursordner nicht als
+Maven- oder Gradle-Projekt importiert. Beim Kopieren in ein eigenes Projekt
+benennst du sie zurück, siehe [`werkzeuge/README.md`](werkzeuge/README.md).
 
 ```bash
 mvn compile           # uebersetzen
@@ -283,28 +294,35 @@ kommen aus Maven Central und landen in `~/.m2/repository`.
 
 ## 12.11 Gradle
 
-`build.gradle.kts`: Beispiel in [`werkzeuge/build.gradle.kts`](werkzeuge/build.gradle.kts).
+`build.gradle.kts`: Beispiel in [`werkzeuge/build.gradle.kts.vorlage`](werkzeuge/build.gradle.kts.vorlage),
+dazu [`werkzeuge/settings.gradle.kts.vorlage`](werkzeuge/settings.gradle.kts.vorlage).
 
 ```bash
 ./gradlew build
 ./gradlew test
-./gradlew run
+./gradlew run       # braucht eine Klasse mit main, eingetragen als mainClass
 ```
+
+`gradlew` ist der *Wrapper*: ein kleines Skript im Projekt, das die passende
+Gradle-Version selbst holt. In einem neuen Projekt erzeugt ihn einmalig
+`gradle wrapper`, danach braucht niemand mehr ein installiertes Gradle.
 
 Unter Windows (PowerShell, cmd) heißt der Wrapper `.\gradlew` (das ist die
 Datei `gradlew.bat`). In IntelliJ und VS Code reicht es, den Projektordner mit
 `pom.xml` bzw. `build.gradle.kts` zu öffnen, die IDE erkennt den Build dann
 selbst, ganz ohne die Einrichtung aus `SETUP.md`.
 
-Gradle ist skriptbar (Kotlin oder Groovy), flexibler und bei grossen Projekten
+Gradle ist skriptbar (Kotlin oder Groovy), flexibler und bei großen Projekten
 schneller (inkrementelle Builds, Build-Cache). Dafür schwerer zu durchschauen.
 
 **Womit anfangen?** Maven. Es ist langweiliger, und das ist bei Build-Werkzeugen
 eine Tugend.
 
-## 12.12 JUnit 5
+## 12.12 JUnit
 
 Beispiel in [`werkzeuge/BeispielTest.java`](werkzeuge/BeispielTest.java).
+Die Vorlagen nutzen JUnit 6 (seit 2025), den Nachfolger von JUnit 5. Für deine
+Tests ändert sich nichts, Annotationen und Assertions sind dieselben.
 
 ```java
 import org.junit.jupiter.api.Test;
@@ -343,7 +361,7 @@ Testnamen als **ganze Sätze**: Ein Testname soll beschreiben, was gelten
 soll, nicht welche Methode aufgerufen wird.
 
 Weitere Bausteine: `@BeforeEach`, `@AfterEach`, `@DisplayName`, `@Disabled`,
-`@Nested`. Zum Nachschlagen: <https://junit.org/junit5/docs/current/user-guide/>
+`@Nested`. Zum Nachschlagen: der User Guide auf <https://junit.org>.
 
 ## 12.13 Weiteres Werkzeug
 
@@ -371,7 +389,7 @@ Wenn dieses Kapitel sitzt, hast du die Sprache. Danach kommt das Ökosystem:
 | **JUnit + Mockito** vertiefen | Tests sind die Grundlage von allem Weiteren |
 | **Spring Boot** | der De-facto-Standard für Java-Backends |
 | **JDBC / JPA / Hibernate** | Datenbanken |
-| **`java.time`** | Datum und Zeit richtig (nie `Date` oder `Calendar`) |
+| **`java.time`** vertiefen | Zeitzonen, `Instant`, Formatieren (Grundlagen in 10.7) |
 | **Logging** (SLF4J + Logback) | statt `System.out.println` |
 | **Jackson** | JSON |
 | **Effective Java** (Joshua Bloch) | das Buch, das aus Java-Kennern Java-Könnern macht |
@@ -400,7 +418,13 @@ Test zuverlässig feststellen**: Die Tests lesen erst nach `join()`, und
 nur unter bestimmten Bedingungen auf, und dann meist erst in Produktion.
 Hier musst du dich auf das Verständnis verlassen, nicht auf grüne Haken.
 Dasselbe gilt dafür, ob deine Threads wirklich *parallel* laufen und ob du
-den `ExecutorService` schliesst, beides sieht man dem Ergebnis nicht an.
+den `ExecutorService` schließt, beides sieht man dem Ergebnis nicht an.
+
+**Rechner mit nur einem Prozessorkern** (manche VMs und Cloud-Umgebungen):
+Dort laufen Threads nie wirklich gleichzeitig, und Race Conditions treten
+viel seltener auf. In Versuchen wurde dort eine Lösung ganz ohne
+`synchronized` in etwa der Hälfte der Läufe grün. Die Tests warnen dann zu
+Beginn und am Ende; nimm grüne Haken dort nicht als Beweis.
 
 ### `Aufgaben.java`
 
@@ -410,7 +434,7 @@ den `ExecutorService` schliesst, beides sieht man dem Ergebnis nicht an.
 2. **`zaehleMitAtomic(int threads, int proThread)`**: dasselbe mit
    `AtomicInteger` statt `synchronized`.
 3. **`summeParallel(long bis, int threads)`** -> `long`.
-   Summe von 1 bis `bis` (einschliesslich), aufgeteilt auf höchstens
+   Summe von 1 bis `bis` (einschließlich), aufgeteilt auf höchstens
    `threads` Teilaufgaben über einen `ExecutorService`. Ergebnis muss
    `bis * (bis + 1) / 2` sein. Tipp: Abschnittslänge aufrunden,
    `(bis + threads - 1) / threads`, sonst bleibt ein Rest-Abschnitt übrig.
@@ -426,7 +450,8 @@ darf doppelt vergeben werden, auch wenn vier Threads gleichzeitig IDs holen.
 
 Ehrlicher Hinweis, wie beim `Zaehler`: Die Tests starten vier Threads
 gleichzeitig und prüfen, ob eine ID doppelt vorkommt. Ein ungeschütztes
-`++zaehler` fliegt dabei fast immer auf, garantiert ist das aber nicht. Und noch
+`++zaehler` fliegt dabei fast immer auf, garantiert ist das aber nicht (auf
+einem einzigen Kern deutlich seltener, siehe oben). Und noch
 etwas zeigt dir diese Aufgabe: Der Zähler eines Singletons läuft über **alle**
 Prüfungen weiter. Kein Test bekommt je wieder eine frische 1. Warum das Tests
 schwer macht, steht in 13.8.
